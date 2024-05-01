@@ -6,21 +6,21 @@ import 'midnight.dart';
 
 import 'package:discord/src/common/utils/cache.dart';
 
-final themeProvider = StateNotifierProvider<ThemeProvider, Map>((ref) => ThemeProvider());
+final themeProvider = StateNotifierProvider<ThemeProvider, String>((ref) => ThemeProvider());
 
-class ThemeProvider extends StateNotifier<Map> {
-  ThemeProvider() : super({});
-
+class ThemeProvider extends StateNotifier<String> {
+  ThemeProvider() : super('dark');
+  
   Future<void> setTheme(String appTheme, bool save) async {
     switch (appTheme) {
       case 'light':
-        state = lightTheme;
+        theme = lightTheme;
       case 'dark':
-        state = darkTheme;
+        theme = darkTheme;
       default:
-        state = midnightTheme;
+        theme = midnightTheme;
+      state = appTheme;
     }
-    theme = state;
     if (save) {
       await prefs.setString('app-theme', appTheme);
     }
