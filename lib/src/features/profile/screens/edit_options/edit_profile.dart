@@ -46,6 +46,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   bool saving = false;
 
   @override
+  void initState() {
+    super.initState();
+    
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _usernameController.dispose();
