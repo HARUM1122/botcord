@@ -6,24 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../utils/constants.dart';
 import '../../../common/utils/cache.dart';
+
 
 final profileControllerProvider = ChangeNotifierProvider((ref) => ProfileController());
 
 class ProfileController extends ChangeNotifier {
-  final Map<String, CurrentUserStatus> onlineStatus = {
-    'online': CurrentUserStatus.online,
-    'idle': CurrentUserStatus.idle,
-    'dnd': CurrentUserStatus.dnd,
-    'invisible': CurrentUserStatus.invisible
-  };
-  final Map<String, ActivityType> activityTypes = {
-    'playing': ActivityType.game,
-    'watching': ActivityType.watching,
-    'listening': ActivityType.listening,
-    'competing': ActivityType.competing,
-    'custom': ActivityType.custom
-  };
+
   late final Map<String, dynamic> botActivity;
   int currentSeconds = 0;
   Timer? timer;

@@ -176,7 +176,7 @@ class ProfileScreen extends ConsumerWidget {
                                     ),
                                     applyClickAnimation: true,
                                     onPressed: () {
-                                      Navigator.pushNamed(context, '/edit-profile-route');
+                                      // Navigator.pushNamed(context, '/edit-profile-route');
                                     },
                                     child: Center(
                                       child: Text(
