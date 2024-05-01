@@ -29,6 +29,7 @@ class ProfileController extends ChangeNotifier {
     botActivity['current-activity-text'] = '';
     botActivity['since'] = ';';
     currentSeconds = 0;
+    print('');
   }
   
   void updatePresence({required bool save, DateTime? datetime}) {
