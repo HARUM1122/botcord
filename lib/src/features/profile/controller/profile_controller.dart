@@ -9,14 +9,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../utils/constants.dart';
 import '../../../common/utils/cache.dart';
 
-
 final profileControllerProvider = ChangeNotifierProvider((ref) => ProfileController());
 
 class ProfileController extends ChangeNotifier {
-
   late final Map<String, dynamic> botActivity;
   int currentSeconds = 0;
   Timer? timer;
+  
   Duration? getDuration(DateTime? datetime) {
     Duration? duration;
     if (botActivity['since'] != ';' && datetime != null) {
@@ -29,7 +28,6 @@ class ProfileController extends ChangeNotifier {
     botActivity['current-activity-text'] = '';
     botActivity['since'] = ';';
     currentSeconds = 0;
-    print('');
   }
   
   void updatePresence({required bool save, DateTime? datetime}) {
@@ -72,7 +70,7 @@ class ProfileController extends ChangeNotifier {
     }
     notifyListeners();
   }
-  
+
   Future <void> updateProfile({
     required String username,
     required String description,
@@ -95,6 +93,7 @@ class ProfileController extends ChangeNotifier {
     );
     notifyListeners();
   }
+  
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (currentSeconds == 0) {

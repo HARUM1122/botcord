@@ -3,14 +3,6 @@ import 'package:flutter/material.dart';
 extension BuildContextExtension on BuildContext {
   Size get getSize => MediaQuery.of(this).size;
   EdgeInsets get padding => MediaQuery.of(this).padding;
-  void pushNamed(String name, {Object? arguments}) {
-    if (!mounted) return;
-    Navigator.pushNamed(this, name, arguments: arguments);
-  }
-  void pop() {
-    if (!mounted) return;
-    Navigator.pop(this);
-  }
 }
 
 extension StringExtension on String {

@@ -138,7 +138,8 @@ class _LinkTrustDialogState extends State<LinkTrustDialog> {
                 await addDomain(uri.host);
               }
               await launchUrl(uri);
-              context.pop();
+              if (!mounted) return;
+              Navigator.pop(context);
             },
           ),
           const SizedBox(height: 10),
@@ -152,7 +153,7 @@ class _LinkTrustDialogState extends State<LinkTrustDialog> {
             onPressedColor: theme['color-06'],
             applyClickAnimation: true,
             animationUpperBound: 0.04,
-            onPressed: context.pop,
+            onPressed: () => Navigator.pop(context),
             child: Center(
               child: Text(
                 "Go Back",

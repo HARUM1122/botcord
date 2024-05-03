@@ -144,7 +144,7 @@ class StatusTile extends StatelessWidget {
       onPressed: () {
         controller.botActivity['current-online-status'] = status;
         controller.updatePresence(save: true);
-        context.pop();
+        Navigator.pop(context);
       },
       backgroundColor: Colors.transparent,
       onPressedColor: theme['color-12'],

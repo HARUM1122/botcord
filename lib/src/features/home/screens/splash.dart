@@ -25,7 +25,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     super.initState();
     final Map<String, dynamic> bot = jsonDecode(prefs.getString('current-bot')!);
     final AuthController authController = ref.read(authControllerProvider);
-    print(bot);
+
     if (bot.isEmpty) {
       Future.delayed(const Duration(seconds: 2), () {
         !prefs.getBool('is-landed')!
@@ -36,7 +36,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       runZonedGuarded(
       () async {
           await authController.login(bot);
-          ref.read(profileControllerProvider).updatePresence(save: false, datetime: DateTime.now());
+          ref.read(profileControllerProvider).updatePresence(
+            save: false, 
+            datetime: DateTime.now()
+          );
           if (mounted) {
             Navigator.pushReplacementNamed(context, '/home-route');
           }

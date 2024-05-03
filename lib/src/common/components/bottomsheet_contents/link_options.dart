@@ -69,7 +69,7 @@ class LinkOptionsSheet extends StatelessWidget {
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16))
               ),
               onPressed: () async {
-                context.pop();
+                Navigator.pop(context);
                 if (trustedDomains.contains(Uri.parse(link).host)) {
                   await launchUrl(Uri.parse(link));
                   return;

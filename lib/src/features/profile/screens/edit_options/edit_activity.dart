@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../components/radio_button_indicator/radio_button_indicator2.dart';
 
 import 'package:discord/src/common/utils/cache.dart';
-import 'package:discord/src/common/utils/extensions.dart';
 import 'package:discord/src/common/components/custom_button.dart';
 
 import 'package:discord/src/features/profile/controller/profile_controller.dart';
@@ -42,7 +41,7 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
       backgroundColor: theme['color-11'],
       appBar: AppBar(
         leading: IconButton(
-          onPressed: context.pop,
+          onPressed: () => Navigator.pop(context),
           splashRadius: 18,
           icon: Icon(
             Icons.close,
@@ -86,7 +85,7 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
               botActivity['current-activity-text'] = _activityText;
               botActivity['current-activity-type'] = _activityType;
               _profileController.updatePresence(save: true, datetime: now);
-              context.pop();
+              Navigator.pop(context);
             },
             child: Text(
               'Save',

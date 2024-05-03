@@ -24,7 +24,7 @@ class _CreateBotAccountScreenState extends State<CreateBotAccountScreen> {
       backgroundColor: theme['color-11'],
       appBar: AppBar(
         leading: IconButton(
-          onPressed: context.pop,
+          onPressed: () => Navigator.pop(context),
           splashRadius: 18,
           icon: Icon(
             Icons.arrow_back,

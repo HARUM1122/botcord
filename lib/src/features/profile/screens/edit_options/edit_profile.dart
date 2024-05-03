@@ -10,7 +10,6 @@ import '../../utils/utils.dart';
 
 import 'package:discord/src/common/utils/cache.dart';
 import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/common/utils/extensions.dart';
 import 'package:discord/src/common/utils/asset_constants.dart';
 
 import 'package:discord/src/common/components/avatar/profile_pic.dart';
@@ -46,12 +45,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   bool saving = false;
 
   @override
-  void initState() {
-    super.initState();
-    
-  }
-
-  @override
   void dispose() {
     super.dispose();
     _usernameController.dispose();
@@ -72,7 +65,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       avatar = _avatar;
       banner = _banner;
       ref.read(bottomNavProvider).refresh();
-      context.pop();
+      if (!context.mounted) return;
+      Navigator.pop(context);
     } catch (e) {
       if (!context.mounted) return;
       setState(() => saving = false);
@@ -84,6 +78,15 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             color: Colors.red[800],
           ), 
           msg: 'Network error'
+        );
+      } else if (e.toString().contains('AVATAR_RATE_LIMIT')) {
+        showSnackBar(
+          context: context, 
+          leading: Icon(
+            Icons.error_outline,
+            color: Colors.red[800],
+          ), 
+          msg: "You're changing your profile too fast."
         );
       } else {
         showSnackBar(
@@ -111,7 +114,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       appBar: AppBar(
         backgroundColor: theme['color-11'],
         leading: IconButton(
-          onPressed: context.pop,
+          onPressed: () => Navigator.pop(context),
           splashRadius: 18,
           icon: Icon(
             Icons.arrow_back,

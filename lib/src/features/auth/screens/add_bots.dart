@@ -114,7 +114,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: context.pop,
+          onPressed: () => Navigator.pop(context),
           splashRadius: 18,
           icon: Icon(
             Icons.arrow_back,

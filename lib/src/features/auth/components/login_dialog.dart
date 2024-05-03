@@ -34,8 +34,8 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
         await _authController.login(widget.bot);
         _profileController.updatePresence(save: false, datetime: DateTime.now());
         if (mounted) {
-          context.pop();
-          context.pop();
+          Navigator.pop(context);
+          Navigator.pop(context);
           globalNavigatorKey.currentState!.pushReplacementNamed('/home-route');
         } else {
           _authController.logout(null);
@@ -44,7 +44,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
       (error, stack) async {
         bool isMounted = true;
         if (mounted) {
-          context.pop();
+          Navigator.pop(context);
         } else {
           isMounted = false;
         }
@@ -160,7 +160,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
             onPressedColor: theme['color-06'],
             applyClickAnimation: true,
             animationUpperBound: 0.04,
-            onPressed: context.pop,
+            onPressed: () => Navigator.pop(context),
             child: Center(
               child: Text(
                 "Go Back",

@@ -53,7 +53,7 @@ class BotOptionsSheet extends ConsumerWidget {
                 Icons.close,
                 color: theme['color-01'],
               ),
-              onPressed: () => context.pop()
+              onPressed: () => Navigator.pop(context)
             ),
           )
         ],
@@ -161,7 +161,8 @@ class BotOptionsSheet extends ConsumerWidget {
                   bot['name']![0].toUpperCase(), 
                   bot['id']!
                 );
-                context.pop();  
+                if (!context.mounted) return;
+                Navigator.pop(context);  
               },
               currPos: 'bottom'
             ),

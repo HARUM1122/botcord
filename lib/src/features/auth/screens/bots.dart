@@ -42,7 +42,7 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
         leading: Visibility(
           visible: !widget.fromSplash,
           child: IconButton(
-            onPressed: context.pop,
+            onPressed: () => Navigator.pop(context),
             splashRadius: 18,
             icon: Icon(
               Icons.arrow_back,
