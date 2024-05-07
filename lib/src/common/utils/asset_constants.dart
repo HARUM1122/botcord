@@ -7,4 +7,5 @@ class AssetIcon {
   static const String link = '$_svgPath/link.svg';
   static const String message = '$_svgPath/message.svg';
   static const String reply = '$_svgPath/reply.svg';
+  static const String home = '$_svgPath/home.svg';
 }

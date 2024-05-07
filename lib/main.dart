@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:discord/src/common/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'routes.dart';
 
-import 'src/themes/themes.dart';
+import 'theme_provider.dart';
 
 import 'src/common/utils/cache.dart';
 
@@ -39,7 +39,7 @@ void main() async {
   }
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
+      enabled: false,
       builder: (_)=> const ProviderScope(
         child: App(),
       ),
@@ -51,15 +51,27 @@ class App extends ConsumerWidget {
   const App({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    String theme = ref.watch(themeProvider);
+    final Brightness brightness = appTheme<Brightness>(
+      theme, 
+      light: Brightness.light, 
+      dark: Brightness.dark, 
+      midnight: Brightness.dark
+    );
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.black.withOpacity(0.002),
+        statusBarIconBrightness: brightness,
+        systemNavigationBarColor: Colors.black.withOpacity(0.002),
+        systemNavigationBarIconBrightness: brightness
+      ),
+    );
     if (!initialized) {
       initialized = true;
       trustedDomains = prefs.getStringList('trusted-domains')!;
       ref.read(authControllerProvider).bots = jsonDecode(prefs.getString('bots')!);
       ref.read(profileControllerProvider).botActivity = jsonDecode(prefs.getString('bot-activity')!);
-      ref.watch(themeProvider.notifier).setTheme(prefs.getString('app-theme')!, false);
-      SystemChrome.setSystemUIOverlayStyle(
-        theme['system-ui']
-      );
+      ref.read(themeProvider.notifier).setTheme(prefs.getString('app-theme')!, false, true);
       SystemChrome.setEnabledSystemUIMode(
         SystemUiMode.edgeToEdge,
         overlays: SystemUiOverlay.values
@@ -75,7 +87,8 @@ class App extends ConsumerWidget {
           elevation: 0
         ),
         textSelectionTheme: TextSelectionThemeData(
-          selectionHandleColor: theme['color-13']
+          selectionColor: const Color(0XFFC8D0FD).withOpacity(0.3),
+          selectionHandleColor: const Color(0XFFC8D0FD)
         ),
         fontFamily: 'GGsans'
       ),

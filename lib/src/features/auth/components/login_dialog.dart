@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:discord/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' show ClientException;
@@ -27,7 +28,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
   bool _running = false;
   late final AuthController _authController = ref.read(authControllerProvider);
   late final ProfileController _profileController = ref.read(profileControllerProvider);
-
+  late final String _theme = ref.read(themeProvider);
   void login() async {
     runZonedGuarded(
       () async {
@@ -50,7 +51,8 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
         }
         if (error is ClientException && isMounted) {
           showSnackBar(
-            context: globalNavigatorKey.currentContext!, 
+            context: globalNavigatorKey.currentContext!,
+            theme: _theme, 
             leading: Icon(
               Icons.error_outline,
               color: Colors.red[800],
@@ -60,7 +62,8 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
         } else if (error.toString().contains('401: Unauthorized') && isMounted) {
           _authController.removeBot(widget.bot['name'][0].toUpperCase(), widget.bot['id']);
           showSnackBar(
-            context: globalNavigatorKey.currentContext!, 
+            context: globalNavigatorKey.currentContext!,
+            theme: _theme,
             leading: Icon(
               Icons.error_outline,
               color: Colors.red[800],
@@ -72,6 +75,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
           await Future.delayed(const Duration(seconds: 1));
           showSnackBar(
             context: globalNavigatorKey.currentContext!,
+            theme: _theme,
             leading: Icon(
               Icons.error_outline,
               color: Colors.red[800],
@@ -88,7 +92,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
       height: context.getSize.height * 0.5,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme['color-11'],
+        color: appTheme<Color>(_theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF1C1D23), midnight: const Color(0xFF000000)),
         borderRadius: BorderRadius.circular(12)
       ),
       child: Column(
@@ -97,7 +101,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
           Text(
             "${widget.bot['name']}#${widget.bot['discriminator']}",
             style: TextStyle(
-              color: theme['color-01'],
+              color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
               fontSize: 16,
               fontFamily: 'GGSansBold'
             ),
@@ -119,8 +123,8 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(45 * 0.5)
                 ),
-                backgroundColor: theme['color-14'],
-                onPressedColor: theme['color-15'],
+                backgroundColor: const Color(0XFF536CF8),
+                onPressedColor: const Color(0XFF4658CA),
                 applyClickAnimation: true,
                 animationUpperBound: 0.04,
                 onPressed: () {
@@ -130,18 +134,18 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
                 },
                 child: Center(
                   child: _running 
-                  ? SizedBox(
+                  ? const SizedBox(
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
-                        color: theme['color-01'],
+                        color: Color(0xFFFFFFFF),
                         strokeWidth: 2,
                       ),
                     ) 
-                  : Text(
+                  : const Text(
                     "Login",
                     style: TextStyle(
-                      color: theme['color-01'],
+                      color: Color(0xFFFFFFFF),
                       fontFamily: 'GGSansSemibold'
                     ),
                   ),
@@ -156,8 +160,8 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(45 * 0.5)
             ),
-            backgroundColor: theme['color-07'],
-            onPressedColor: theme['color-06'],
+            backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFDFE1E3), dark: const Color(0XFF373A42), midnight: const Color(0XFF2C2D36)),
+            onPressedColor: appTheme<Color>(_theme, light: const Color(0XFFC4C6C8), dark: const Color(0XFF4D505A), midnight: const Color(0XFF373A42)),
             applyClickAnimation: true,
             animationUpperBound: 0.04,
             onPressed: () => Navigator.pop(context),
@@ -165,7 +169,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
               child: Text(
                 "Go Back",
                 style: TextStyle(
-                  color: theme['color-01'],
+                  color: appTheme<Color>(_theme, light: const Color(0XFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                   fontFamily: 'GGSansSemibold'
                 ),
               ),
@@ -176,3 +180,4 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
     );
   }
 }
+

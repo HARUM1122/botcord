@@ -10,7 +10,7 @@ import 'src/features/auth/screens/screens.dart';
 
 import 'src/features/home/screens/screens.dart';
 
-import 'src/features/profile/screens/edit_options/edit_options.dart';
+import 'src/features/profile/screens/screens.dart';
 
 Route<dynamic> generateRoutes(RouteSettings settings) {
   switch (settings.name) {
@@ -39,6 +39,10 @@ Route<dynamic> generateRoutes(RouteSettings settings) {
     case '/tutorial-video-route':
       return MaterialPageRoute(
         builder: (context) => const TutorialVideoScreen(),
+      );
+    case '/settings-route':
+      return MaterialPageRoute(
+        builder: (context) => const SettingsScreen(),
       );
     case '/edit-status-route':
       return PageAnimationTransition(

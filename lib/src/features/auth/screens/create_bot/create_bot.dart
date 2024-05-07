@@ -1,40 +1,42 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:discord/theme_provider.dart';
 
 import '../../utils/constants.dart';
 
 import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/common/utils/cache.dart';
-import 'package:discord/src/common/utils/extensions.dart';
 import 'package:discord/src/common/components/custom_button.dart';
 import 'package:discord/src/common/components/bottomsheet_contents/link_options.dart';
 
-class CreateBotAccountScreen extends StatefulWidget {
+class CreateBotAccountScreen extends ConsumerStatefulWidget {
   const CreateBotAccountScreen({super.key});
 
   @override
-  State<CreateBotAccountScreen> createState() => _CreateBotAccountScreenState();
+  ConsumerState<CreateBotAccountScreen> createState() => _CreateBotAccountScreenState();
 }
 
-class _CreateBotAccountScreenState extends State<CreateBotAccountScreen> {
+class _CreateBotAccountScreenState extends ConsumerState<CreateBotAccountScreen> {
   @override
   Widget build(BuildContext context) {
+    final String theme = ref.watch(themeProvider);
     return Scaffold(
-      backgroundColor: theme['color-11'],
+      backgroundColor: appTheme(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           splashRadius: 18,
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
-            color: theme['color-05'],
+            color: Color(0XFF7D818F),
           )
         ),
         title: Text(
           'Botcord',
           style: TextStyle(
-            color: theme['color-01'],
+            color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
             fontFamily: 'GGSansBold'
           ),
         ),
@@ -45,7 +47,7 @@ class _CreateBotAccountScreenState extends State<CreateBotAccountScreen> {
           children: [
             Expanded(
               child: GlowingOverscrollIndicator(
-                color: theme['color-15'],
+                color: Colors.blue,
                 axisDirection: AxisDirection.down,
                 child: Markdown(
                   data: createBotAccountSteps.trim(),
@@ -56,7 +58,7 @@ class _CreateBotAccountScreenState extends State<CreateBotAccountScreen> {
                     borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(16)
                     ),
-                    color: theme['color-11'],
+                    color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
                     builder: (context, controller, offset) => LinkOptionsSheet(
                       link: href!, 
                       controller: controller
@@ -64,24 +66,24 @@ class _CreateBotAccountScreenState extends State<CreateBotAccountScreen> {
                   ),
                   styleSheet: MarkdownStyleSheet(
                     listBullet: TextStyle(
-                      color: theme['color-01'],
+                      color: appTheme<Color>(theme, light: const Color(0XFF939597), dark: const Color(0XFF80848A), midnight: const Color(0XFF898B98)),
                       fontSize: 16,
                       fontFamily: 'GGSansSemibold'
                     ),
                     h2: TextStyle(
-                      color: theme['color-01'],
+                      color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                       fontFamily: 'GGSansBold'
                     ),
                     a: const TextStyle(
                       color: Colors.blue
                     ),
                     p: TextStyle(
-                      color: theme['color-01'],
+                      color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                       fontSize: 16
                     ),
                     code: TextStyle(
-                      color: theme['color-01'],
-                      backgroundColor: theme['color-09']
+                      color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                      backgroundColor: appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF242830), midnight: const Color(0XFF151419))
                     ),
                   ),
                 ),
@@ -98,13 +100,13 @@ class _CreateBotAccountScreenState extends State<CreateBotAccountScreen> {
                 ),
                 applyClickAnimation: true,
                 animationUpperBound: 0.04,
-                backgroundColor: theme['color-14'],
-                onPressedColor: theme['color-15'],
-                child: Center(
+                backgroundColor: const Color(0XFF536CF8),
+                onPressedColor: const Color(0XFF4658CA),
+                child: const Center(
                   child: Text(
                     "Watch Tutorial Video",
                     style: TextStyle(
-                      color: theme['color-01'],
+                      color: Color(0XFFF0F4F7),
                       fontFamily: 'GGsansSemibold'
                     ),
                   ),

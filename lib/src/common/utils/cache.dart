@@ -11,6 +11,5 @@ Application? application;
 (Uint8List, String)? banner;
 
 final globalNavigatorKey = GlobalKey<NavigatorState>();
-late Map theme;
 late final SharedPreferences prefs;
 late final List<String> trustedDomains;

@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../util/constants.dart';
 
+import 'package:discord/theme_provider.dart';
+
 import '../../../common/utils/cache.dart';
+import '../../../common/utils/utils.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/components/custom_button.dart';
 
 
-class LandingScreen extends StatelessWidget {
+class LandingScreen extends ConsumerWidget {
   const LandingScreen({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final String theme = ref.watch(themeProvider);
+    print(theme);
     return Scaffold(
-      backgroundColor: theme['color-11'],
+      backgroundColor: appTheme(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       appBar: AppBar(
         title: Text(
           "Welcome to Botcord",
           style: TextStyle(
-            color: theme['color-01'],
+            color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
             fontFamily: 'GGsansBold',
             fontSize: 24
           ),
@@ -34,22 +40,22 @@ class LandingScreen extends StatelessWidget {
             Expanded(
               child: GlowingOverscrollIndicator(
                 axisDirection: AxisDirection.down,
-                color: theme['color-15'],
+                color: Colors.white,
                 child: Markdown(
                   data: warningMessage,
                   styleSheet: MarkdownStyleSheet(
                     h2: TextStyle(
-                      color: theme['color-01'],
+                      color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                       fontFamily: 'GGSansBold',
                       fontSize: 18
                     ),
                     strong: TextStyle(
-                      color: theme['color-01'],
+                      color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                       fontFamily: 'GGSansBold',
                       fontSize: 16
                     ),
                     p: TextStyle(
-                      color: theme['color-01'],
+                      color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                       fontSize: 16
                     )
                   ),
@@ -68,18 +74,18 @@ class LandingScreen extends StatelessWidget {
               },
               width: context.getSize.width * 0.90,
               height: 50,
-              backgroundColor: theme['color-14'],
-              onPressedColor: theme['color-15'],
+              backgroundColor: const Color(0xFF5964F4),
+              onPressedColor: const Color(0XFF485CCF),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(context.getSize.width / 2)
               ),
               applyClickAnimation: true,
               animationUpperBound: 0.08,
-              child: Center(
+              child: const Center(
                 child: Text(
                   "Agree And Continue",
                   style: TextStyle(
-                    color: theme['color-01'],
+                    color: Color(0xFFFFFFFF),
                     fontFamily: 'GGsansSemibold',
                     fontSize: 16
                   ),
@@ -95,5 +101,3 @@ class LandingScreen extends StatelessWidget {
     );
   }
 }
-
-

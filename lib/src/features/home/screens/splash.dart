@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:discord/theme_provider.dart';
+
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/cache.dart';
 
@@ -25,7 +27,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     super.initState();
     final Map<String, dynamic> bot = jsonDecode(prefs.getString('current-bot')!);
     final AuthController authController = ref.read(authControllerProvider);
-
+    final String theme = ref.read(themeProvider);
     if (bot.isEmpty) {
       Future.delayed(const Duration(seconds: 2), () {
         !prefs.getBool('is-landed')!
@@ -49,7 +51,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           await Future.delayed(const Duration(seconds: 1));
           if (error is ClientException) {
             showSnackBar(
-              context: globalNavigatorKey.currentContext!, 
+              context: globalNavigatorKey.currentContext!,
+              theme: theme, 
               leading: Icon(
                 Icons.error_outline,
                 color: Colors.red[800],
@@ -59,7 +62,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           } else if (error.toString().contains('401: Unauthorized')) {
             authController.removeBot(bot['name'][0].toUpperCase(), bot['id']);
             showSnackBar(
-              context: globalNavigatorKey.currentContext!, 
+              context: globalNavigatorKey.currentContext!,
+              theme: theme, 
               leading: Icon(
                 Icons.error_outline,
                 color: Colors.red[800],
@@ -70,6 +74,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             authController.logout(null);
             showSnackBar(
               context: globalNavigatorKey.currentContext!,
+              theme: theme,
               leading: Icon(
                 Icons.error_outline,
                 color: Colors.red[800],
@@ -83,13 +88,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    final String theme = ref.read(themeProvider);
     return Material(
-      color: theme['color-11'],
+      color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       child: Center(
         child: Icon(
           Icons.discord_outlined,
           size: 180,
-          color: theme['color-02']
+          color: appTheme<Color>(theme, light: const Color(0xFF1A1D24), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF))
         )
       )
     );

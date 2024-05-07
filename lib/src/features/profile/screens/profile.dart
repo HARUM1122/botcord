@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:discord/theme_provider.dart';
+
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/cache.dart';
 import '../../../common/utils/extensions.dart';
@@ -20,11 +22,14 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ProfileController controller = ref.watch(profileControllerProvider);
+    final String theme = ref.watch(themeProvider);
+    final Color textColor1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+    final Color textColor2 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D));
     final Map<String, dynamic> botActivity = controller.botActivity;
     String seconds = controller.currentSeconds.toString().formatSeconds();
-    
+
     return Material(
-      color: theme['color-11'],
+      color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       child: SingleChildScrollView(
         child: Stack(
           children: [
@@ -43,9 +48,7 @@ class ProfileScreen extends ConsumerWidget {
                     color: banner == null ? Colors.purple : null
                   ),
                   child: GestureDetector(
-                    onTap: () {
-                      
-                    },
+                    onTap: () => Navigator.pushNamed(context, '/settings-route'),
                     child: Container(
                       width: 30,
                       height: 30,
@@ -70,7 +73,7 @@ class ProfileScreen extends ConsumerWidget {
                       margin: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: theme['color-10'],
+                        color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419)),
                         borderRadius: BorderRadius.circular(16)
                       ),
                       child: Column(
@@ -79,7 +82,7 @@ class ProfileScreen extends ConsumerWidget {
                           Text(
                             user!.username,
                             style: TextStyle(
-                              color: theme['color-01'],
+                              color: textColor1,
                               fontSize: 24,
                               fontFamily: 'GGSansBold'
                             )
@@ -87,7 +90,7 @@ class ProfileScreen extends ConsumerWidget {
                           Text(
                             '${user!.username}#${user!.discriminator}',
                             style: TextStyle(
-                              color: theme['color-01'],
+                              color: textColor1,
                               fontSize: 14,
                             )
                           ),
@@ -100,7 +103,7 @@ class ProfileScreen extends ConsumerWidget {
                                   Text(
                                     "${(botActivity['current-activity-type']  != 'custom' ? botActivity['current-activity-type'].toString().capitalize() : '').trim()} ${botActivity['current-activity-text']}",
                                     style: TextStyle(
-                                      color: theme['color-03'],
+                                      color: textColor2,
                                       fontFamily: 'GGSansSemibold'
                                     )
                                   ),
@@ -114,13 +117,13 @@ class ProfileScreen extends ConsumerWidget {
                                       width: 15,
                                       height: 15,
                                       decoration: BoxDecoration(
-                                        color: theme['color-02'],
+                                        color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
                                         shape: BoxShape.circle
                                       ),
                                       child: Center(
                                         child: Icon(
                                           Icons.close,
-                                          color: theme['color-11'],
+                                          color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
                                           size: 12,
                                         ),
                                       ),
@@ -134,7 +137,7 @@ class ProfileScreen extends ConsumerWidget {
                             Text(
                               "Clears in $seconds",
                               style: TextStyle(
-                                color: theme['color-03'],
+                                color: textColor2,
                                 fontFamily: 'GGSansSemibold'
                               )
                             ),
@@ -144,20 +147,22 @@ class ProfileScreen extends ConsumerWidget {
                             children: [
                               Expanded(
                                 child: CustomButton(
-                                  backgroundColor: theme['color-06'], 
-                                  onPressedColor: theme['color-07'], 
+                                  backgroundColor: appTheme<Color>(theme, light: const Color(0XFFDFE1E3), dark: const Color(0XFF373A42), midnight: const Color(0XFF2C2D36)),
+                                  onPressedColor: appTheme<Color>(theme, light: const Color(0XFFC4C6C8), dark: const Color(0XFF4D505A), midnight: const Color(0XFF373A42)), 
                                   height: 40,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(context.getSize.width * 0.5)
                                   ),
                                   applyClickAnimation: true,
-                                  onPressed: () =>  Navigator.pushNamed(context, '/edit-status-route'),
+                                  onPressed: () {},
+                                  // onPressed: () =>  Navigator.pushNamed(context, '/edit-status-route'),
                                   child: Center(
                                     child: Text(
                                       "Edit Activity",
                                       style: TextStyle(
-                                        color: theme['color-01'],
-                                        fontSize: 14
+                                        color: textColor1,
+                                        fontSize: 14,
+                                        fontFamily: 'GGSansSemibold'
                                       ),
                                     ),
                                   ),
@@ -167,19 +172,21 @@ class ProfileScreen extends ConsumerWidget {
                               Expanded(
                                 child: CustomButton(
                                   height: 40,
-                                  backgroundColor: theme['color-06'], 
-                                  onPressedColor: theme['color-07'], 
+                                  backgroundColor: appTheme<Color>(theme, light: const Color(0XFFDFE1E3), dark: const Color(0XFF373A42), midnight: const Color(0XFF2C2D36)),
+                                  onPressedColor: appTheme<Color>(theme, light: const Color(0XFFC4C6C8), dark: const Color(0XFF4D505A), midnight: const Color(0XFF373A42)), 
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(context.getSize.width * 0.5)
                                   ),
                                   applyClickAnimation: true,
-                                  onPressed: () => Navigator.pushNamed(context, '/edit-profile-route'),
+                                  // onPressed: () => Navigator.pushNamed(context, '/edit-profile-route'),
+                                  onPressed: () {},
                                   child: Center(
                                     child: Text(
                                       "Edit Profile",
                                       style: TextStyle(
-                                        color: theme['color-01'],
-                                        fontSize: 14
+                                        color: textColor1,
+                                        fontSize: 14,
+                                        fontFamily: 'GGSansSemibold'
                                       ),
                                     ),
                                   ),
@@ -195,7 +202,7 @@ class ProfileScreen extends ConsumerWidget {
                       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: theme['color-10'],
+                        color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419)),
                         borderRadius: BorderRadius.circular(16)
                       ),
                       child: Column(
@@ -207,7 +214,7 @@ class ProfileScreen extends ConsumerWidget {
                             Text(
                               'Description',
                               style: TextStyle(
-                                color: theme['color-03'],
+                                color: textColor2,
                                 fontFamily: 'GGSansSemibold'
                               )
                             ),
@@ -215,15 +222,15 @@ class ProfileScreen extends ConsumerWidget {
                             Text(
                               application!.description,
                               style: TextStyle(
-                                color: theme['color-02']
+                                color: textColor1
                               )
                             ),
                             const SizedBox(height: 16),
                           ],
                           Text(
-                            'Discord Member Since',
+                            'Created At',
                             style: TextStyle(
-                              color: theme['color-03'],
+                              color: textColor2,
                               fontFamily: 'GGSansSemibold'
                             )
                           ),
@@ -231,7 +238,7 @@ class ProfileScreen extends ConsumerWidget {
                           Text(
                             DateFormat('MMM dd, yyyy').format(user!.id.timestamp),
                             style: TextStyle(
-                              color: theme['color-02'],
+                              color: textColor1,
                               fontSize: 16
                             )
                           )
@@ -254,18 +261,18 @@ class ProfileScreen extends ConsumerWidget {
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(16)
                   ),
-                  color: theme['color-11'],
+                  color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
                   builder: (context, controller, offset) => StatusSheet(controller: controller)
                 ),
                 radius: 90, 
                 image: avatar?.$1 ?? user!.avatar.url.toString(),
                 padding: const EdgeInsets.all(6),
-                backgroundColor: theme['color-11'],
+                backgroundColor: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: theme['color-11'],
+                      color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
                       shape: BoxShape.circle
                     ),
                     child: Padding(

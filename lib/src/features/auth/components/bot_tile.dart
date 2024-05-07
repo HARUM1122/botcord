@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:discord/theme_provider.dart';
 
 import 'bot_options_sheet.dart';
 
 import '../../../common/utils/utils.dart';
-import '../../../common/utils/cache.dart';
 import '../../../common/components/custom_button.dart';
 import '../../../common/components/avatar/profile_pic.dart';
 
-class BotTile extends StatelessWidget {
+class BotTile extends ConsumerWidget {
   final String title;
   final dynamic bots;
   const BotTile({
@@ -17,7 +19,8 @@ class BotTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final String theme = ref.read(themeProvider);
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -26,7 +29,7 @@ class BotTile extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-              color: theme['color-03'],
+              color: appTheme<Color>(theme, light: const Color(0XFF4C4F54), dark: const Color(0XFFC8CBD2), midnight: const Color(0XFFC5C4C9)),
               fontSize: 16,
               fontFamily: 'GGSansSemibold'
             ),
@@ -34,7 +37,7 @@ class BotTile extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 10),
             decoration: BoxDecoration(
-              color: theme['color-10'],
+              color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419)),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Column(
@@ -45,6 +48,7 @@ class BotTile extends StatelessWidget {
                     bot: bots[index],
                     isFirst: index == 0,
                     isLast: index == bots.length - 1,
+                    theme: theme,
                   ),
                   Offstage(
                     offstage: bots.length == 1 || index == bots.length - 1,
@@ -52,7 +56,7 @@ class BotTile extends StatelessWidget {
                       thickness: 0.2,
                       indent: 50,
                       height: 0,
-                      color: theme['color-04'],
+                      color: appTheme<Color>(theme, light: const Color(0XFFEAEAEA), dark: const Color(0XFF2E3138), midnight: const Color(0XFF1F1E23)),
                     ),
                   )
                 ]
@@ -69,10 +73,12 @@ class BotInfo extends StatelessWidget {
   final Map<String, dynamic> bot;
   final bool isFirst;
   final bool isLast;
+  final String theme;
   const BotInfo({
     required this.bot,
     required this.isFirst,
     required this.isLast,
+    required this.theme,
     super.key
   });
 
@@ -91,11 +97,11 @@ class BotInfo extends StatelessWidget {
           ),
           height: 0.5, 
           maxHeight: 0.8,
-          color: theme['color-11']
+          color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
         );
       },
       backgroundColor: Colors.transparent,
-      onPressedColor: theme['color-12'],
+      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE0E0E0), dark: const Color(0XFF32353E), midnight: const Color(0XFF232227)),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: isFirst ? const Radius.circular(14) : Radius.zero,
@@ -120,7 +126,7 @@ class BotInfo extends StatelessWidget {
                 bot['name']!,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color: theme['color-01'],
+                  color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                   fontSize: 16,
                   fontFamily: 'GGSansSemibold'
                 ),
@@ -128,7 +134,7 @@ class BotInfo extends StatelessWidget {
             ),
             Icon(
               Icons.more_vert,
-              color: theme['color-01']
+              color: appTheme<Color>(theme, light: const Color(0XFF4C4F54), dark: const Color(0XFFC8CBD2), midnight: const Color(0XFFC5C4C9))
             ),
           ],
         ),

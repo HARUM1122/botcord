@@ -1,3 +1,5 @@
+import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,12 +22,14 @@ class StatusSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ProfileController profileController = ref.read(profileControllerProvider);
     final Map<String, dynamic> botActivity = profileController.botActivity;
+    final String theme = ref.read(themeProvider);
+    
     List<Widget> children = [
       Align(
         alignment: Alignment.topCenter,
         child: DragHandle(
-          color: theme['color-06'],
-        ),
+          color: appTheme<Color>(theme, light: const Color(0XFFD8DADD), dark: const Color(0XFF2F3039), midnight: const Color(0XFF151518)),
+        )
       ),
       const SizedBox(height: 20),
       Align(
@@ -33,7 +37,7 @@ class StatusSheet extends ConsumerWidget {
         child: Text(
           'Change Online Status',
           style: TextStyle(
-            color: theme['color-01'],
+            color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
             fontSize: 20,
             fontFamily: 'GGSansBold'
           ),
@@ -43,7 +47,7 @@ class StatusSheet extends ConsumerWidget {
       Text(
         "Online Status",
         style: TextStyle(
-          color: theme['color-02'],
+          color: appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D)),
           fontSize: 14,
           fontFamily: 'GGSansSemibold'
         ),
@@ -53,7 +57,7 @@ class StatusSheet extends ConsumerWidget {
         width: double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 2),
         decoration: BoxDecoration(
-          color: theme['color-10'],
+          color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0xFF1A1D24)),
           borderRadius: BorderRadius.circular(16)
         ),
         child: Column(
@@ -63,13 +67,14 @@ class StatusSheet extends ConsumerWidget {
               status: 'online',
               title: 'Online',
               selected: botActivity['current-online-status'] == 'online',
+              theme: theme,
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(16)
               ),
               controller: profileController,
             ),
-            Divider(
-              color: theme['color-04'],
+            const Divider(
+              color: Color(0xFF777A81),
               thickness: 0.2,
               height: 0,
               indent: 50,
@@ -78,11 +83,12 @@ class StatusSheet extends ConsumerWidget {
               status: 'idle',
               title: 'Idle',
               selected: botActivity['current-online-status'] == 'idle',
+              theme: theme,
               borderRadius: BorderRadius.zero,
               controller: profileController,
             ),
-            Divider(
-              color: theme['color-04'],
+            const Divider(
+              color: Color(0xFF777A81),
               thickness: 0.2,
               height: 0,
               indent: 50,
@@ -91,11 +97,12 @@ class StatusSheet extends ConsumerWidget {
               status: 'dnd',
               title: 'Do Not Disturb',
               selected: botActivity['current-online-status'] == 'dnd',
+              theme: theme,
               borderRadius: BorderRadius.zero,
               controller: profileController,
             ),
-            Divider(
-              color: theme['color-04'],
+            const Divider(
+              color: Color(0xFF777A81),
               thickness: 0.2,
               height: 0,
               indent: 50,
@@ -104,6 +111,7 @@ class StatusSheet extends ConsumerWidget {
               status: 'invisible',
               title: 'Invisible',
               selected: botActivity['current-online-status'] == 'invisible',
+              theme: theme,
               borderRadius: const BorderRadius.vertical(
                 bottom: Radius.circular(16)
               ),
@@ -127,12 +135,14 @@ class StatusTile extends StatelessWidget {
   final String title;
   final BorderRadius borderRadius;
   final bool selected;
+  final String theme;
   final ProfileController controller;
   const StatusTile({
     required this.status,
     required this.title,
     required this.borderRadius,
     required this.selected,
+    required this.theme,
     required this.controller,
     super.key
   });
@@ -147,7 +157,7 @@ class StatusTile extends StatelessWidget {
         Navigator.pop(context);
       },
       backgroundColor: Colors.transparent,
-      onPressedColor: theme['color-12'],
+      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE0E0E0), dark: const Color(0XFF32353E), midnight: const Color(0XFF232227)),
       shape: RoundedRectangleBorder(
         borderRadius: borderRadius
       ),
@@ -163,7 +173,7 @@ class StatusTile extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-              color: theme['color-01'],
+              color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
               fontSize: 16,
               fontFamily: 'GGSansSemibold'
             ),

@@ -22,5 +22,6 @@ Map midnightTheme = {
   'color-12': const Color(0xFF0F1317),
   'color-13': const Color(0xFF969BF6),
   'color-14': const Color(0xFF5964F4),
-  'color-15': const Color(0xFF2C337B),
+  'color-15': const Color(0XFF485CCF),
+  'color-16': const Color(0xFF2C337B),
 };

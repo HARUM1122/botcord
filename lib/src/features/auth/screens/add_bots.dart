@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' show ClientException;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:discord/theme_provider.dart';
+
 import '../controller/auth_controller.dart';
 
 import '../../../common/utils/utils.dart';
-import '../../../common/utils/cache.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/components/custom_button.dart';
 
@@ -19,14 +20,17 @@ class AddBotsScreen extends ConsumerStatefulWidget {
 }
 
 class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
-  final TextEditingController controller = TextEditingController();
-  bool running = false;
+  final TextEditingController _controller = TextEditingController();
+  late final String _theme = ref.read(themeProvider);
+  bool _running = false;
+
+  String _text = '';
 
   void addToken() async {
-    if (running) return;
-    setState(() => running = true);
+    if (_running) return;
+    setState(() => _running = true);
     try {
-      int value = await ref.read(authControllerProvider).addToken(controller.text.trim());
+      int value = await ref.read(authControllerProvider).addToken(_text.trim());
       if (context.mounted) {
         switch (value) {
           case 200:
@@ -36,7 +40,8 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                 Icons.done,
                 color: Colors.tealAccent,
               ), 
-              msg: 'Successfully added the bot', 
+              msg: 'Successfully added the bot',
+              theme: _theme 
             );
           case 429:
             showSnackBar(
@@ -45,7 +50,8 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                 Icons.error_outline,
                 color: Colors.red[800],
               ), 
-              msg: 'You are being rate limited', 
+              msg: 'You are being rate limited',
+              theme: _theme 
             );
           case 401:
             showSnackBar(
@@ -54,7 +60,8 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                 Icons.error_outline,
                 color: Colors.red[800],
               ), 
-              msg: 'Invalid token', 
+              msg: 'Invalid token',
+              theme: _theme 
             );
           case -1:
             showSnackBar(
@@ -63,7 +70,8 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                 Icons.error_outline,
                 color: Colors.red[800],
               ), 
-              msg: 'Bot already added', 
+              msg: 'Bot already added',
+              theme: _theme 
             );
           default:
             showSnackBar(
@@ -72,7 +80,8 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                 Icons.error_outline,
                 color: Colors.red[800],
               ), 
-              msg: 'Unexpected error. Please retry'
+              msg: 'Unexpected error. Please retry',
+              theme: _theme
             );
         }
       }
@@ -84,7 +93,8 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
             Icons.error_outline,
             color: Colors.red[800],
           ), 
-          msg: 'Network error. Please retry'
+          msg: 'Network error. Please retry',
+          theme: _theme
         );
       }
     } catch (e) {
@@ -95,17 +105,18 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
             Icons.error_outline,
             color: Colors.red[800],
           ), 
-          msg: 'Unexpected error. Please retry'
+          msg: 'Unexpected error. Please retry',
+          theme: _theme
         );
       }
     }
-    controller.text = '';
-    setState(() => running = false);
+    _controller.text = '';
+    setState(() => _running = false);
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -118,12 +129,12 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
           splashRadius: 18,
           icon: Icon(
             Icons.arrow_back,
-            color: theme['color-05'],
+            color: appTheme(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
           ),
         ),
         centerTitle: true,
       ),
-      backgroundColor: theme['color-11'],
+      backgroundColor: appTheme(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0XFF1A1D24), midnight: const Color(0XFF000000)),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
@@ -135,7 +146,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                 Text(
                   'Add by Token',
                   style: TextStyle(
-                    color: theme['color-01'],
+                    color: appTheme(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                     fontFamily: 'GGSansBold',
                     fontSize: 26
                   )
@@ -145,12 +156,19 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                   width: double.infinity,
                   height: 60,
                   child: TextField(
-                    controller: controller,
+                    controller: _controller,
                     style: TextStyle(
-                      color: theme['color-02'],
+                      color: appTheme(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                       fontSize: 14
                     ),
-                    cursorColor: theme['color-02'],
+                    onChanged: (text) {
+                      if (_text.isEmpty || text.isEmpty) {
+                        setState(() => _text = text);
+                      } else {
+                        _text = text;
+                      }
+                    },
+                    cursorColor: const Color(0XFFC3CBEF),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
@@ -159,11 +177,11 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                       contentPadding: const EdgeInsets.all(16),
                       hintText: "Bot's token",
                       hintStyle: TextStyle(
-                        color: theme['color-03'],
+                        color: appTheme(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
                         fontSize: 16
                       ),
                       filled: true,
-                      fillColor: theme['color-12'],
+                      fillColor: appTheme(_theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017)),
                     )
                   ),
                 ),
@@ -174,14 +192,14 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                     text: TextSpan(
                       text: "Don't have a bot account? Click ",
                       style: TextStyle(
-                        color: theme['color-03'],
+                        color: appTheme(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
                         fontSize: 12
                       ),
                       children: [
                         TextSpan(
                           text: 'here',
                           style: TextStyle(
-                            color: theme['color-01'],
+                            color: appTheme(_theme, light: const Color(0xFF000000), dark: const Color(0XFFC7CAD1), midnight: const Color(0xFFFFFFFF)),
                             fontSize: 12,
                           ),
                           recognizer: TapGestureRecognizer()..onTap = () => Navigator.pushNamed(
@@ -195,9 +213,12 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                 ),
                 const Spacer(),
                 CustomButton(
+                  enabled: _text.isNotEmpty,
                   onPressed: addToken,
-                  backgroundColor: theme['color-14'],
-                  onPressedColor: theme['color-15'],
+                  backgroundColor: _text.isEmpty 
+                  ? appTheme<Color>(_theme, light: const Color(0XFFA3AEF8), dark: const Color(0XFF384590), midnight: const Color(0XFF2A357D))
+                  : const Color(0XFF536CF8),
+                  onPressedColor: const Color(0XFF4658CA),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(context.getSize.width * 0.5)
                   ),
@@ -206,20 +227,20 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                   width: double.infinity,
                   height: 50,
                   child: Center(
-                    child: running
-                    ? SizedBox(
+                    child: _running
+                    ? const SizedBox(
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
-                        color: theme['color-01'],
+                        color: Color(0xFFFFFFFF),
                         strokeWidth: 2,
                       ),
                     )
-                    : Text(
+                    : const Text(
                       'Add Bot',
                       style: TextStyle(
                         fontSize: 16,
-                        color: theme['color-01'],
+                        color: Color(0xFFFFFFFF),
                         fontFamily: 'GGsansSemibold'
                       )
                     )

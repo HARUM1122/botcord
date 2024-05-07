@@ -42,6 +42,7 @@ void showSheet({
 
 void showSnackBar({
   required BuildContext context,
+  required String theme,
   Widget? leading,
   required String msg,
 
@@ -54,7 +55,7 @@ void showSnackBar({
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: theme['color-10'],
+            color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0xFF25282F)),
             borderRadius: BorderRadius.circular(25)
           ),
           child: Row(
@@ -65,7 +66,7 @@ void showSnackBar({
                 child: Text(
                   msg,
                   style: TextStyle(
-                    color: theme['color-01'],
+                    color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                     fontFamily: 'GGSansSemibold',
                   ),
                   overflow: TextOverflow.ellipsis,
@@ -79,6 +80,17 @@ void showSnackBar({
     ),
   ).show(context);
 }
+
+
+T appTheme<T> (String theme, {
+  required T light, 
+  required T dark, 
+  required T midnight
+}) => switch(theme) {
+  'light' => light,
+  'dark' => dark,
+  _=> midnight
+};
 
 Future<(Uint8List, String)?> pickImage() async {
   final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);

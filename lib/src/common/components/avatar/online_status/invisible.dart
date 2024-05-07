@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/cache.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class InvisibleStatus extends StatelessWidget {
+import 'package:discord/theme_provider.dart';
+
+import '../../../utils/utils.dart';
+
+
+class InvisibleStatus extends ConsumerWidget {
   final double radius;
   const InvisibleStatus({required this.radius, super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       width: radius,
       height: radius,
@@ -17,7 +22,7 @@ class InvisibleStatus extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       child: CircleAvatar(
-        backgroundColor: theme['color-11'],
+        backgroundColor: appTheme<Color>(ref.read(themeProvider), light: const Color(0xFFFFFFFF), dark: const Color(0xFF000000), midnight: const Color(0xFF000000)),
       )
     );
   }

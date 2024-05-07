@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'package:discord/src/common/utils/cache.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RadioButtonIndicator2 extends StatelessWidget {
+import 'package:discord/theme_provider.dart';
+import 'package:discord/src/common/utils/utils.dart';
+
+class RadioButtonIndicator2 extends ConsumerWidget {
   final double radius;
   final bool selected;
   const RadioButtonIndicator2({required this.radius, required this.selected,super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final String theme = ref.read(themeProvider);
     return Container(
       width: radius,
       height: radius,
@@ -18,13 +22,18 @@ class RadioButtonIndicator2 extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.transparent,
         border: Border.all(
-          color: theme[selected ? 'color-01' : 'color-03'],
+          color: appTheme<Color>(
+            theme, 
+            light: selected ? const Color(0xFF373A43) : const Color(0xFF000000),
+            dark: selected ? const Color(0XFFFFFFFF) : const Color(0xFF91949D), 
+            midnight: const Color(0xFF1A1D24)
+          ),
           width: 2
         ),
         shape: BoxShape.circle
       ),
-      child: selected ? CircleAvatar(
-        backgroundColor: theme['color-13'],
+      child: selected ? const CircleAvatar(
+        backgroundColor: Color(0xFF969BF6),
       ) : null, 
 
     );

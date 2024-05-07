@@ -1,16 +1,17 @@
-import 'package:discord/src/common/components/avatar/online_status/status.dart';
-import 'package:discord/src/common/components/avatar/profile_pic.dart';
-import 'package:discord/src/features/profile/controller/profile_controller.dart';
+import 'package:discord/src/common/utils/asset_constants.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:discord/theme_provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 import 'navigation_button.dart';
-
 import '../provider/bottom_nav.dart';
-
 import '../../../common/utils/cache.dart';
+import '../../../common/utils/utils.dart';
 import '../../../common/utils/extensions.dart';
+import '../../../common/components/avatar/profile_pic.dart';
 
 class BottomNavigator extends ConsumerWidget {
   final PageController controller;
@@ -19,28 +20,34 @@ class BottomNavigator extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final BottomNavProvider navProvider = ref.watch(bottomNavProvider);
+    final String theme = ref.watch(themeProvider);
+    final Color selectedColor = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+    final Color unSelectedColor = appTheme<Color>(theme, light: const Color(0XFF9FA2A9), dark: const Color(0xFF777A81), midnight: const Color(0xFF777A81));
     return AnimatedSlide(
       offset: Offset(0, navProvider.leftMenuOpened ? 1 : 0),
       duration: const Duration(milliseconds: 160),
       child: Container(
         height: 60 + context.padding.bottom,
-        color: theme['color-09'],
+        color: appTheme<Color>(theme, light: const Color(0XFFDFE1E3), dark: const Color(0XFF2C2F36), midnight: const Color(0XFF171A21)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             NavigationButton(
-              widget: Icon(
-                Icons.home_filled,
-                color: navProvider.currentPageIndex == 0 
-                ? theme['color-02']
-                : theme['color-05']
+              widget: SvgPicture.asset(
+                AssetIcon.home,
+                colorFilter: ColorFilter.mode(
+                  navProvider.currentPageIndex == 0 
+                  ? selectedColor
+                  : unSelectedColor, 
+                  BlendMode.srcIn
+                )
               ),
               title: Text(
                 'Servers',
                 style: TextStyle(
                   color: navProvider.currentPageIndex == 0 
-                  ? theme['color-02']
-                  : theme['color-05'],
+                  ? selectedColor
+                : unSelectedColor,
                   fontSize: 12
                 )
               ),
@@ -59,8 +66,8 @@ class BottomNavigator extends ConsumerWidget {
                 'You',
                 style: TextStyle(
                   color: navProvider.currentPageIndex == 1 
-                  ? theme['color-02']
-                  : theme['color-05'],
+                  ? selectedColor
+                  : unSelectedColor,
                   fontSize: 12
                 )
               ),
