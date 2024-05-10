@@ -23,8 +23,8 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ProfileController controller = ref.watch(profileControllerProvider);
     final String theme = ref.watch(themeProvider);
-    final Color textColor1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-    final Color textColor2 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D));
+    final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+    final Color color2 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D));
     final Map<String, dynamic> botActivity = controller.botActivity;
     String seconds = controller.currentSeconds.toString().formatSeconds();
 
@@ -82,7 +82,7 @@ class ProfileScreen extends ConsumerWidget {
                           Text(
                             user!.username,
                             style: TextStyle(
-                              color: textColor1,
+                              color: color1,
                               fontSize: 24,
                               fontFamily: 'GGSansBold'
                             )
@@ -90,7 +90,7 @@ class ProfileScreen extends ConsumerWidget {
                           Text(
                             '${user!.username}#${user!.discriminator}',
                             style: TextStyle(
-                              color: textColor1,
+                              color: color1,
                               fontSize: 14,
                             )
                           ),
@@ -103,7 +103,7 @@ class ProfileScreen extends ConsumerWidget {
                                   Text(
                                     "${(botActivity['current-activity-type']  != 'custom' ? botActivity['current-activity-type'].toString().capitalize() : '').trim()} ${botActivity['current-activity-text']}",
                                     style: TextStyle(
-                                      color: textColor2,
+                                      color: color2,
                                       fontFamily: 'GGSansSemibold'
                                     )
                                   ),
@@ -117,13 +117,13 @@ class ProfileScreen extends ConsumerWidget {
                                       width: 15,
                                       height: 15,
                                       decoration: BoxDecoration(
-                                        color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                                        color: appTheme<Color>(theme, light: const Color(0XFF4C4F56), dark: const Color(0XFFC5C8CF), midnight: const Color(0XFFC9C8CD)),
                                         shape: BoxShape.circle
                                       ),
                                       child: Center(
                                         child: Icon(
                                           Icons.close,
-                                          color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                                          color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF31343B), midnight: const Color(0XFF201F27)),
                                           size: 12,
                                         ),
                                       ),
@@ -137,7 +137,7 @@ class ProfileScreen extends ConsumerWidget {
                             Text(
                               "Clears in $seconds",
                               style: TextStyle(
-                                color: textColor2,
+                                color: color2,
                                 fontFamily: 'GGSansSemibold'
                               )
                             ),
@@ -154,13 +154,12 @@ class ProfileScreen extends ConsumerWidget {
                                     borderRadius: BorderRadius.circular(context.getSize.width * 0.5)
                                   ),
                                   applyClickAnimation: true,
-                                  onPressed: () {},
-                                  // onPressed: () =>  Navigator.pushNamed(context, '/edit-status-route'),
+                                  onPressed: () =>  Navigator.pushNamed(context, '/edit-status-route'),
                                   child: Center(
                                     child: Text(
                                       "Edit Activity",
                                       style: TextStyle(
-                                        color: textColor1,
+                                        color: color1,
                                         fontSize: 14,
                                         fontFamily: 'GGSansSemibold'
                                       ),
@@ -178,13 +177,12 @@ class ProfileScreen extends ConsumerWidget {
                                     borderRadius: BorderRadius.circular(context.getSize.width * 0.5)
                                   ),
                                   applyClickAnimation: true,
-                                  // onPressed: () => Navigator.pushNamed(context, '/edit-profile-route'),
-                                  onPressed: () {},
+                                  onPressed: () => Navigator.pushNamed(context, '/edit-profile-route'),
                                   child: Center(
                                     child: Text(
                                       "Edit Profile",
                                       style: TextStyle(
-                                        color: textColor1,
+                                        color: color1,
                                         fontSize: 14,
                                         fontFamily: 'GGSansSemibold'
                                       ),
@@ -214,7 +212,7 @@ class ProfileScreen extends ConsumerWidget {
                             Text(
                               'Description',
                               style: TextStyle(
-                                color: textColor2,
+                                color: color2,
                                 fontFamily: 'GGSansSemibold'
                               )
                             ),
@@ -222,7 +220,7 @@ class ProfileScreen extends ConsumerWidget {
                             Text(
                               application!.description,
                               style: TextStyle(
-                                color: textColor1
+                                color: color1
                               )
                             ),
                             const SizedBox(height: 16),
@@ -230,7 +228,7 @@ class ProfileScreen extends ConsumerWidget {
                           Text(
                             'Created At',
                             style: TextStyle(
-                              color: textColor2,
+                              color: color2,
                               fontFamily: 'GGSansSemibold'
                             )
                           ),
@@ -238,7 +236,7 @@ class ProfileScreen extends ConsumerWidget {
                           Text(
                             DateFormat('MMM dd, yyyy').format(user!.id.timestamp),
                             style: TextStyle(
-                              color: textColor1,
+                              color: color1,
                               fontSize: 16
                             )
                           )
@@ -267,20 +265,18 @@ class ProfileScreen extends ConsumerWidget {
                 radius: 90, 
                 image: avatar?.$1 ?? user!.avatar.url.toString(),
                 padding: const EdgeInsets.all(6),
-                backgroundColor: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                backgroundColor: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
                 child: Align(
                   alignment: Alignment.bottomRight,
-                  child: DecoratedBox(
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
-                      color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                      color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
                       shape: BoxShape.circle
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(2),
-                      child: getOnlineStatus(
-                        controller.botActivity['current-online-status'], 
-                        16
-                      ),
+                    child: getOnlineStatus(
+                      controller.botActivity['current-online-status'], 
+                      16
                     ),
                   ),
                 ),

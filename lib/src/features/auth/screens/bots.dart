@@ -26,18 +26,18 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
   String _name = "";
   Timer? _debounce;
   late final AuthController _authController = ref.read(authControllerProvider);
-  late final String _theme = ref.read(themeProvider);
+  late final String _theme = ref.watch(themeProvider);
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: appTheme(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+      backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(
           "Bots",
           style: TextStyle(
-            color: appTheme(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+            color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
             fontFamily: 'GGSansBold',
             fontSize: 24
           ),
@@ -87,14 +87,17 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
                 height: 40,
                 child: Theme(
                   data: ThemeData(
-                    textSelectionTheme: TextSelectionThemeData(
-                      selectionColor: appTheme(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)).withOpacity(0.3),
-                      cursorColor: appTheme(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-                    )
+                    textSelectionTheme: () {
+                      final Color color = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+                      return TextSelectionThemeData(
+                        selectionColor: color.withOpacity(0.3),
+                        cursorColor: color
+                      );
+                    }()
                   ),
                   child: TextField(
                     style: TextStyle(
-                      color: appTheme(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                      color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                       fontSize: 14
                     ),
                     onChanged: (text) {
@@ -110,16 +113,16 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
                       ),
                       prefixIcon: Icon(
                         Icons.search,
-                        color: appTheme(_theme, light: const Color(0XFF2A2E31), dark: const Color(0XFFCDD1D4), midnight: const Color(0XFFDCE0E4))
+                        color: appTheme<Color>(_theme, light: const Color(0XFF2A2E31), dark: const Color(0XFFCDD1D4), midnight: const Color(0XFFDCE0E4))
                       ),
                       hintText: 'Search',
                       hintStyle: TextStyle(
-                        color: appTheme(_theme, light: const Color(0XFF585B62), dark: const Color(0XFF83868F), midnight: const Color(0XFF9598A1)),
+                        color: appTheme<Color>(_theme, light: const Color(0XFF585B62), dark: const Color(0XFF83868F), midnight: const Color(0XFF9598A1)),
                         fontSize: 14
                       ),
                       contentPadding: const EdgeInsets.all(8),
                       filled: true,
-                      fillColor: appTheme(_theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017)),
+                      fillColor: appTheme<Color>(_theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017)),
                     ),
                   ),
                 ),
@@ -135,7 +138,7 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
                       child: Text(
                         "You haven't added any bots",
                         style: TextStyle(
-                          color: appTheme(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                          color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                           fontSize: 20,
                           fontFamily: 'GGSansSemibold'
                         ),
@@ -150,7 +153,7 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
                       child: Text(
                         "No bots were found",
                         style: TextStyle(
-                          color: appTheme(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                          color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                           fontSize: 20,
                           fontFamily: 'GGSansSemibold'
                         ),

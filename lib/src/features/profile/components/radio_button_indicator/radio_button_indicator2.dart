@@ -24,9 +24,9 @@ class RadioButtonIndicator2 extends ConsumerWidget {
         border: Border.all(
           color: appTheme<Color>(
             theme, 
-            light: selected ? const Color(0xFF373A43) : const Color(0xFF000000),
+            light: selected ? const Color(0xFF373A43) : const Color(0XFF50515A),
             dark: selected ? const Color(0XFFFFFFFF) : const Color(0xFF91949D), 
-            midnight: const Color(0xFF1A1D24)
+            midnight: selected ? const Color(0XFFFFFFFF) : const Color(0XFF838591)
           ),
           width: 2
         ),

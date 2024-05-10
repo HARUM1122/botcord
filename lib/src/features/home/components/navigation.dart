@@ -1,10 +1,12 @@
 import 'package:discord/src/common/utils/asset_constants.dart';
+import 'package:discord/src/features/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/theme_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nyxx/nyxx.dart';
 
 import 'navigation_button.dart';
 import '../provider/bottom_nav.dart';
@@ -58,7 +60,7 @@ class BottomNavigator extends ConsumerWidget {
             ),
             NavigationButton(
               widget: ProfilePicWidget(
-                image: avatar == null ? user!.avatar.url.toString() : avatar!.$1,
+                image: avatar != null ? user!.avatar.url.toString() : avatar!.$1,
                 radius: 24,
                 backgroundColor: Colors.transparent,
               ),

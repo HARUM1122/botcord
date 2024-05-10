@@ -83,11 +83,13 @@ class LinkOptionsSheet extends ConsumerWidget {
                   ),
                 );
               },
-              currPos: 'top',
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(16)
+              ),
               theme: theme,
             ),
             Divider(
-              thickness: 0.2,
+              thickness: 0.4,
               height: 0,
               indent: 50,
               color: dividerColor,
@@ -107,11 +109,11 @@ class LinkOptionsSheet extends ConsumerWidget {
                   msg: "Link copied"
                 );
               },
-              currPos: '',
+              borderRadius: BorderRadius.zero,
               theme: theme,
             ),
             Divider(
-              thickness: 0.2,
+              thickness: 0.4,
               height: 0,
               indent: 50,
               color: dividerColor,
@@ -119,7 +121,9 @@ class LinkOptionsSheet extends ConsumerWidget {
             LinkOption(
               title: 'Share Link',
               onPressed: () => Share.share(link),
-              currPos: 'bottom',
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(16)
+              ),
               theme: theme,
             ),
           ]
@@ -139,12 +143,12 @@ class LinkOptionsSheet extends ConsumerWidget {
 class LinkOption extends StatelessWidget {
   final String title;
   final Function() onPressed;
-  final String currPos;
+  final BorderRadius borderRadius;
   final String theme;
   const LinkOption({
     required this.title,
     required this.onPressed,
-    required this.currPos,
+    required this.borderRadius,
     required this.theme,
     super.key
   });
@@ -154,10 +158,7 @@ class LinkOption extends StatelessWidget {
       backgroundColor: Colors.transparent,
       onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE0E0E0), dark: const Color(0XFF32353E), midnight: const Color(0XFF232227)),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: currPos == "top" ? const Radius.circular(20) : Radius.zero,
-          bottom: currPos == "bottom" ? const Radius.circular(20) : Radius.zero,
-        ),
+        borderRadius: borderRadius
       ),
       onPressed: onPressed,
       applyClickAnimation: false, 

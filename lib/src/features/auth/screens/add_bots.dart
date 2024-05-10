@@ -129,12 +129,12 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
           splashRadius: 18,
           icon: Icon(
             Icons.arrow_back,
-            color: appTheme(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
+            color: appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
           ),
         ),
         centerTitle: true,
       ),
-      backgroundColor: appTheme(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0XFF1A1D24), midnight: const Color(0XFF000000)),
+      backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0XFF1A1D24), midnight: const Color(0XFF000000)),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
@@ -146,7 +146,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                 Text(
                   'Add by Token',
                   style: TextStyle(
-                    color: appTheme(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                    color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                     fontFamily: 'GGSansBold',
                     fontSize: 26
                   )
@@ -155,34 +155,44 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                 SizedBox(
                   width: double.infinity,
                   height: 60,
-                  child: TextField(
-                    controller: _controller,
-                    style: TextStyle(
-                      color: appTheme(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-                      fontSize: 14
+                  child: Theme(
+                    data: ThemeData(
+                      textSelectionTheme: () {
+                        final Color color = appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594));
+                        return TextSelectionThemeData(
+                          selectionColor: color.withOpacity(0.3),
+                          cursorColor: color
+                        );
+                      }()
                     ),
-                    onChanged: (text) {
-                      if (_text.isEmpty || text.isEmpty) {
-                        setState(() => _text = text);
-                      } else {
-                        _text = text;
-                      }
-                    },
-                    cursorColor: const Color(0XFFC3CBEF),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide.none
+                    child: TextField(
+                      controller: _controller,
+                      style: TextStyle(
+                        color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                        fontSize: 14
                       ),
-                      contentPadding: const EdgeInsets.all(16),
-                      hintText: "Bot's token",
-                      hintStyle: TextStyle(
-                        color: appTheme(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
-                        fontSize: 16
-                      ),
-                      filled: true,
-                      fillColor: appTheme(_theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017)),
-                    )
+                      onChanged: (text) {
+                        if (_text.isEmpty || text.isEmpty) {
+                          setState(() => _text = text);
+                        } else {
+                          _text = text;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none
+                        ),
+                        contentPadding: const EdgeInsets.all(16),
+                        hintText: "Bot's token",
+                        hintStyle: TextStyle(
+                          color: appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
+                          fontSize: 14
+                        ),
+                        filled: true,
+                        fillColor: appTheme<Color>(_theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017)),
+                      )
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -192,14 +202,14 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                     text: TextSpan(
                       text: "Don't have a bot account? Click ",
                       style: TextStyle(
-                        color: appTheme(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
+                        color: appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
                         fontSize: 12
                       ),
                       children: [
                         TextSpan(
                           text: 'here',
                           style: TextStyle(
-                            color: appTheme(_theme, light: const Color(0xFF000000), dark: const Color(0XFFC7CAD1), midnight: const Color(0xFFFFFFFF)),
+                            color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0XFFC7CAD1), midnight: const Color(0xFFFFFFFF)),
                             fontSize: 12,
                           ),
                           recognizer: TapGestureRecognizer()..onTap = () => Navigator.pushNamed(

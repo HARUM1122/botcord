@@ -17,6 +17,9 @@ final authControllerProvider = ChangeNotifierProvider<AuthController>((ref) => A
 
 class AuthController extends ChangeNotifier {
   Map<String, dynamic> bots = {};
+  // User? user;
+  // NyxxGateway? client;
+  // Application? application;
 
   Future<void> login(Map<String, dynamic> bot) async {
     client = await Nyxx.connectGateway(
@@ -33,14 +36,9 @@ class AuthController extends ChangeNotifier {
 
   Future<void> logout(BuildContext? context) async {
     await client?.close();
-    client = null;
-    user = null;
-    avatar = null;
-    banner = null;
-    application = null;
     await prefs.setString('current-bot', '{}');
     if (context == null || !context.mounted ) return;
-    Navigator.pushNamed(context, '/bots-route', arguments: true);
+    Navigator.pushReplacementNamed(context, '/bots-route', arguments: true);
   }
 
   Future<int> addToken(String token) async {

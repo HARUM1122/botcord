@@ -53,10 +53,10 @@ class BotTile extends ConsumerWidget {
                   Offstage(
                     offstage: bots.length == 1 || index == bots.length - 1,
                     child: Divider(
-                      thickness: 0.2,
+                      thickness: 0.4,
                       indent: 50,
                       height: 0,
-                      color: appTheme<Color>(theme, light: const Color(0XFFEAEAEA), dark: const Color(0XFF2E3138), midnight: const Color(0XFF1F1E23)),
+                      color: appTheme<Color>(theme, light: const Color(0xFFC5C8CF), dark: const Color(0xFF4C4F58), midnight: const Color(0xFF4C4F58)),
                     ),
                   )
                 ]
