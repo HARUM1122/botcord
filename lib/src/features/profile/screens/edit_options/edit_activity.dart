@@ -41,7 +41,8 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
   @override
   Widget build(BuildContext context) {
     final String theme = ref.read(themeProvider);
-    final Color dividerColor = appTheme<Color>(theme, light: const Color(0xFFC5C8CF), dark: const Color(0xFF4C4F58), midnight: const Color(0xFF4C4F58));
+    final Color color1 = appTheme<Color>(theme, light: const Color(0XFFCCCED3), dark: const Color(0XFF1A1C20), midnight: const Color(0XFF1A1C22));
+
     return Scaffold(
       backgroundColor: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       appBar: AppBar(
@@ -200,8 +201,8 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                         onPressed: () => setState(() => _activityType = 'playing')
                       ),
                       Divider(
-                        color: dividerColor,
-                        thickness: 0.2,
+                        color: color1,
+                        thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
@@ -213,8 +214,8 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                         onPressed: () => setState(() => _activityType = 'watching')
                       ),
                       Divider(
-                        color: dividerColor,
-                        thickness: 0.2,
+                        color: color1,
+                        thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
@@ -226,8 +227,8 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                         onPressed: () => setState(() => _activityType = 'listening')
                       ),
                       Divider(
-                        color: dividerColor,
-                        thickness: 0.2,
+                        color: color1,
+                        thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
@@ -239,8 +240,8 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                         onPressed: () => setState(() => _activityType = 'competing')
                       ),
                       Divider(
-                        color: dividerColor,
-                        thickness: 0.2,
+                        color: color1,
+                        thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
@@ -284,8 +285,8 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                         onPressed: () => setState(() => _duration = '24')
                       ),
                       Divider(
-                        color: dividerColor,
-                        thickness: 0.2,
+                        color: color1,
+                        thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
@@ -297,8 +298,8 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                         onPressed: () => setState(() => _duration = '4')
                       ),
                       Divider(
-                        color: dividerColor,
-                        thickness: 0.2,
+                        color: color1,
+                        thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
@@ -310,8 +311,8 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                         onPressed: () => setState(() => _duration = '1')
                       ),
                       Divider(
-                        color: dividerColor,
-                        thickness: 0.2,
+                        color: color1,
+                        thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
@@ -323,8 +324,8 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                         onPressed: () => setState(() => _duration = '30')
                       ),
                       Divider(
-                        color: dividerColor,
-                        thickness: 0.2,
+                        color: color1,
+                        thickness: 1,
                         height: 0,
                         indent: 16,
                       ),

@@ -110,6 +110,21 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
           Center(
             child: ProfilePicWidget(
               image: widget.bot['avatar-url'],
+              errorWidget: DecoratedBox(
+              decoration: BoxDecoration(
+                color: appTheme<Color>(_theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419)),
+                shape: BoxShape.circle
+              ),
+              child: Center(
+                child: Text(
+                  widget.bot['name'][0],
+                  style: TextStyle(
+                    color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                    fontSize: 36,
+                  ),
+                ),
+              ),
+            ),
               backgroundColor: Colors.transparent,
               radius: context.getSize.height * 0.2,
             ),

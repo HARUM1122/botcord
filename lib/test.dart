@@ -29,3 +29,19 @@
 //   print(map);
 // }
 
+// class A {
+//   int val = 213;
+// }
+
+// A? a;
+
+// void main() {
+//   List b = [
+//     if (a?.val case final val?) val
+//   ];
+//   print(b);
+// }
+
+
+int fact(int n) => n == 1 ? 1 : n * fact(n - 1);
+int sum(int n) => n == 1 ? 1 : n + sum(n - 1);

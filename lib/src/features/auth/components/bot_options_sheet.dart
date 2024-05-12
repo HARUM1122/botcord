@@ -24,6 +24,7 @@ class BotOptionsSheet extends ConsumerWidget {
     final String theme = ref.read(themeProvider);
     final Color color = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color dividerColor = appTheme<Color>(theme, light: const Color(0xFFC5C8CF), dark: const Color(0xFF4C4F58), midnight: const Color(0xFF4C4F58));
+    
     List<Widget> children = [
       Align(
         alignment: Alignment.topCenter,
@@ -37,6 +38,21 @@ class BotOptionsSheet extends ConsumerWidget {
         children: [
           ProfilePicWidget(
             image: bot['avatar-url']!, 
+            errorWidget: DecoratedBox(
+              decoration: BoxDecoration(
+                color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419)),
+                shape: BoxShape.circle
+              ),
+              child: Center(
+                child: Text(
+                  bot['name'][0],
+                  style: TextStyle(
+                    color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
             radius: 30, 
             backgroundColor: Colors.transparent
           ),

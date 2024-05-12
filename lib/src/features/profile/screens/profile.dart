@@ -263,7 +263,7 @@ class ProfileScreen extends ConsumerWidget {
                   builder: (context, controller, offset) => StatusSheet(controller: controller)
                 ),
                 radius: 90, 
-                image: avatar?.$1 ?? user!.avatar.url.toString(),
+                image: avatar?.$1 ?? (user?.avatar.url.toString() ?? ''),
                 padding: const EdgeInsets.all(6),
                 backgroundColor: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
                 child: Align(

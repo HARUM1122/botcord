@@ -28,8 +28,8 @@ class LinkOptionsSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeProvider);
-    final Color color = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-    final Color dividerColor = appTheme<Color>(theme, light: const Color(0xFFC5C8CF), dark: const Color(0xFF4C4F58), midnight: const Color(0xFF4C4F58));
+    final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+    final Color color2 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
     List<Widget> children = [
       Align(
         alignment: Alignment.topCenter,
@@ -43,7 +43,7 @@ class LinkOptionsSheet extends ConsumerWidget {
         child: Text(
           "Link Options",
           style: TextStyle(
-            color: color,
+            color: color1,
             fontFamily: 'GGSansBold',
             fontSize: 18
           ),
@@ -63,7 +63,7 @@ class LinkOptionsSheet extends ConsumerWidget {
       const SizedBox(height: 30),
       DecoratedBox(
         decoration: BoxDecoration(
-          color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0xFF1A1D24)),
+          color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
           borderRadius: BorderRadius.circular(16)
         ),
         child: Column(
@@ -72,7 +72,7 @@ class LinkOptionsSheet extends ConsumerWidget {
               title: 'Open Link',
               onPressed: () async {
                 Navigator.pop(context);
-                if (trustedDomains.contains(Uri.parse(link).host)) {
+                if (!trustedDomains.contains(Uri.parse(link).host)) {
                   await launchUrl(Uri.parse(link));
                   return;
                 }
@@ -89,10 +89,10 @@ class LinkOptionsSheet extends ConsumerWidget {
               theme: theme,
             ),
             Divider(
-              thickness: 0.4,
+              thickness: 1,
               height: 0,
               indent: 50,
-              color: dividerColor,
+              color: color2,
             ),
             LinkOption(
               title: 'Copy Link',
@@ -104,7 +104,7 @@ class LinkOptionsSheet extends ConsumerWidget {
                   theme: theme,
                   leading: SvgPicture.asset(
                     AssetIcon.link,
-                    colorFilter: ColorFilter.mode(color, BlendMode.srcIn)
+                    colorFilter: ColorFilter.mode(color1, BlendMode.srcIn)
                   ),
                   msg: "Link copied"
                 );
@@ -113,10 +113,10 @@ class LinkOptionsSheet extends ConsumerWidget {
               theme: theme,
             ),
             Divider(
-              thickness: 0.4,
+              thickness: 1,
               height: 0,
               indent: 50,
-              color: dividerColor,
+              color: color2,
             ),
             LinkOption(
               title: 'Share Link',
@@ -156,7 +156,7 @@ class LinkOption extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomButton(
       backgroundColor: Colors.transparent,
-      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE0E0E0), dark: const Color(0XFF32353E), midnight: const Color(0XFF232227)),
+      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
       shape: RoundedRectangleBorder(
         borderRadius: borderRadius
       ),

@@ -7,6 +7,8 @@ Future<void> login(String token) async {
     runZonedGuarded(
       () async {
         NyxxGateway client = await Nyxx.connectGateway(token, GatewayIntents.all);
+        User user = await client.user.get();
+        print(user.avatar.url);
       }, 
       (error, stack) {
         if (error is ClientException) {
@@ -18,5 +20,14 @@ Future<void> login(String token) async {
   }
 
 void main() {
-  login('MTAxMzcxMTEzMjIzMTQ4NzUwOA.GTeo5Z.sRn3kXiGGmxgHW-_4kObi_IfJzzWJeiB9w09_k');
+  login('ODkzNTcyNTk1NTQ1NDIzODgy.G9XCKt.mMwVRQ5WrmLx-kCBgLdo0nmAewtGPF7hFT2soE');
 }
+
+// void main() {
+//   // List<int> values = [1, 2, 3, 4, 5];
+//   // int finalValue = values.reduce((value, element) => value + element);
+//   // print(finalValue);
+//   String name = 'Nuke BOT';
+//   String s = [for (String i in name.split(' ')) i[0]].join();
+//   print(s);
+// }

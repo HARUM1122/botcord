@@ -1,4 +1,5 @@
 import 'package:discord/src/features/auth/controller/auth_controller.dart';
+import 'package:discord/src/features/auth/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -31,7 +32,6 @@ class EditProfileScreen extends ConsumerStatefulWidget {
 
 class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   late final String _theme = ref.read(themeProvider);
-  late final AuthController _authController = ref.read(authControllerProvider);
   late final ProfileController _profileController = ref.read(profileControllerProvider);
 
   late final String _prevUsername = user!.username;
@@ -60,20 +60,33 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   Future<void> _updateProfile() async {
     setState(() => saving = true);
     try {
-      await _profileController.updateProfile(
-        username: _username, 
-        description: _description,
-        avatar: nyxx.ImageBuilder(data: _avatar.$1, format: _avatar.$2),
-        banner: _banner != null 
-        ? nyxx.ImageBuilder(data: _banner!.$1, format: _banner!.$2)
-        : null
-      );
+      // await _profileController.updateProfile(
+      //   username: _username, 
+      //   description: _description,
+      //   avatar: nyxx.ImageBuilder(data: _avatar.$1, format: _avatar.$2),
+      //   banner: _banner != null 
+      //   ? nyxx.ImageBuilder(data: _banner!.$1, format: _banner!.$2)
+      //   : null
+      // );
       avatar = _avatar;
       banner = _banner;
       ref.read(bottomNavProvider).refresh();
+      final AuthController authController = ref.read(authControllerProvider);
+      int index = authController.indexOf('G', user?.id.toString() ?? '');
+      print(index);
+      if (index != -1) {
+        Map<String, dynamic> bots = authController.bots;   
+        bots[_prevUsername[0].toUpperCase()][index]['name'] = _username;
+        bots[_prevUsername[0].toUpperCase()][index]['avatar'] = user?.avatar.url.toString();
+        print(bots);
+        bots = sort(bots);
+        print(authController.bots);
+        // authController.save();
+      }
       if (!context.mounted) return;
       Navigator.pop(context);
     } catch (e) {
+      print(e);
       if (!context.mounted) return;
       setState(() => saving = false);
       if (e is http.ClientException) {
@@ -86,7 +99,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           ), 
           msg: 'Network error'
         );
-      } else if (e.toString().contains('AVATAR_RATE_LIMIT')) {
+      } else if (e.toString().contains('RATE_LIMIT')) {
         showSnackBar(
           theme: _theme,
           context: context, 
@@ -112,7 +125,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     bool hasMadeChanges = _username != _prevUsername || 
       _description != _prevDescription || 
       !isSame(_avatar, _prevAvatar) ||

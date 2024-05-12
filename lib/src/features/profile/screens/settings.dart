@@ -25,6 +25,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0XFF4C4F57), dark: const Color(0XFFC8C9D1), midnight: const Color(0xFFFFFFFF));
     final Color color3 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
+    final Color color4 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
 
     return Scaffold(
       backgroundColor: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
@@ -67,7 +68,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                 width: double.infinity,
                 margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: BoxDecoration(
-                  color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0xFF1A1D24)),
+                  color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
                   borderRadius: BorderRadius.circular(16)
                 ),
                 child: Column(
@@ -77,7 +78,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                         top: Radius.circular(16)
                       ),
                       backgroundColor: Colors.transparent,
-                      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE0E0E0), dark: const Color(0XFF32353E), midnight: const Color(0XFF232227)),
+                      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
                       onPressed: () => ref.read(
                         themeProvider.notifier
                       ).setTheme('light', true, false),
@@ -106,8 +107,8 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                         ],
                       )
                     ),
-                    const Divider(
-                      color: Color(0xFF777A81),
+                    Divider(
+                      color: color4,
                       thickness: 0.2,
                       height: 0,
                       indent: 50,
@@ -115,7 +116,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                     OptionTile(
                       borderRadius: BorderRadius.zero,
                       backgroundColor: Colors.transparent,
-                      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE0E0E0), dark: const Color(0XFF32353E), midnight: const Color(0XFF232227)),
+                      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
                       onPressed: () => ref.read(
                         themeProvider.notifier
                       ).setTheme('dark', true, false),
@@ -144,8 +145,8 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                         ],
                       )
                     ),
-                    const Divider(
-                      color: Color(0xFF777A81),
+                    Divider(
+                      color: color4,
                       thickness: 0.2,
                       height: 0,
                       indent: 50,
@@ -155,7 +156,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                         bottom: Radius.circular(16)
                       ),
                       backgroundColor: Colors.transparent,
-                      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE0E0E0), dark: const Color(0XFF32353E), midnight: const Color(0XFF232227)),
+                      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
                       onPressed: () => ref.read(
                         themeProvider.notifier
                       ).setTheme('midnight', true, false),
@@ -190,8 +191,8 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
               const SizedBox(height: 30),
               OptionTile(
                 borderRadius: BorderRadius.circular(16),
-                backgroundColor: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0xFF1A1D24)),
-                onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE0E0E0), dark: const Color(0XFF32353E), midnight: const Color(0XFF232227)),
+                backgroundColor: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
+                onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
                 onPressed: () => authController.logout(context),
                 child: Row(
                   children: [

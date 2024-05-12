@@ -17,9 +17,6 @@ final authControllerProvider = ChangeNotifierProvider<AuthController>((ref) => A
 
 class AuthController extends ChangeNotifier {
   Map<String, dynamic> bots = {};
-  // User? user;
-  // NyxxGateway? client;
-  // Application? application;
 
   Future<void> login(Map<String, dynamic> bot) async {
     client = await Nyxx.connectGateway(

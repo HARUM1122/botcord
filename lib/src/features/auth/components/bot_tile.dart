@@ -37,7 +37,7 @@ class BotTile extends ConsumerWidget {
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 10),
             decoration: BoxDecoration(
-              color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419)),
+              color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Column(
@@ -53,10 +53,10 @@ class BotTile extends ConsumerWidget {
                   Offstage(
                     offstage: bots.length == 1 || index == bots.length - 1,
                     child: Divider(
-                      thickness: 0.4,
+                      thickness: 1,
                       indent: 50,
                       height: 0,
-                      color: appTheme<Color>(theme, light: const Color(0xFFC5C8CF), dark: const Color(0xFF4C4F58), midnight: const Color(0xFF4C4F58)),
+                      color: appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21)),
                     ),
                   )
                 ]
@@ -101,7 +101,7 @@ class BotInfo extends StatelessWidget {
         );
       },
       backgroundColor: Colors.transparent,
-      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE0E0E0), dark: const Color(0XFF32353E), midnight: const Color(0XFF232227)),
+      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: isFirst ? const Radius.circular(14) : Radius.zero,
@@ -116,6 +116,21 @@ class BotInfo extends StatelessWidget {
           children: [
             ProfilePicWidget(
               image: bot['avatar-url']!, 
+              errorWidget: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                  shape: BoxShape.circle
+                ),
+                child: Center(
+                  child: Text(
+                    bot['name'][0],
+                    style: TextStyle(
+                      color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
               radius: 30, 
               backgroundColor: Colors.transparent,
               padding: const EdgeInsets.all(2),

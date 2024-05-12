@@ -21,7 +21,9 @@ class StatusSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ProfileController profileController = ref.read(profileControllerProvider);
     final Map<String, dynamic> botActivity = profileController.botActivity;
+
     final String theme = ref.read(themeProvider);
+    final Color color1 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
     
     List<Widget> children = [
       Align(
@@ -56,7 +58,7 @@ class StatusSheet extends ConsumerWidget {
         width: double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 2),
         decoration: BoxDecoration(
-          color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0xFF1A1D24)),
+          color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
           borderRadius: BorderRadius.circular(16)
         ),
         child: Column(
@@ -72,9 +74,9 @@ class StatusSheet extends ConsumerWidget {
               ),
               controller: profileController,
             ),
-            const Divider(
-              color: Color(0xFF777A81),
-              thickness: 0.2,
+            Divider(
+              color: color1,
+              thickness: 1,
               height: 0,
               indent: 50,
             ),
@@ -86,9 +88,9 @@ class StatusSheet extends ConsumerWidget {
               borderRadius: BorderRadius.zero,
               controller: profileController,
             ),
-            const Divider(
-              color: Color(0xFF777A81),
-              thickness: 0.2,
+            Divider(
+              color: color1,
+              thickness: 1,
               height: 0,
               indent: 50,
             ),
@@ -100,9 +102,9 @@ class StatusSheet extends ConsumerWidget {
               borderRadius: BorderRadius.zero,
               controller: profileController,
             ),
-            const Divider(
-              color: Color(0xFF777A81),
-              thickness: 0.2,
+            Divider(
+              color: color1,
+              thickness: 1,
               height: 0,
               indent: 50,
             ),
@@ -156,7 +158,7 @@ class StatusTile extends StatelessWidget {
         Navigator.pop(context);
       },
       backgroundColor: Colors.transparent,
-      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE0E0E0), dark: const Color(0XFF32353E), midnight: const Color(0XFF232227)),
+      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
       shape: RoundedRectangleBorder(
         borderRadius: borderRadius
       ),
