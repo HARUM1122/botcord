@@ -18,6 +18,14 @@ final authControllerProvider = ChangeNotifierProvider<AuthController>((ref) => A
 class AuthController extends ChangeNotifier {
   Map<String, dynamic> bots = {};
 
+  Map? getBotData(String key, String id) {
+    int index = indexOf(key, id);
+    if (index != -1) {
+        return bots[key][index];
+    }
+    return null;
+  }
+
   Future<void> login(Map<String, dynamic> bot) async {
     client = await Nyxx.connectGateway(
       bot['token'], 
@@ -93,6 +101,7 @@ class AuthController extends ChangeNotifier {
     }
     return -1;
   }
+
 
   Future<void> save() async =>
     await prefs.setString('bots', jsonEncode(bots));

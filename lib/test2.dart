@@ -8,6 +8,7 @@ Future<void> login(String token) async {
       () async {
         NyxxGateway client = await Nyxx.connectGateway(token, GatewayIntents.all);
         User user = await client.user.get();
+        print(user.username);
         print(user.avatar.url);
       }, 
       (error, stack) {
@@ -20,7 +21,19 @@ Future<void> login(String token) async {
   }
 
 void main() {
-  login('ODkzNTcyNTk1NTQ1NDIzODgy.G9XCKt.mMwVRQ5WrmLx-kCBgLdo0nmAewtGPF7hFT2soE');
+  // login('OTAxOTY0NDM3OTY2MTY4MDY1.GwPmNS.eT5QJS0QR3_DDC_wuYntZ39xm3JBu6p9klr6C0');
+  Map m = {
+    "g" : {
+      'a' : 'b'
+    },
+    "b" : {
+      "c" : "d"
+    }
+  };
+  Map d = m['b'];
+  m.remove('b');
+  print(d);
+  print(m);
 }
 
 // void main() {

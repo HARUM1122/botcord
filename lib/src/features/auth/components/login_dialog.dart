@@ -70,7 +70,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
             ), 
             msg: 'Invalid token'
           );
-        } else {
+        } else if (isMounted) {
           _authController.logout(globalNavigatorKey.currentContext!);
           await Future.delayed(const Duration(seconds: 1));
           showSnackBar(

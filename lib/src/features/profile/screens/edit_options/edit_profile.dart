@@ -60,33 +60,33 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   Future<void> _updateProfile() async {
     setState(() => saving = true);
     try {
-      // await _profileController.updateProfile(
-      //   username: _username, 
-      //   description: _description,
-      //   avatar: nyxx.ImageBuilder(data: _avatar.$1, format: _avatar.$2),
-      //   banner: _banner != null 
-      //   ? nyxx.ImageBuilder(data: _banner!.$1, format: _banner!.$2)
-      //   : null
-      // );
+      await _profileController.updateProfile(
+        username: _username, 
+        description: _description,
+        avatar: nyxx.ImageBuilder(data: _avatar.$1, format: _avatar.$2),
+        banner: _banner != null 
+        ? nyxx.ImageBuilder(data: _banner!.$1, format: _banner!.$2)
+        : null
+      );
       avatar = _avatar;
       banner = _banner;
-      ref.read(bottomNavProvider).refresh();
       final AuthController authController = ref.read(authControllerProvider);
-      int index = authController.indexOf('G', user?.id.toString() ?? '');
-      print(index);
-      if (index != -1) {
-        Map<String, dynamic> bots = authController.bots;   
-        bots[_prevUsername[0].toUpperCase()][index]['name'] = _username;
-        bots[_prevUsername[0].toUpperCase()][index]['avatar'] = user?.avatar.url.toString();
-        print(bots);
+      Map<String, dynamic> bots = authController.bots;
+      String key = _prevUsername[0].toUpperCase();
+      String newKey = _username[0].toUpperCase();
+      dynamic bot = authController.getBotData(key, user!.id.toString());
+      if (bot != null) {
+        bots.remove(key);
+        bot['name'] = _username;
+        bot['avatar-url'] = user!.avatar.url.toString();
+        bots[newKey] = bot;
         bots = sort(bots);
-        print(authController.bots);
-        // authController.save();
+        authController.save();
       }
+      ref.read(bottomNavProvider).refresh();
       if (!context.mounted) return;
       Navigator.pop(context);
     } catch (e) {
-      print(e);
       if (!context.mounted) return;
       setState(() => saving = false);
       if (e is http.ClientException) {
