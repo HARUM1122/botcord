@@ -7,13 +7,14 @@ import 'package:http/http.dart' show ClientException;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common/utils/utils.dart';
-import '../../../common/utils/cache.dart';
+import '../../../common/utils/globals.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/components/custom_button.dart';
-import '../../../common/components/avatar/profile_pic.dart';
+import '../../../common/components/profile_pic.dart';
 
 
 import '../../../features/auth/controller/auth_controller.dart';
+import '../../guild/controllers/guilds_controller.dart';
 import '../../../features/profile/controller/profile_controller.dart';
 
 
@@ -34,6 +35,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
       () async {
         await _authController.login(widget.bot);
         _profileController.updatePresence(save: false, datetime: DateTime.now());
+        ref.read(guildsControllerProvider).listenGuildEvents();
         if (mounted) {
           Navigator.pop(context);
           Navigator.pop(context);

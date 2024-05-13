@@ -12,7 +12,7 @@ import 'routes.dart';
 
 import 'theme_provider.dart';
 
-import 'src/common/utils/cache.dart';
+import 'src/common/utils/globals.dart';
 
 import 'src/features/home/screens/splash.dart';
 import 'src/features/auth/controller/auth_controller.dart';
@@ -39,7 +39,7 @@ void main() async {
   }
   runApp(
     DevicePreview(
-      enabled: false,
+      enabled: true,
       builder: (_)=> const ProviderScope(
         child: App(),
       ),

@@ -12,12 +12,12 @@ import '../../utils/utils.dart';
 
 import 'package:discord/theme_provider.dart';
 
-import 'package:discord/src/common/utils/cache.dart';
+import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/utils/asset_constants.dart';
 
-import 'package:discord/src/common/components/avatar/profile_pic.dart';
-import 'package:discord/src/common/components/avatar/online_status/status.dart';
+import 'package:discord/src/common/components/profile_pic.dart';
+import 'package:discord/src/common/components/online_status/status.dart';
 
 import 'package:discord/src/features/home/provider/bottom_nav.dart';
 import 'package:discord/src/features/profile/controller/profile_controller.dart';
@@ -76,11 +76,15 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       String newKey = _username[0].toUpperCase();
       dynamic bot = authController.getBotData(key, user!.id.toString());
       if (bot != null) {
-        bots.remove(key);
         bot['name'] = _username;
         bot['avatar-url'] = user!.avatar.url.toString();
-        bots[newKey] = bot;
-        bots = sort(bots);
+        authController.removeBot(key, user!.id.toString(), false);
+        if (bots.containsKey(newKey)) {
+          bots[newKey].add(bot);
+        } else {
+          bots[newKey] = [bot];
+        }
+        authController.bots = sort(bots);
         authController.save();
       }
       ref.read(bottomNavProvider).refresh();

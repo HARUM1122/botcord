@@ -5,7 +5,7 @@ import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 
-import 'cache.dart';
+import 'globals.dart';
 
 void showDialogBox({required BuildContext context, required Widget child}) {
   showDialog(

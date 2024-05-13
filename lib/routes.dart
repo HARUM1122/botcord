@@ -24,9 +24,7 @@ Route<dynamic> generateRoutes(RouteSettings settings) {
       );
     case '/bots-route':
       return MaterialPageRoute(
-        builder: (context) => BotsScreen(
-          fromSplash: settings.arguments as bool
-        ),
+        builder: (context) => const BotsScreen(),
       );
     case '/add-bots-route':
       return MaterialPageRoute(

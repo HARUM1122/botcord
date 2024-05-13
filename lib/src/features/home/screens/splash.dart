@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:discord/theme_provider.dart';
 
 import '../../../common/utils/utils.dart';
-import '../../../common/utils/cache.dart';
+import '../../../common/utils/globals.dart';
 
 import '../../../features/auth/controller/auth_controller.dart';
 import '../../../features/profile/controller/profile_controller.dart';
@@ -32,12 +33,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       Future.delayed(const Duration(seconds: 2), () {
         !prefs.getBool('is-landed')!
         ? Navigator.pushReplacementNamed(context, '/landing-route')
-        : Navigator.pushReplacementNamed(context, '/bots-route', arguments: true);
+        : Navigator.pushReplacementNamed(context, '/bots-route');
       });
     } else {
       runZonedGuarded(
       () async {
           await authController.login(bot);
+          ref.read(guildsControllerProvider).listenGuildEvents();
           ref.read(profileControllerProvider).updatePresence(
             save: false, 
             datetime: DateTime.now()

@@ -7,7 +7,7 @@ import '../util/constants.dart';
 
 import 'package:discord/theme_provider.dart';
 
-import '../../../common/utils/cache.dart';
+import '../../../common/utils/globals.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/components/custom_button.dart';
@@ -18,7 +18,6 @@ class LandingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.watch(themeProvider);
-    print(theme);
     return Scaffold(
       backgroundColor: appTheme(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       appBar: AppBar(

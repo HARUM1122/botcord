@@ -6,7 +6,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 
 import 'package:discord/theme_provider.dart';
 
-import '../../utils/cache.dart';
+import '../../utils/globals.dart';
 import '../../utils/utils.dart';
 import '../../utils/extensions.dart';
 

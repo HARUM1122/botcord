@@ -9,7 +9,7 @@ import 'radio_button_indicator/radio_button_indicator.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/components/drag_handle.dart';
 import '../../../common/components/custom_button.dart';
-import '../../../common/components/avatar/online_status/status.dart';
+import '../../../common/components/online_status/status.dart';
 
 import '../../../features/profile/controller/profile_controller.dart';
 

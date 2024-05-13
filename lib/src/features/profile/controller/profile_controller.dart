@@ -7,7 +7,7 @@ import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../utils/constants.dart';
-import '../../../common/utils/cache.dart';
+import '../../../common/utils/globals.dart';
 
 final profileControllerProvider = ChangeNotifierProvider((ref) => ProfileController());
 

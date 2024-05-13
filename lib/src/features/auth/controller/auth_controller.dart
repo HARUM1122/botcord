@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../utils/utils.dart';
 import '../utils/constants.dart';
 
-import '../../../common/utils/cache.dart';
+import '../../../common/utils/globals.dart';
 import '../../../common/utils/constants.dart';
 
 final authControllerProvider = ChangeNotifierProvider<AuthController>((ref) => AuthController());
@@ -40,8 +40,12 @@ class AuthController extends ChangeNotifier {
   }
 
   Future<void> logout(BuildContext? context) async {
-    await client?.close();
-    await prefs.setString('current-bot', '{}');
+    try {
+      await client?.close();
+      await prefs.setString('current-bot', '{}');
+    } catch (e) {
+      // 
+    }
     if (context == null || !context.mounted ) return;
     Navigator.pushReplacementNamed(context, '/bots-route', arguments: true);
   }
@@ -54,7 +58,8 @@ class AuthController extends ChangeNotifier {
     Map<String, dynamic> json = jsonDecode(res.body);
     if (res.statusCode == 200) {
       String username = json['username']!;
-      if (indexOf(username[0].toUpperCase(), json['id']!) != -1) {
+      final String key = username[0].toUpperCase();
+      if (indexOf(key, json['id']!) != -1) {
         return -1;
       }
       Map<String, String> data = {
@@ -64,12 +69,12 @@ class AuthController extends ChangeNotifier {
         'avatar-url': "$imageUrl/${json['id']}/${json['avatar']}.png",
         'token': token
       };
-      if (bots.containsKey(username[0].toUpperCase())) {
-        bots[username[0].toUpperCase()]!.add(data);
+      if (bots.containsKey(key)) {
+        bots[key]!.add(data);
       } else {
-        bots[username[0].toUpperCase()] = [data];
-        bots = sort(bots);
+        bots[key] = [data];
       }
+      bots = sort(bots);
       await save();
       refresh();
       return 200;
@@ -77,13 +82,17 @@ class AuthController extends ChangeNotifier {
     return res.statusCode;
   }
 
-  Future<bool> removeBot(String key, String id) async {
+  Future<bool> removeBot(String key, String id, [bool logoutIfCurrent = true]) async {
     int index = indexOf(key, id);
     if (index != -1) {
-      if (jsonDecode(prefs.getString('current-bot') ?? "{}")?['id'] == id) {
+      if (jsonDecode(prefs.getString('current-bot') ?? "{}")?['id'] == id && logoutIfCurrent) {
         logout(globalNavigatorKey.currentContext);
       }
-      bots[key]!.removeAt(index);
+      if (bots[key].length < 2) {
+        bots.remove(key);
+      } else {
+        bots[key].removeAt(index);
+      }
       bots = sort(bots);
       await save();
       refresh();

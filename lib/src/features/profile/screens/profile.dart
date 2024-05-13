@@ -6,11 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:discord/theme_provider.dart';
 
 import '../../../common/utils/utils.dart';
-import '../../../common/utils/cache.dart';
+import '../../../common/utils/globals.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/components/custom_button.dart';
-import '../../../common/components/avatar/profile_pic.dart';
-import '../../../common/components/avatar/online_status/status.dart';
+import '../../../common/components/profile_pic.dart';
+import '../../../common/components/online_status/status.dart';
 
 import '../../../features/profile/components/status_sheet.dart';
 import '../../../features/profile/controller/profile_controller.dart';

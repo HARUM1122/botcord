@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:discord/src/common/utils/cache.dart';
+import 'package:discord/src/common/utils/globals.dart';
 
 final themeProvider = StateNotifierProvider<ThemeProvider, String>((ref) => ThemeProvider());
 

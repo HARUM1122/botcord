@@ -11,7 +11,7 @@ import 'package:discord/theme_provider.dart';
 import '../drag_handle.dart';
 
 import '../../utils/utils.dart';
-import '../../utils/cache.dart';
+import '../../utils/globals.dart';
 import '../../utils/extensions.dart';
 import '../../utils/asset_constants.dart';
 

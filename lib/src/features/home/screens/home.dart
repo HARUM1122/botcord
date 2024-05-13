@@ -1,3 +1,4 @@
+import 'package:discord/src/features/guild/screens/guild.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,7 +38,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             controller: _controller,
             physics: const NeverScrollableScrollPhysics(),
             children: const [
-              GuildScreen(),
+              GuildsScreen(),
               ProfileScreen()
             ],
           ),
@@ -53,35 +54,35 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 }
 
-class GuildScreen extends ConsumerWidget {
-  const GuildScreen({super.key});
+// class GuildScreen extends ConsumerWidget {
+//   const GuildScreen({super.key});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              ref.read(themeProvider.notifier).setTheme('light', true, false);
-            },
-            child: Text("LIGHT"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              ref.read(themeProvider.notifier).setTheme('dark', true, false);
-            },
-            child: Text("DARK"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              ref.read(themeProvider.notifier).setTheme('midnight', true, false);
-            },
-            child: Text("MIDNIGHT"),
-          )
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     return Center(
+//       child: Column(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         children: [
+//           ElevatedButton(
+//             onPressed: () {
+//               ref.read(themeProvider.notifier).setTheme('light', true, false);
+//             },
+//             child: Text("LIGHT"),
+//           ),
+//           ElevatedButton(
+//             onPressed: () {
+//               ref.read(themeProvider.notifier).setTheme('dark', true, false);
+//             },
+//             child: Text("DARK"),
+//           ),
+//           ElevatedButton(
+//             onPressed: () {
+//               ref.read(themeProvider.notifier).setTheme('midnight', true, false);
+//             },
+//             child: Text("MIDNIGHT"),
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }

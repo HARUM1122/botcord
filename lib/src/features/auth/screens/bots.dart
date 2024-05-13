@@ -15,8 +15,7 @@ import '../../../common/utils/utils.dart';
 import '../controller/auth_controller.dart';
 
 class BotsScreen extends ConsumerStatefulWidget {
-  final bool fromSplash;
-  const BotsScreen({required this.fromSplash, super.key});
+  const BotsScreen({super.key});
 
   @override
   ConsumerState<BotsScreen> createState() => _BotsScreenState();
@@ -43,17 +42,6 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
           ),
         ),
         centerTitle: true,
-        leading: Visibility(
-          visible: !widget.fromSplash,
-          child: IconButton(
-            onPressed: () => Navigator.pop(context),
-            splashRadius: 18,
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Color(0XFF7D818F),
-            ),
-          )
-        ),
         actions: [
           TextButton(
             onPressed: () {
@@ -79,92 +67,94 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 18, right: 18),
-        child: Column(
-          children: [
-            if (_authController.bots.isNotEmpty) ...[
-              SizedBox(
-                width: double.infinity,
-                height: 40,
-                child: Theme(
-                  data: ThemeData(
-                    textSelectionTheme: () {
-                      final Color color = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-                      return TextSelectionThemeData(
-                        selectionColor: color.withOpacity(0.3),
-                        cursorColor: color
-                      );
-                    }()
-                  ),
-                  child: TextField(
-                    style: TextStyle(
-                      color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-                      fontSize: 14
-                    ),
-                    onChanged: (text) {
-                      if (_debounce?.isActive ?? false) _debounce?.cancel();
-                      _debounce = Timer(const Duration(milliseconds: 400), () =>
-                        setState(() =>_name = text)
-                      );
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6),
-                        borderSide: BorderSide.none
+        child: Consumer(
+          builder: (_, ref, __) {
+            Map<String, dynamic> bots = ref.watch(authControllerProvider).bots;
+            return Column(
+              children: [
+                if (_authController.bots.isNotEmpty) ...[
+                  SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: Theme(
+                      data: ThemeData(
+                        textSelectionTheme: () {
+                          final Color color = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+                          return TextSelectionThemeData(
+                            selectionColor: color.withOpacity(0.3),
+                            cursorColor: color
+                          );
+                        }()
                       ),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: appTheme<Color>(_theme, light: const Color(0XFF2A2E31), dark: const Color(0XFFCDD1D4), midnight: const Color(0XFFDCE0E4))
-                      ),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(
-                        color: appTheme<Color>(_theme, light: const Color(0XFF585B62), dark: const Color(0XFF83868F), midnight: const Color(0XFF9598A1)),
-                        fontSize: 14
-                      ),
-                      contentPadding: const EdgeInsets.all(8),
-                      filled: true,
-                      fillColor: appTheme<Color>(_theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017)),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20)
-            ],
-            Consumer(
-              builder: (_, ref, __) {
-                Map<String, dynamic> bots = ref.watch(authControllerProvider).bots;
-                if (bots.isEmpty) {
-                   return Expanded(
-                    child: Center(
-                      child: Text(
-                        "You haven't added any bots",
+                      child: TextField(
                         style: TextStyle(
                           color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-                          fontSize: 20,
-                          fontFamily: 'GGSansSemibold'
+                          fontSize: 14
+                        ),
+                        onChanged: (text) {
+                          if (_debounce?.isActive ?? false) _debounce?.cancel();
+                          _debounce = Timer(const Duration(milliseconds: 400), () =>
+                            setState(() =>_name = text)
+                          );
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: BorderSide.none
+                          ),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: appTheme<Color>(_theme, light: const Color(0XFF2A2E31), dark: const Color(0XFFCDD1D4), midnight: const Color(0XFFDCE0E4))
+                          ),
+                          hintText: 'Search',
+                          hintStyle: TextStyle(
+                            color: appTheme<Color>(_theme, light: const Color(0XFF585B62), dark: const Color(0XFF83868F), midnight: const Color(0XFF9598A1)),
+                            fontSize: 14
+                          ),
+                          contentPadding: const EdgeInsets.all(8),
+                          filled: true,
+                          fillColor: appTheme<Color>(_theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017)),
                         ),
                       ),
                     ),
-                  );
-                }
-                Map<String, dynamic> filteredBots = filter(bots, _name);
-                if (filteredBots.isEmpty) {
-                  return Expanded(
-                    child: Center(
-                      child: Text(
-                        "No bots were found",
-                        style: TextStyle(
-                          color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-                          fontSize: 20,
-                          fontFamily: 'GGSansSemibold'
+                  ),
+                  const SizedBox(height: 20)
+                ],
+                () {
+                  if (bots.isEmpty) {
+                    return Expanded(
+                      child: Center(
+                        child: Text(
+                          "You haven't added any bots",
+                          style: TextStyle(
+                            color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                            fontSize: 20,
+                            fontFamily: 'GGSansSemibold'
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }
-                return BotsList(bots: filteredBots);
-              }
-            )
-          ],
+                    );
+                  }
+                  Map<String, dynamic> filteredBots = filter(bots, _name);
+                  if (filteredBots.isEmpty) {
+                    return Expanded(
+                      child: Center(
+                        child: Text(
+                          "No bots were found",
+                          style: TextStyle(
+                            color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                            fontSize: 20,
+                            fontFamily: 'GGSansSemibold'
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  return BotsList(bots: filteredBots);
+                }()
+              ],
+            );
+          }
         ),
       ),
     );
