@@ -1,5 +1,3 @@
-import 'package:discord/src/features/auth/controller/auth_controller.dart';
-import 'package:discord/src/features/auth/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -19,9 +17,10 @@ import 'package:discord/src/common/utils/asset_constants.dart';
 import 'package:discord/src/common/components/profile_pic.dart';
 import 'package:discord/src/common/components/online_status/status.dart';
 
+import 'package:discord/src/features/auth/utils/utils.dart';
 import 'package:discord/src/features/home/provider/bottom_nav.dart';
+import 'package:discord/src/features/auth/controller/auth_controller.dart';
 import 'package:discord/src/features/profile/controller/profile_controller.dart';
-
 
 class EditProfileScreen extends ConsumerStatefulWidget {
   const EditProfileScreen({super.key});

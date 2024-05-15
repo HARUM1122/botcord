@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:discord/theme_provider.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +31,12 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
   late final AuthController _authController = ref.read(authControllerProvider);
   late final ProfileController _profileController = ref.read(profileControllerProvider);
   late final String _theme = ref.read(themeProvider);
+  
   void login() async {
     runZonedGuarded(
       () async {
         await _authController.login(widget.bot);
+        _profileController.botActivity = jsonDecode(prefs.getString('bot-activity')!);
         _profileController.updatePresence(save: false, datetime: DateTime.now());
         ref.read(guildsControllerProvider).listenGuildEvents();
         if (mounted) {

@@ -23,13 +23,15 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
+  late final Map<String, dynamic> _bot = jsonDecode(prefs.getString('current-bot')!);
+  late final AuthController _authController = ref.read(authControllerProvider);
+  late final ProfileController _profileController = ref.read(profileControllerProvider);
+  late final String _theme = ref.read(themeProvider);
+
   @override
   void initState() {
     super.initState();
-    final Map<String, dynamic> bot = jsonDecode(prefs.getString('current-bot')!);
-    final AuthController authController = ref.read(authControllerProvider);
-    final String theme = ref.read(themeProvider);
-    if (bot.isEmpty) {
+    if (_bot.isEmpty) {
       Future.delayed(const Duration(seconds: 2), () {
         !prefs.getBool('is-landed')!
         ? Navigator.pushReplacementNamed(context, '/landing-route')
@@ -38,12 +40,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     } else {
       runZonedGuarded(
       () async {
-          await authController.login(bot);
+          await _authController.login(_bot);
           ref.read(guildsControllerProvider).listenGuildEvents();
-          ref.read(profileControllerProvider).updatePresence(
-            save: false, 
-            datetime: DateTime.now()
-          );
+          _profileController.botActivity = jsonDecode(prefs.getString('bot-activity')!);
+          _profileController.updatePresence(save: false, datetime: DateTime.now());
           if (mounted) {
             Navigator.pushReplacementNamed(context, '/home-route');
           }
@@ -54,7 +54,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           if (error is ClientException) {
             showSnackBar(
               context: globalNavigatorKey.currentContext!,
-              theme: theme, 
+              theme: _theme, 
               leading: Icon(
                 Icons.error_outline,
                 color: Colors.red[800],
@@ -62,10 +62,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               msg: 'Network error, Please login again'
             );
           } else if (error.toString().contains('401: Unauthorized')) {
-            authController.removeBot(bot['name'][0].toUpperCase(), bot['id']);
+            _authController.removeBot(_bot['name'][0].toUpperCase(), _bot['id']);
             showSnackBar(
               context: globalNavigatorKey.currentContext!,
-              theme: theme, 
+              theme: _theme, 
               leading: Icon(
                 Icons.error_outline,
                 color: Colors.red[800],
@@ -73,10 +73,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               msg: 'Invalid token, Please login again'
             );
           } else {
-            authController.logout(null);
+            _authController.logout(null);
             showSnackBar(
               context: globalNavigatorKey.currentContext!,
-              theme: theme,
+              theme: _theme,
               leading: Icon(
                 Icons.error_outline,
                 color: Colors.red[800],

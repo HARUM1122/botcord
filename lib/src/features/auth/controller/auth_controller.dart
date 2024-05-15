@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:discord/src/features/profile/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -36,6 +37,7 @@ class AuthController extends ChangeNotifier {
     CdnAsset? b = user!.banner;
     if (b != null) banner = (await b.fetch(), b.defaultFormat.extension);
     application = await client!.applications.fetchCurrentApplication();
+    
     await prefs.setString('current-bot',  jsonEncode(bot));
   }
 
@@ -43,6 +45,14 @@ class AuthController extends ChangeNotifier {
     try {
       await client?.close();
       await prefs.setString('current-bot', '{}');
+      await prefs.setString('bot-activity', jsonEncode(
+      {
+        'current-online-status': 'online',
+        'current-activity-text': '',
+        'current-activity-type': 'custom',
+        'since': ';'
+      }
+    ));
     } catch (e) {
       // 
     }

@@ -16,7 +16,6 @@ import 'src/common/utils/globals.dart';
 
 import 'src/features/home/screens/splash.dart';
 import 'src/features/auth/controller/auth_controller.dart';
-import 'src/features/profile/controller/profile_controller.dart';
 
 bool initialized = false;
 void main() async {
@@ -70,7 +69,6 @@ class App extends ConsumerWidget {
       initialized = true;
       trustedDomains = prefs.getStringList('trusted-domains')!;
       ref.read(authControllerProvider).bots = jsonDecode(prefs.getString('bots')!);
-      ref.read(profileControllerProvider).botActivity = jsonDecode(prefs.getString('bot-activity')!);
       ref.read(themeProvider.notifier).setTheme(prefs.getString('app-theme')!, false, true);
       SystemChrome.setEnabledSystemUIMode(
         SystemUiMode.edgeToEdge,

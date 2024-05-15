@@ -12,7 +12,12 @@ import '../../../common/utils/globals.dart';
 final profileControllerProvider = ChangeNotifierProvider((ref) => ProfileController());
 
 class ProfileController extends ChangeNotifier {
-  late final Map<String, dynamic> botActivity;
+  Map<String, dynamic> botActivity = {
+    'current-online-status': 'online',
+    'current-activity-text': '',
+    'current-activity-type': 'custom',
+    'since': ';'
+  };
   int currentSeconds = 0;
   Timer? timer;
   
