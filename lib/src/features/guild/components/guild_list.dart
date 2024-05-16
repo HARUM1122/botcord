@@ -17,7 +17,6 @@ class GuildsList extends StatelessWidget {
   Widget build(BuildContext context) => ListView.builder(
     itemCount: guilds.length,
     itemBuilder: (context, index) {
-      print(guilds[index].name);
       return GuildButton(
         guild: guilds[index],
         selected: guilds[index].id == currentGuild.id,

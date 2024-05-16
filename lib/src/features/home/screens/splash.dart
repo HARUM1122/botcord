@@ -41,15 +41,16 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       runZonedGuarded(
       () async {
           await _authController.login(_bot);
-          ref.read(guildsControllerProvider).listenGuildEvents();
           _profileController.botActivity = jsonDecode(prefs.getString('bot-activity')!);
           _profileController.updatePresence(save: false, datetime: DateTime.now());
+
+          ref.read(guildsControllerProvider).listenGuildEvents();
           if (mounted) {
             Navigator.pushReplacementNamed(context, '/home-route');
           }
         }, 
         (error, stack) async {
-          Navigator.pushReplacementNamed(globalNavigatorKey.currentContext!, '/bots-route', arguments: true);
+          Navigator.pushReplacementNamed(globalNavigatorKey.currentContext!, '/bots-route');
           await Future.delayed(const Duration(seconds: 1));
           if (error is ClientException) {
             showSnackBar(

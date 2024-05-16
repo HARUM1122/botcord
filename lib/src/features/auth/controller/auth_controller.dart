@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
 import 'package:discord/src/features/profile/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -14,9 +15,12 @@ import '../utils/constants.dart';
 import '../../../common/utils/globals.dart';
 import '../../../common/utils/constants.dart';
 
-final authControllerProvider = ChangeNotifierProvider<AuthController>((ref) => AuthController());
+final authControllerProvider = ChangeNotifierProvider<AuthController>((ref) => AuthController(ref: ref));
 
 class AuthController extends ChangeNotifier {
+  final ChangeNotifierProviderRef<AuthController> ref;
+  AuthController({required this.ref});
+
   Map<String, dynamic> bots = {};
 
   Map? getBotData(String key, String id) {
@@ -46,18 +50,19 @@ class AuthController extends ChangeNotifier {
       await client?.close();
       await prefs.setString('current-bot', '{}');
       await prefs.setString('bot-activity', jsonEncode(
-      {
-        'current-online-status': 'online',
-        'current-activity-text': '',
-        'current-activity-type': 'custom',
-        'since': ';'
-      }
-    ));
+        {
+          'current-online-status': 'online',
+          'current-activity-text': '',
+          'current-activity-type': 'custom',
+          'since': ';'
+        }
+      ));
+      ref.read(guildsControllerProvider).guildsCache.clear();
     } catch (e) {
       // 
     }
     if (context == null || !context.mounted ) return;
-    Navigator.pushReplacementNamed(context, '/bots-route', arguments: true);
+    Navigator.pushReplacementNamed(context, '/bots-route');
   }
 
   Future<int> addToken(String token) async {

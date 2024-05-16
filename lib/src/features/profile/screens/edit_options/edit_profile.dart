@@ -46,7 +46,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   late final TextEditingController _usernameController = TextEditingController(text: _username);
   late final TextEditingController _descriptionController = TextEditingController(text: _description);
 
-  bool saving = false;
+  late final Color _color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+  late final Color _color2 = appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFB1B1BB));
+
+  bool _saving = false;
 
   @override
   void dispose() {
@@ -57,7 +60,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
 
   Future<void> _updateProfile() async {
-    setState(() => saving = true);
+    setState(() => _saving = true);
     try {
       await _profileController.updateProfile(
         username: _username, 
@@ -91,7 +94,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       Navigator.pop(context);
     } catch (e) {
       if (!context.mounted) return;
-      setState(() => saving = false);
+      setState(() => _saving = false);
       if (e is http.ClientException) {
         showSnackBar(
           theme: _theme,
@@ -134,9 +137,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       !isSame(_banner ?? (Uint8List(0), ''), 
       _prevBanner ?? (Uint8List(0), '')
     );
-    final Color color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-    final Color color2 = appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFB1B1BB));
-    
     return Scaffold(
       backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0XFF141318)),
       appBar: AppBar(
@@ -164,7 +164,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
              style: const ButtonStyle(
               overlayColor: MaterialStatePropertyAll(Colors.transparent)
             ),
-            child: !saving 
+            child: !_saving 
             ? Text(
               "Save",
               style: TextStyle(
@@ -247,7 +247,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       Text(
                         _username.isEmpty ? _prevUsername : _username,
                         style: TextStyle(
-                          color: color1,
+                          color: _color1,
                           fontSize: 24,
                           fontFamily: 'GGSansBold'
                         )
@@ -255,7 +255,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       Text(
                         '$_username#${user!.discriminator}',
                         style: TextStyle(
-                          color: color1,
+                          color: _color1,
                           fontSize: 14,
                         )
                       ),
@@ -263,7 +263,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       Text(
                         'USERNAME',
                         style: TextStyle(
-                          color: color2,
+                          color: _color2,
                           fontSize: 12,
                           fontFamily: 'GGSansBold'
                         )
@@ -285,7 +285,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       Text(
                         'DESCRIPTION',
                         style: TextStyle(
-                          color: color2,
+                          color: _color2,
                           fontSize: 12,
                           fontFamily: 'GGSansBold'
                         )

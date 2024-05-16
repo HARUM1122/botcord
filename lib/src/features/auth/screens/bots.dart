@@ -33,6 +33,7 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
       backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           "Bots",
           style: TextStyle(

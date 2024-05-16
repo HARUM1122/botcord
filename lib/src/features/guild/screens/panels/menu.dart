@@ -30,13 +30,47 @@ class MenuScreen extends ConsumerWidget {
           Expanded(
             child: Container(
               margin: EdgeInsets.only(top: MediaQuery.paddingOf(context).top,right: 40),
+              padding: const EdgeInsets.only(top: 10),
               decoration: BoxDecoration(
                 color: appTheme<Color>(theme, light: const Color(0XFFECEEF0), dark: const Color(0XFF1C1D23), midnight: const Color(0xFF000000)),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(26),
                   topRight: Radius.circular(6)
                 )
-              )
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: Text(
+                            currentGuild.name,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: appTheme<Color>(
+                                theme, 
+                                light: const Color(0xFF000000),
+                                dark: const Color(0xFFFFFFFF),
+                                midnight: const Color(0xFFFFFFFF)
+                              ),
+                              fontSize: 20,
+                              fontFamily: 'GGSansBold'
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          color: appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D)),
+                        ),
+                        const SizedBox(width: 30)
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           )
         ],

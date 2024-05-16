@@ -1,15 +1,19 @@
-import 'package:discord/src/common/components/custom_button.dart';
-import 'package:discord/src/common/utils/globals.dart';
-import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
-import 'package:discord/theme_provider.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nyxx/nyxx.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+
+import 'package:discord/theme_provider.dart';
 
 import 'panels/panels.dart';
+
+import '../../../common/utils/utils.dart';
+import '../../../common/components/custom_button.dart';
+
+import '../../../features/guild/controllers/guilds_controller.dart';
+
+
 
 class GuildsScreen extends ConsumerStatefulWidget {
   const GuildsScreen({super.key});
@@ -24,8 +28,9 @@ class GuildsScreen extends ConsumerStatefulWidget {
 }
 
 class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderStateMixin {
-  AnimationController? controller;
-  double translate = 0;
+  double _translate = 0;
+
+  late final String _theme = ref.read(themeProvider);
 
   double _calculateGoal(double width, int multiplier) => 
     (multiplier * width) + (-multiplier * 20);
@@ -35,23 +40,23 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
 
     final AnimationController animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
 
-    if (translate.abs() >= width / 2) {
+    if (_translate.abs() >= width / 2) {
       final goal = _calculateGoal(width, 1);
 
-      final Tween<double> tween = Tween(begin: translate, end: goal);
+      final Tween<double> tween = Tween(begin: _translate, end: goal);
 
       final Animation animation = tween.animate(animationController);
 
       animation.addListener(() {
         setState(() {
-          translate = animation.value;
+          _translate = animation.value;
         });
       });
     } else {
-      final Animation<double> animation = Tween<double>(begin: translate, end: 0).animate(animationController);
+      final Animation<double> animation = Tween<double>(begin: _translate, end: 0).animate(animationController);
 
       animation.addListener(() {
-        setState(() => translate = animation.value);
+        setState(() => _translate = animation.value);
       });
     }
     animationController.forward();
@@ -59,17 +64,17 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
 
    void _onTranslate(double delta) {
     setState(() {
-      final double trns = translate + delta;
-      translate = trns > 0 ? trns : translate;
+      final double trns = _translate + delta;
+      _translate = trns > 0 ? trns : _translate;
     });
   }
 
   void revealLeft() {
-    if (translate != 0) return;
+    if (_translate != 0) return;
 
     final AnimationController animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
     
-    final Animation<double> animation = Tween<double>(begin: translate, end: _calculateGoal(MediaQuery.of(context).size.width, 1)).animate(animationController);
+    final Animation<double> animation = Tween<double>(begin: _translate, end: _calculateGoal(MediaQuery.of(context).size.width, 1)).animate(animationController);
 
     animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -80,7 +85,7 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
 
     animation.addListener(() {
       setState(() {
-        translate = animation.value;
+        _translate = animation.value;
       });
     });
     animationController.forward();
@@ -89,10 +94,9 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
   @override
   Widget build(BuildContext context) {
     final GuildsController controller = ref.watch(guildsControllerProvider);
-    final String theme = ref.read(themeProvider);
-    if (controller.guilds.isEmpty) {
+    if (controller.guildsCache.isEmpty) {
       return Container(
-        color: appTheme<Color>(theme, light: const Color(0XFFECEEF0), dark: const Color(0XFF141318), midnight: const Color(0xFF000000)),
+        color: appTheme<Color>(_theme, light: const Color(0XFFECEEF0), dark: const Color(0XFF141318), midnight: const Color(0xFF000000)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -100,7 +104,7 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
             Text(
               "NO SERVERS",
               style: TextStyle(
-                color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                 fontSize: 20,
                 fontFamily: 'GGSansBold'
               ),
@@ -112,7 +116,7 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
                 "Your bot currently hasn't joined any server yet. Invite your bot to a server",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D)),
+                  color: appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D)),
                   fontSize: 16,
                   fontFamily: 'GGSansSemibold'
                 ),
@@ -147,14 +151,14 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
     }
     return Stack(children: [
       Offstage(
-        offstage: translate < 0,
+        offstage: _translate < 0,
         child: MenuScreen(
-          guilds: controller.guilds,
+          guilds: controller.guildsCache,
           currentGuild: controller.currentGuild!,
         ),
       ),
       Transform.translate(
-        offset: Offset(translate, 0),
+        offset: Offset(_translate, 0),
         child: const ChatScreen(),
       ),
       GestureDetector(

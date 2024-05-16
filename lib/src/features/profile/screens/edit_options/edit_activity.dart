@@ -19,7 +19,7 @@ class EditActivityScreen extends ConsumerStatefulWidget {
 }
 
 class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
-
+  late final String _theme = ref.read(themeProvider);
   late final ProfileController _profileController = ref.read(profileControllerProvider);
 
   late final String _prevActivityText = _profileController.botActivity['current-activity-text'];
@@ -32,6 +32,8 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
 
   late final TextEditingController _controller = TextEditingController(text: _activityText);
 
+  late final Color _color1 = appTheme<Color>(_theme, light: const Color(0XFFCCCED3), dark: const Color(0XFF1A1C20), midnight: const Color(0XFF1A1C22));
+
   @override
   void dispose() {
     super.dispose();
@@ -40,24 +42,21 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String theme = ref.read(themeProvider);
-    final Color color1 = appTheme<Color>(theme, light: const Color(0XFFCCCED3), dark: const Color(0XFF1A1C20), midnight: const Color(0XFF1A1C22));
-
     return Scaffold(
-      backgroundColor: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+      backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           splashRadius: 18,
           icon: Icon(
             Icons.close,
-            color: appTheme<Color>(theme, light: const Color(0XFF50515B), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+            color: appTheme<Color>(_theme, light: const Color(0XFF50515B), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
           )
         ),
         title: Text(
           'Edit Activity',
           style: TextStyle(
-            color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+            color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
             fontSize: 18,
             fontFamily: 'GGSansBold'
           ),
@@ -96,7 +95,7 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
             child: Text(
               'Save',
               style: TextStyle(
-                color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                 fontSize: 18,
               ),
             ),
@@ -116,7 +115,7 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                   child: Theme(
                     data: ThemeData(
                       textSelectionTheme: () {
-                        final Color color = appTheme<Color>(theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594));
+                        final Color color = appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594));
                         return TextSelectionThemeData(
                           selectionColor: color.withOpacity(0.3),
                           cursorColor: color
@@ -138,7 +137,7 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                           child: Text(
                             (maxLength! - currentLength).toString(),
                             style: TextStyle(
-                              color: appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF858893)),
+                              color: appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF858893)),
                               fontFamily: 'GGSansBold',
                               fontSize: 12
                             )
@@ -153,7 +152,7 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                         }
                       },
                       style: TextStyle(
-                        color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                        color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                         fontSize: 14
                       ),
                       decoration: InputDecoration(
@@ -164,11 +163,11 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                         contentPadding: const EdgeInsets.all(16),
                         hintText: "What you're up to?",
                         hintStyle: TextStyle(
-                          color: appTheme<Color>(theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
+                          color: appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
                           fontSize: 16
                         ),
                         filled: true,
-                        fillColor: appTheme<Color>(theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017))
+                        fillColor: appTheme<Color>(_theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017))
                       ),
                     ),
                   ),
@@ -177,7 +176,7 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                 Text(
                   'Activity Type',
                   style: TextStyle(
-                    color: appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0)),
+                    color: appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0)),
                     fontFamily: 'GGSansSemibold',
                     fontSize: 14
                   ),
@@ -186,14 +185,14 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                   width: double.infinity,
                   margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
                   decoration: BoxDecoration(
-                    color: appTheme<Color>(theme, light: const Color(0XFFDFE1E3), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0F1014)),
+                    color: appTheme<Color>(_theme, light: const Color(0XFFDFE1E3), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0F1014)),
                     borderRadius: BorderRadius.circular(16)
                   ),
                   child: Column(
                     children: [
                       RadioButtonTile(
                         title: 'Playing',
-                        theme: theme,
+                        theme: _theme,
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(16)
                         ),
@@ -201,53 +200,53 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                         onPressed: () => setState(() => _activityType = 'playing')
                       ),
                       Divider(
-                        color: color1,
+                        color: _color1,
                         thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
                       RadioButtonTile(
                         title: 'Watching',
-                        theme: theme,
+                        theme: _theme,
                         borderRadius: BorderRadius.zero,
                         selected: _activityType == 'watching',
                         onPressed: () => setState(() => _activityType = 'watching')
                       ),
                       Divider(
-                        color: color1,
+                        color: _color1,
                         thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
                       RadioButtonTile(
                         title: 'Listening',
-                        theme: theme,
+                        theme: _theme,
                         borderRadius: BorderRadius.zero,
                         selected: _activityType == 'listening',
                         onPressed: () => setState(() => _activityType = 'listening')
                       ),
                       Divider(
-                        color: color1,
+                        color: _color1,
                         thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
                       RadioButtonTile(
                         title: 'Competing',
-                        theme: theme,
+                        theme: _theme,
                         borderRadius: BorderRadius.zero,
                         selected: _activityType == 'competing',
                         onPressed: () => setState(() => _activityType = 'competing')
                       ),
                       Divider(
-                        color: color1,
+                        color: _color1,
                         thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
                       RadioButtonTile(
                         title: "Custom",
-                        theme: theme,
+                        theme: _theme,
                         borderRadius: const BorderRadius.vertical(
                           bottom: Radius.circular(16)
                         ),
@@ -261,7 +260,7 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                 Text(
                   'Status Duration',
                   style: TextStyle(
-                    color: appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0)),
+                    color: appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0)),
                     fontFamily: 'GGSansSemibold',
                     fontSize: 14
                   ),
@@ -270,14 +269,14 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                   width: double.infinity,
                   margin: const EdgeInsets.only(left: 4, right: 4, bottom: 16, top: 5),
                   decoration: BoxDecoration(
-                    color: appTheme<Color>(theme, light: const Color(0XFFDFE1E3), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0F1014)),
+                    color: appTheme<Color>(_theme, light: const Color(0XFFDFE1E3), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0F1014)),
                     borderRadius: BorderRadius.circular(16)
                   ),
                   child: Column(
                     children: [
                       RadioButtonTile(
                         title: 'Clear in 24 hours',
-                        theme: theme,
+                        theme: _theme,
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(16)
                         ),
@@ -285,53 +284,53 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                         onPressed: () => setState(() => _duration = '24')
                       ),
                       Divider(
-                        color: color1,
+                        color: _color1,
                         thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
                       RadioButtonTile(
                         title: 'Clear in 4 hours',
-                        theme: theme,
+                        theme: _theme,
                         borderRadius: BorderRadius.zero,
                         selected: _duration == '4',
                         onPressed: () => setState(() => _duration = '4')
                       ),
                       Divider(
-                        color: color1,
+                        color: _color1,
                         thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
                       RadioButtonTile(
                         title: 'Clear in 1 hour',
-                        theme: theme,
+                        theme: _theme,
                         borderRadius: BorderRadius.zero,
                         selected: _duration == '1',
                         onPressed: () => setState(() => _duration = '1')
                       ),
                       Divider(
-                        color: color1,
+                        color: _color1,
                         thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
                       RadioButtonTile(
                         title: 'Clear in 30 minutes',
-                        theme: theme,
+                        theme: _theme,
                         borderRadius: BorderRadius.zero,
                         selected: _duration == '30',
                         onPressed: () => setState(() => _duration = '30')
                       ),
                       Divider(
-                        color: color1,
+                        color: _color1,
                         thickness: 1,
                         height: 0,
                         indent: 16,
                       ),
                       RadioButtonTile(
                         title: "Don't clear",
-                        theme: theme,
+                        theme: _theme,
                         borderRadius: const BorderRadius.vertical(
                           bottom: Radius.circular(16)
                         ),

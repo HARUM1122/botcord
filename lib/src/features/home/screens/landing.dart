@@ -65,11 +65,7 @@ class LandingScreen extends ConsumerWidget {
             CustomButton(
               onPressed: () {
                 prefs.setBool('is-landed', true);
-                Navigator.pushReplacementNamed(
-                  context, 
-                  '/bots-route',
-                  arguments: true
-                );
+                Navigator.pushReplacementNamed(context, '/bots-route');
               },
               width: context.getSize.width * 0.90,
               height: 50,

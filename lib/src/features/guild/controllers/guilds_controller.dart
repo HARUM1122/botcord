@@ -11,37 +11,42 @@ import 'package:nyxx/nyxx.dart';
 final guildsControllerProvider = ChangeNotifierProvider((ref) => GuildsController());
 
 class GuildsController extends ChangeNotifier {
-  List<UserGuild> guilds = [];
+  List<UserGuild> guildsCache = [];
   UserGuild? currentGuild;
 
   void selectGuild(UserGuild guild) {
+    if (guild.id == currentGuild?.id) return;
     currentGuild = guild;
     notifyListeners();
   }
 
   void listenGuildEvents() {
-    Timer? debounce;
     client?.onGuildCreate.listen((event) async {
       UserGuild guild = await event.guild.get();
-      guilds.add(guild);
-      if ((debounce?.isActive ?? false)) debounce?.cancel();
-      debounce = Timer(const Duration(milliseconds: 500), () {
-        currentGuild = guilds.isNotEmpty ? guilds.first : null; 
-        notifyListeners();
-      });
+      currentGuild = currentGuild != null ? guild : currentGuild;
+      guildsCache.add(guild);
+      notifyListeners();
     });
     client?.onGuildUpdate.listen((event) {
-      for (int i = 0; i < guilds.length; i++) {
-        if (guilds[i].id == event.guild.id) {
-          guilds[i] = event.guild;
+      for (int i = 0; i < guildsCache.length; i++) {
+        if (guildsCache[i].id == event.guild.id) {
+          guildsCache[i] = event.guild;
           notifyListeners();
           break;
         }
       }
     });
     client?.onGuildDelete.listen((event) {
-      guilds.removeWhere((guild) => guild.id == event.guild.id);
+      if (currentGuild?.id == event.guild.id) {
+        currentGuild = guildsCache.isNotEmpty ? guildsCache.first : null;
+      }
+      guildsCache.removeWhere((guild) => guild.id == event.guild.id);
       notifyListeners();
     });
+  }
+
+  void clearCache() {
+    guildsCache.clear();
+    currentGuild = null;
   }
 }
