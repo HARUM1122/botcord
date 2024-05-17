@@ -49,186 +49,184 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 30),
-              Text(
-                "App Theme",
-                style: TextStyle(
-                  color: color3,
-                  fontSize: 14,
-                  fontFamily: 'GGSansSemibold'
-                ),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 30),
+            Text(
+              "App Theme",
+              style: TextStyle(
+                color: color3,
+                fontSize: 14,
+                fontFamily: 'GGSansSemibold'
               ),
-              const SizedBox(height: 8),
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 2),
-                decoration: BoxDecoration(
-                  color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
-                  borderRadius: BorderRadius.circular(16)
-                ),
-                child: Column(
-                  children: [
-                    OptionTile(
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(16)
-                      ),
-                      backgroundColor: Colors.transparent,
-                      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
-                      onPressed: () => ref.read(
-                        themeProvider.notifier
-                      ).setTheme('light', true, false),
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 10),
-                          Icon(
-                            Icons.light_mode,
-                            color: color2,
-                          ),
-                          const SizedBox(width: 18),
-                          Text(
-                            'Light',
-                            style: TextStyle(
-                              color: color1,
-                              fontSize: 16,
-                              fontFamily: 'GGSansSemibold'
-                            ),
-                          ),
-                          const Spacer(),
-                          RadioButtonIndicator(
-                            radius: 20, 
-                            selected: theme == 'light'
-                          ),
-                          const SizedBox(width: 10)
-                        ],
-                      )
-                    ),
-                    Divider(
-                      color: color4,
-                      thickness: 0.2,
-                      height: 0,
-                      indent: 50,
-                    ),
-                    OptionTile(
-                      borderRadius: BorderRadius.zero,
-                      backgroundColor: Colors.transparent,
-                      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
-                      onPressed: () => ref.read(
-                        themeProvider.notifier
-                      ).setTheme('dark', true, false),
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 10),
-                          Icon(
-                            Icons.light_mode,
-                            color: color2,
-                          ),
-                          const SizedBox(width: 18),
-                          Text(
-                            'Dark',
-                            style: TextStyle(
-                              color: color1,
-                              fontSize: 16,
-                              fontFamily: 'GGSansSemibold'
-                            ),
-                          ),
-                          const Spacer(),
-                          RadioButtonIndicator(
-                            radius: 20, 
-                            selected: theme == 'dark'
-                          ),
-                          const SizedBox(width: 10)
-                        ],
-                      )
-                    ),
-                    Divider(
-                      color: color4,
-                      thickness: 0.2,
-                      height: 0,
-                      indent: 50,
-                    ),
-                    OptionTile(
-                      borderRadius: const BorderRadius.vertical(
-                        bottom: Radius.circular(16)
-                      ),
-                      backgroundColor: Colors.transparent,
-                      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
-                      onPressed: () => ref.read(
-                        themeProvider.notifier
-                      ).setTheme('midnight', true, false),
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 10),
-                          Icon(
-                            Icons.light_mode,
-                            color: color2,
-                          ),
-                          const SizedBox(width: 18),
-                          Text(
-                            'Midnight',
-                            style: TextStyle(
-                              color: color1,
-                              fontSize: 16,
-                              fontFamily: 'GGSansSemibold'
-                            ),
-                          ),
-                          const Spacer(),
-                          RadioButtonIndicator(
-                            radius: 20, 
-                            selected: theme == 'midnight'
-                          ),
-                          const SizedBox(width: 10)
-                        ],
-                      )
-                    ),
-                  ],
-                )
+            ),
+            const SizedBox(height: 8),
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 2),
+              decoration: BoxDecoration(
+                color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
+                borderRadius: BorderRadius.circular(16)
               ),
-              const SizedBox(height: 30),
-              OptionTile(
-                borderRadius: BorderRadius.circular(16),
-                backgroundColor: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
-                onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
-                onPressed: () => authController.logout(context),
-                child: Row(
-                  children: [
-                    const SizedBox(width: 10),
-                    Icon(
-                      Icons.logout,
-                      color: color2,
+              child: Column(
+                children: [
+                  SettingsTile(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(16)
                     ),
-                    const SizedBox(width: 18),
-                    const Text(
-                      'Log Out',
-                      style: TextStyle(
-                        color: Color(0XFFFF5340),
-                        fontSize: 16,
-                        fontFamily: 'GGSansSemibold'
-                      ),
+                    backgroundColor: Colors.transparent,
+                    onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
+                    onPressed: () => ref.read(
+                      themeProvider.notifier
+                    ).setTheme('light', true, false),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        Icon(
+                          Icons.light_mode,
+                          color: color2,
+                        ),
+                        const SizedBox(width: 18),
+                        Text(
+                          'Light',
+                          style: TextStyle(
+                            color: color1,
+                            fontSize: 16,
+                            fontFamily: 'GGSansSemibold'
+                          ),
+                        ),
+                        const Spacer(),
+                        RadioButtonIndicator(
+                          radius: 20, 
+                          selected: theme == 'light'
+                        ),
+                        const SizedBox(width: 10)
+                      ],
+                    )
+                  ),
+                  Divider(
+                    color: color4,
+                    thickness: 1,
+                    height: 0,
+                    indent: 50,
+                  ),
+                  SettingsTile(
+                    borderRadius: BorderRadius.zero,
+                    backgroundColor: Colors.transparent,
+                    onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
+                    onPressed: () => ref.read(
+                      themeProvider.notifier
+                    ).setTheme('dark', true, false),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        Icon(
+                          Icons.light_mode,
+                          color: color2,
+                        ),
+                        const SizedBox(width: 18),
+                        Text(
+                          'Dark',
+                          style: TextStyle(
+                            color: color1,
+                            fontSize: 16,
+                            fontFamily: 'GGSansSemibold'
+                          ),
+                        ),
+                        const Spacer(),
+                        RadioButtonIndicator(
+                          radius: 20, 
+                          selected: theme == 'dark'
+                        ),
+                        const SizedBox(width: 10)
+                      ],
+                    )
+                  ),
+                  Divider(
+                    color: color4,
+                    thickness: 1,
+                    height: 0,
+                    indent: 50,
+                  ),
+                  SettingsTile(
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.circular(16)
                     ),
-                  ],
-                )
-              ),
-            ],
-          ),
+                    backgroundColor: Colors.transparent,
+                    onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
+                    onPressed: () => ref.read(
+                      themeProvider.notifier
+                    ).setTheme('midnight', true, false),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        Icon(
+                          Icons.light_mode,
+                          color: color2,
+                        ),
+                        const SizedBox(width: 18),
+                        Text(
+                          'Midnight',
+                          style: TextStyle(
+                            color: color1,
+                            fontSize: 16,
+                            fontFamily: 'GGSansSemibold'
+                          ),
+                        ),
+                        const Spacer(),
+                        RadioButtonIndicator(
+                          radius: 20, 
+                          selected: theme == 'midnight'
+                        ),
+                        const SizedBox(width: 10)
+                      ],
+                    )
+                  ),
+                ],
+              )
+            ),
+            const SizedBox(height: 30),
+            SettingsTile(
+              borderRadius: BorderRadius.circular(16),
+              backgroundColor: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
+              onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
+              onPressed: () => authController.logout(context),
+              child: Row(
+                children: [
+                  const SizedBox(width: 10),
+                  Icon(
+                    Icons.logout,
+                    color: color2,
+                  ),
+                  const SizedBox(width: 18),
+                  const Text(
+                    'Log Out',
+                    style: TextStyle(
+                      color: Color(0XFFFF5340),
+                      fontSize: 16,
+                      fontFamily: 'GGSansSemibold'
+                    ),
+                  ),
+                ],
+              )
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class OptionTile extends StatelessWidget {
+class SettingsTile extends StatelessWidget {
   final BorderRadius borderRadius;
   final Color backgroundColor;
   final Color onPressedColor;
   final Function() onPressed;
   final Widget child;
 
-  const OptionTile({
+  const SettingsTile({
     required this.borderRadius,
     required this.backgroundColor,
     required this.onPressedColor,

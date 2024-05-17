@@ -1,12 +1,9 @@
-import 'dart:async';
-
-import 'package:discord/src/common/utils/globals.dart';
-import 'package:discord/src/features/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 
+import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:nyxx/nyxx.dart';
+import '../../../common/utils/globals.dart';
 
 final guildsControllerProvider = ChangeNotifierProvider((ref) => GuildsController());
 
@@ -23,7 +20,7 @@ class GuildsController extends ChangeNotifier {
   void listenGuildEvents() {
     client?.onGuildCreate.listen((event) async {
       UserGuild guild = await event.guild.get();
-      currentGuild = currentGuild != null ? guild : currentGuild;
+      currentGuild ??= guild;
       guildsCache.add(guild);
       notifyListeners();
     });

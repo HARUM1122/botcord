@@ -8,6 +8,8 @@ import 'package:page_animation_transition/animations/bottom_to_top_faded_transit
 
 import 'src/features/auth/screens/screens.dart';
 
+import 'src/features/guild/screens/screens.dart';
+
 import 'src/features/home/screens/screens.dart';
 
 import 'src/features/profile/screens/screens.dart';
@@ -51,6 +53,10 @@ Route<dynamic> generateRoutes(RouteSettings settings) {
       return PageAnimationTransition(
         page: const EditProfileScreen(), 
         pageAnimationType: RightToLeftTransition()
+      );
+    case '/invite-bot-route':
+      return MaterialPageRoute(
+        builder: (context) => const InviteBotScreen(),
       );
     default:
       return MaterialPageRoute(

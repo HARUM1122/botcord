@@ -72,8 +72,9 @@ class LinkOptionsSheet extends ConsumerWidget {
               title: 'Open Link',
               onPressed: () async {
                 Navigator.pop(context);
-                if (!trustedDomains.contains(Uri.parse(link).host)) {
-                  await launchUrl(Uri.parse(link));
+                Uri uri = Uri.parse(link);
+                if (!trustedDomains.contains(uri.host)) {
+                  await launchUrl(uri);
                   return;
                 }
                 showDialogBox(

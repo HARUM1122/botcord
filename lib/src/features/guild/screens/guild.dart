@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 
 import 'package:discord/theme_provider.dart';
 
@@ -142,8 +140,7 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
                   ),
                 ),
               ),
-              onPressed: () {
-              },
+              onPressed: () => Navigator.pushNamed(context, '/invite-bot-route')
             ),
           ],
         )
@@ -152,10 +149,10 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
     return Stack(children: [
       Offstage(
         offstage: _translate < 0,
-        child: MenuScreen(
+        child: controller.currentGuild != null ? MenuScreen(
           guilds: controller.guildsCache,
           currentGuild: controller.currentGuild!,
-        ),
+        ) : null
       ),
       Transform.translate(
         offset: Offset(_translate, 0),

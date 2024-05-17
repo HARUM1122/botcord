@@ -1,20 +1,14 @@
 import 'dart:async';
 
-import 'package:discord/src/common/utils/globals.dart';
-import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 import 'package:discord/theme_provider.dart';
-
 import 'package:discord/src/common/utils/utils.dart';
-import 'package:nyxx/nyxx.dart';
+import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
 
 import '../guild.dart';
-
-
 
 class ChatScreen extends ConsumerWidget {
   const ChatScreen({super.key});
@@ -42,32 +36,7 @@ class ChatScreen extends ConsumerWidget {
             fontSize: 18
           ),
         ),
-      ),
-      body: Center(
-        child: () {
-            return Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    final GuildsController controller = ref.read(guildsControllerProvider);
-                    controller.listenGuildEvents();
-                    // List<UserGuild> guilds = await client!.listGuilds();
-                    // client!.onGuildCreate.listen((event) async { 
-                    //   UserGuild guild = await event.guild.get();
-                    //   print(guild.name);
-                    // });
-                    // client!.onGuildCreate.listen((event) {
-                    //   print(event.guild.get());
-                    // });
-                    // client!.onGuildDelete.listen((event) {
-                    //   print(event.deletedGuild!.name);
-                    // });
-                  },
-                  child: Text("Press"),
-                ),
-              ],
-            );
-          }()
+        centerTitle: false,
       ),
     );
   }
