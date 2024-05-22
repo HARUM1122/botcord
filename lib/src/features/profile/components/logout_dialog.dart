@@ -1,12 +1,14 @@
-import 'package:discord/src/common/components/custom_button.dart';
-import 'package:discord/src/common/utils/extensions.dart';
-import 'package:discord/src/features/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../common/utils/utils.dart';
 import 'package:discord/theme_provider.dart';
+
+import '../../../common/utils/utils.dart';
+import '../../../common/utils/extensions.dart';
+import '../../../common/components/custom_button.dart';
+
+import '../../../features/auth/controller/auth_controller.dart';
 
 
 

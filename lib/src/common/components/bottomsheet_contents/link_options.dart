@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/theme_provider.dart';
 
 import '../drag_handle.dart';
 
 import '../../utils/utils.dart';
-import '../../utils/globals.dart';
 import '../../utils/extensions.dart';
 import '../../utils/asset_constants.dart';
 
 import '../custom_button.dart';
-
-import '../dialog_contents/link_trust.dart';
 
 
 class LinkOptionsSheet extends ConsumerWidget {
