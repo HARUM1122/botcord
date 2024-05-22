@@ -38,7 +38,7 @@ void main() async {
   }
   runApp(
     DevicePreview(
-      enabled: true,
+      enabled: false,
       builder: (_)=> const ProviderScope(
         child: App(),
       ),
@@ -51,20 +51,6 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String theme = ref.watch(themeProvider);
-    final Brightness brightness = appTheme<Brightness>(
-      theme, 
-      light: Brightness.light, 
-      dark: Brightness.dark, 
-      midnight: Brightness.dark
-    );
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Colors.black.withOpacity(0.002),
-        statusBarIconBrightness: brightness,
-        systemNavigationBarColor: Colors.black.withOpacity(0.002),
-        systemNavigationBarIconBrightness: brightness
-      ),
-    );
     if (!initialized) {
       initialized = true;
       trustedDomains = prefs.getStringList('trusted-domains')!;
@@ -75,6 +61,21 @@ class App extends ConsumerWidget {
         overlays: SystemUiOverlay.values
       );
     }
+    final Brightness brightness = appTheme<Brightness>(
+      theme, 
+      light: Brightness.dark, 
+      dark: Brightness.light, 
+      midnight: Brightness.light
+    );
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.black.withOpacity(0.002),
+        statusBarIconBrightness: brightness,
+        systemNavigationBarColor: Colors.black.withOpacity(0.002),
+        systemNavigationBarIconBrightness: brightness
+      ),
+    );
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: globalNavigatorKey,

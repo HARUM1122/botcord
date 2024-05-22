@@ -8,7 +8,7 @@ import 'package:discord/theme_provider.dart';
 
 import '../utils/utils.dart';
 
-import '../components/bot_list.dart';
+import '../components/bot/list.dart';
 
 import '../../../common/utils/utils.dart';
 

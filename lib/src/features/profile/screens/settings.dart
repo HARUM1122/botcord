@@ -1,13 +1,16 @@
-import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/features/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/theme_provider.dart';
 
-import '../../../common/components/custom_button.dart';
 import '../components/radio_button_indicator/radio_button_indicator.dart';
+
+import '../../../common/utils/utils.dart';
+import '../../../common/components/custom_button.dart';
+
+import '../../../features/profile/components/logout_dialog.dart';
+
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -21,7 +24,6 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final String theme = ref.watch(themeProvider);
-    final AuthController authController = ref.read(authControllerProvider);
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0XFF4C4F57), dark: const Color(0XFFC8C9D1), midnight: const Color(0xFFFFFFFF));
     final Color color3 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
@@ -192,7 +194,10 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
               borderRadius: BorderRadius.circular(16),
               backgroundColor: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
               onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
-              onPressed: () => authController.logout(context),
+              onPressed: () => showDialogBox(
+                context: context, 
+                child: const LogoutDialog()
+              ),
               child: Row(
                 children: [
                   const SizedBox(width: 10),

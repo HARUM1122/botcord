@@ -9,9 +9,10 @@ import 'panels/panels.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/components/custom_button.dart';
 
+import '../../../features/home/provider/bottom_nav.dart';
 import '../../../features/guild/controllers/guilds_controller.dart';
 
-
+double translate = 0;
 
 class GuildsScreen extends ConsumerStatefulWidget {
   const GuildsScreen({super.key});
@@ -26,9 +27,9 @@ class GuildsScreen extends ConsumerStatefulWidget {
 }
 
 class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderStateMixin {
-  double _translate = 0;
 
   late final String _theme = ref.read(themeProvider);
+  late final BottomNavProvider _bottomNavProv = ref.read(bottomNavProvider);
 
   double _calculateGoal(double width, int multiplier) => 
     (multiplier * width) + (-multiplier * 20);
@@ -37,24 +38,30 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
     final double width = MediaQuery.of(context).size.width;
 
     final AnimationController animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
-
-    if (_translate.abs() >= width / 2) {
+    animationController.addStatusListener((status) { 
+      if (status == AnimationStatus.completed) {
+        _bottomNavProv
+        ..leftMenuOpened = translate > 0
+        ..refresh();
+      }
+    });
+    if (translate.abs() >= width / 2) {
       final goal = _calculateGoal(width, 1);
 
-      final Tween<double> tween = Tween(begin: _translate, end: goal);
+      final Tween<double> tween = Tween(begin: translate, end: goal);
 
       final Animation animation = tween.animate(animationController);
 
       animation.addListener(() {
         setState(() {
-          _translate = animation.value;
+          translate = animation.value;
         });
       });
     } else {
-      final Animation<double> animation = Tween<double>(begin: _translate, end: 0).animate(animationController);
+      final Animation<double> animation = Tween<double>(begin: translate, end: 0).animate(animationController);
 
       animation.addListener(() {
-        setState(() => _translate = animation.value);
+        setState(() => translate = animation.value);
       });
     }
     animationController.forward();
@@ -62,17 +69,17 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
 
    void _onTranslate(double delta) {
     setState(() {
-      final double trns = _translate + delta;
-      _translate = trns > 0 ? trns : _translate;
+      final double trns = translate + delta;
+      translate = trns > 0 ? trns : translate;
     });
   }
 
   void revealLeft() {
-    if (_translate != 0) return;
+    if (translate != 0) return;
 
     final AnimationController animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
     
-    final Animation<double> animation = Tween<double>(begin: _translate, end: _calculateGoal(MediaQuery.of(context).size.width, 1)).animate(animationController);
+    final Animation<double> animation = Tween<double>(begin: translate, end: _calculateGoal(MediaQuery.of(context).size.width, 1)).animate(animationController);
 
     animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -83,7 +90,7 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
 
     animation.addListener(() {
       setState(() {
-        _translate = animation.value;
+        translate = animation.value;
       });
     });
     animationController.forward();
@@ -92,6 +99,7 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
   @override
   Widget build(BuildContext context) {
     final GuildsController controller = ref.watch(guildsControllerProvider);
+
     if (controller.guildsCache.isEmpty) {
       return Container(
         color: appTheme<Color>(_theme, light: const Color(0XFFECEEF0), dark: const Color(0XFF141318), midnight: const Color(0xFF000000)),
@@ -148,14 +156,14 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
     }
     return Stack(children: [
       Offstage(
-        offstage: _translate < 0,
+        offstage: translate < 0,
         child: controller.currentGuild != null ? MenuScreen(
           guilds: controller.guildsCache,
           currentGuild: controller.currentGuild!,
         ) : null
       ),
       Transform.translate(
-        offset: Offset(_translate, 0),
+        offset: Offset(translate, 0),
         child: const ChatScreen(),
       ),
       GestureDetector(
@@ -166,5 +174,3 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
     ]);
   }
 }
-
-// f"{self.discordApi}/oauth2/authorize?client_id={client.user.id}&permissions=8&scope=bot"

@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/theme_provider.dart';
 
-import 'bot_options_sheet.dart';
+import 'options_sheet.dart';
 
-import '../../../common/utils/utils.dart';
-import '../../../common/components/custom_button.dart';
-import '../../../common/components/profile_pic.dart';
+import '../../../../common/utils/utils.dart';
+import '../../../../common/components/custom_button.dart';
+import '../../../../common/components/profile_pic.dart';
 
 class BotTile extends ConsumerWidget {
   final String title;

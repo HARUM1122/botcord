@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
-import 'package:discord/src/features/profile/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -14,6 +12,8 @@ import '../utils/constants.dart';
 
 import '../../../common/utils/globals.dart';
 import '../../../common/utils/constants.dart';
+
+import '../../../features/guild/controllers/guilds_controller.dart';
 
 final authControllerProvider = ChangeNotifierProvider<AuthController>((ref) => AuthController(ref: ref));
 
@@ -57,7 +57,7 @@ class AuthController extends ChangeNotifier {
           'since': ';'
         }
       ));
-      ref.read(guildsControllerProvider).guildsCache.clear();
+      ref.read(guildsControllerProvider).clearCache();
     } catch (e) {
       // 
     }

@@ -43,5 +43,14 @@
 // }
 
 
-int fact(int n) => n == 1 ? 1 : n * fact(n - 1);
-int sum(int n) => n == 1 ? 1 : n + sum(n - 1);
+// int fact(int n) => n == 1 ? 1 : n * fact(n - 1);
+// int sum(int n) => n == 1 ? 1 : n + sum(n - 1);
+
+import 'package:nyxx/nyxx.dart';
+
+void main() async {
+    NyxxGateway client = await Nyxx.connectGateway('MTAxMzcxMTEzMjIzMTQ4NzUwOA.GhWLfT.nwTYxR6199t2inN84-0luh7V_2oYwxcjQi6cCw', GatewayIntents.all);
+    client.onGuildCreate.listen((event) {
+      print("HELLO WORLD");
+    });
+}

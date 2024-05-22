@@ -1,13 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/features/guild/components/guild_avatar.dart';
-import 'package:discord/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
-import '../controllers/guilds_controller.dart';
+import 'package:discord/theme_provider.dart';
+
+import '../../controllers/guilds_controller.dart';
+
+import '../../../../common/utils/utils.dart';
 
 class GuildButton extends ConsumerWidget {
   final UserGuild guild;
@@ -53,9 +54,9 @@ class GuildButton extends ConsumerWidget {
                 color: guildIcon == null 
                 ? appTheme<Color>(
                   theme, 
-                  light: const Color(0XFFF2F4F5), 
-                  dark: const Color(0XFF1C1D23), 
-                  midnight: const Color(0XFF0F1014)
+                  light: Color(!selected ? 0XFFF2F4F5 : 0XFF536CF8), 
+                  dark: Color(!selected ? 0XFF1C1D23 : 0XFF536CF8), 
+                  midnight: Color(!selected ? 0XFF0F1014 : 0XFF536CF8)
                 )
                 : Colors.transparent,
                 image: guildIcon != null 
@@ -73,7 +74,12 @@ class GuildButton extends ConsumerWidget {
                 child: Text(
                   guild.name[0],
                   style: TextStyle(
-                    color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                    color: appTheme<Color>(
+                      theme, 
+                      light: const Color(0xFF000000),
+                      dark: const Color(0xFFFFFFFF), 
+                      midnight: const Color(0xFFFFFFFF)
+                    ),
                     fontSize: 16,
                   ),
                 ),

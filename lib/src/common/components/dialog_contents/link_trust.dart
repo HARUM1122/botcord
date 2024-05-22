@@ -1,3 +1,4 @@
+import 'package:discord/src/common/components/checkbox_indicator.dart';
 import 'package:flutter/material.dart';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -21,7 +22,7 @@ class LinkTrustDialog extends ConsumerStatefulWidget {
 }
 
 class _LinkTrustDialogState extends ConsumerState<LinkTrustDialog> {
-  bool checked = false;
+  bool _domainTrusted = false;
 
   Future<void> addDomain(String domainName) async {
     trustedDomains.add(domainName);
@@ -34,7 +35,7 @@ class _LinkTrustDialogState extends ConsumerState<LinkTrustDialog> {
     final Uri uri = Uri.parse(widget.link);
     final List<int> indicies = widget.link.getIndicies(uri.host);
     return Container(
-      height: context.getSize.height * 0.5,
+      height: context.getSize.height * 0.6,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
@@ -64,7 +65,7 @@ class _LinkTrustDialogState extends ConsumerState<LinkTrustDialog> {
             width: double.infinity,
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0xFF1A1D24)),
+              color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF262730), midnight: const Color(0XFF141318)),
               borderRadius: BorderRadius.circular(10)
             ),
             child: MarkdownBody(
@@ -83,42 +84,71 @@ class _LinkTrustDialogState extends ConsumerState<LinkTrustDialog> {
             )
           ),
           const SizedBox(height: 14),
-          Container(
+          CustomButton(
             width: double.infinity,
-            padding: const EdgeInsets.only(top: 12, bottom: 12, left: 12),
-            decoration: BoxDecoration(
-              color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0xFF1A1D24)),
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10)
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Text(
-                    "Trust ${uri.host} links from now on",
-                    style: TextStyle(
-                      color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFC5C8CF), midnight: const Color(0xFFFFFFFF)),
-                      fontSize: 16,
-                      fontFamily: 'GGSansSemibold'
-                    ), 
+            backgroundColor: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF262730), midnight: const Color(0XFF141318)),
+            onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF35363F), midnight: const Color(0XFF242328)),
+            applyClickAnimation: false,
+            onPressed: () => setState(() => _domainTrusted = !_domainTrusted),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Trust ${uri.host} links from now on",
+                      style: TextStyle(
+                        color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFC5C8CF), midnight: const Color(0xFFFFFFFF)),
+                        fontSize: 16,
+                        fontFamily: 'GGSansSemibold'
+                      ), 
+                    ),
                   ),
-                ),
-                Checkbox(
-                  value: checked,
-                  splashRadius: 0,
-                  side: BorderSide(
-                    color: appTheme<Color>(theme, light: const Color(0xFF31343D), dark: const Color(0xFFC5C8CF), midnight: const Color(0xFFC5C8CF)),
-                    width: 2
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(3)
-                  ),
-                  activeColor: const Color(0xFF5964F4),
-                  onChanged: (state) => setState(() => checked = !checked)
-                )
-              ],
+                  CheckBoxIndicator(selected: _domainTrusted)
+                ],
+              ),
             )
           ),
+          // Container(
+          //   width: double.infinity,
+          //   padding: const EdgeInsets.only(top: 12, bottom: 12, left: 12),
+          //   decoration: BoxDecoration(
+          //     color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0xFF1A1D24)),
+          //     borderRadius: BorderRadius.circular(10)
+          //   ),
+          //   child: Row(
+          //     crossAxisAlignment: CrossAxisAlignment.center,
+          //     children: [
+          //       Expanded(
+          //         child: Text(
+          //           "Trust ${uri.host} links from now on",
+          //           style: TextStyle(
+          //             color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFC5C8CF), midnight: const Color(0xFFFFFFFF)),
+          //             fontSize: 16,
+          //             fontFamily: 'GGSansSemibold'
+          //           ), 
+          //         ),
+          //       ),
+          //       Checkbox(
+          //         value: checked,
+          //         splashRadius: 0,
+          //         side: BorderSide(
+          //           color: appTheme<Color>(theme, light: const Color(0xFF31343D), dark: const Color(0xFFC5C8CF), midnight: const Color(0xFFC5C8CF)),
+          //           width: 2
+          //         ),
+          //         shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(3)
+          //         ),
+          //         activeColor: const Color(0xFF5964F4),
+          //         onChanged: (state) => setState(() => checked = !checked)
+          //       )
+          //     ],
+          //   )
+          // ),
           const Spacer(),
           CustomButton(
             width: double.infinity,
@@ -140,7 +170,7 @@ class _LinkTrustDialogState extends ConsumerState<LinkTrustDialog> {
               ),
             ),
             onPressed: () async {
-              if (checked) {
+              if (_domainTrusted) {
                 await addDomain(uri.host);
               }
               await launchUrl(uri);

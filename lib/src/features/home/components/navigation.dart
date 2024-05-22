@@ -15,6 +15,8 @@ import '../../../common/utils/extensions.dart';
 import '../../../common/utils/asset_constants.dart';
 import '../../../common/components/profile_pic.dart';
 
+import '../../../features/guild/controllers/guilds_controller.dart';
+
 class BottomNavigator extends ConsumerWidget {
   final PageController controller;
   const BottomNavigator({required this.controller, super.key});
@@ -22,11 +24,12 @@ class BottomNavigator extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final BottomNavProvider navProvider = ref.watch(bottomNavProvider);
+    final GuildsController guildsController = ref.watch(guildsControllerProvider);
     final String theme = ref.watch(themeProvider);
     final Color selectedColor = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color unSelectedColor = appTheme<Color>(theme, light: const Color(0XFF9FA2A9), dark: const Color(0xFF777A81), midnight: const Color(0xFF777A81));
     return AnimatedSlide(
-      offset: Offset(0, navProvider.leftMenuOpened ? 1 : 0),
+      offset: Offset(0, navProvider.leftMenuOpened || guildsController.currentGuild == null ? 0 : 1),
       duration: const Duration(milliseconds: 160),
       child: Container(
         height: 60 + context.padding.bottom,

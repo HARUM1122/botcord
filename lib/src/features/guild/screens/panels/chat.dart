@@ -1,12 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/theme_provider.dart';
 import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
 
 import '../guild.dart';
 

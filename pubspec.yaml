@@ -36,7 +36,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   shared_preferences: ^2.2.2
-  nyxx: ^6.2.1
+  nyxx:
+    git:
+      url: https://github.com/abitofevrything/nyxx.git
+      ref: patch/hang-status
   internet_connection_checker: ^1.0.0+1
   image_picker: ^1.0.7
   overlapping_panels: ^0.0.3

@@ -7,12 +7,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/theme_provider.dart';
 
-import '../util/constants.dart';
+import '../utils/constants.dart';
 
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/globals.dart';
+import '../../../common/utils/extensions.dart';
 import '../../../common/utils/asset_constants.dart';
 import '../../../common/components/custom_button.dart';
+import '../../../common/components/checkbox_indicator.dart';
 
 class InviteBotScreen extends ConsumerStatefulWidget {
   const InviteBotScreen({super.key});
@@ -60,7 +62,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(left: 12, right: 12, bottom: MediaQuery.paddingOf(context).bottom + 10),
+        padding: EdgeInsets.only(left: 12, right: 12, bottom: context.padding.bottom + 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -119,10 +121,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                               ),
                             ),
                             const Spacer(),
-                            CheckBoxIndicator(
-                              selected: selected,
-                              unSelectedBorderColor: appTheme<Color>(theme, light: const Color(0xFF31343D), dark: const Color(0xFFC5C8CF), midnight: const Color(0xFFC5C8CF)),
-                            ),
+                            CheckBoxIndicator(selected: selected),
                             const SizedBox(width: 10)
                           ],
                         )
@@ -199,10 +198,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                               ),
                             ),
                             const Spacer(),
-                            CheckBoxIndicator(
-                              selected: selected,
-                              unSelectedBorderColor: appTheme<Color>(theme, light: const Color(0xFF31343D), dark: const Color(0xFFC5C8CF), midnight: const Color(0xFFC5C8CF)),
-                            ),
+                            CheckBoxIndicator(selected: selected),
                             const SizedBox(width: 10)
                           ],
                         )
@@ -279,10 +275,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                               ),
                             ),
                             const Spacer(),
-                            CheckBoxIndicator(
-                              selected: selected,
-                              unSelectedBorderColor: appTheme<Color>(theme, light: const Color(0xFF31343D), dark: const Color(0xFFC5C8CF), midnight: const Color(0xFFC5C8CF)),
-                            ),
+                            CheckBoxIndicator(selected: selected),
                             const SizedBox(width: 10)
                           ],
                         )
@@ -376,41 +369,6 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class CheckBoxIndicator extends StatelessWidget {
-  final bool selected;
-  final Color unSelectedBorderColor;
-  const CheckBoxIndicator({
-    required this.selected,
-    required this.unSelectedBorderColor,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 20,
-      height: 20,
-      decoration: BoxDecoration(
-        color: selected ? const Color(0xFF5964F4) : Colors.transparent,
-        borderRadius: BorderRadius.circular(4),
-        border: !selected 
-        ? Border.all(
-          color: unSelectedBorderColor,
-          width: 2
-        )
-        : null
-      ),
-      child: selected ? const Center(
-        child: Icon(
-          Icons.check,
-          color: Color(0xFFFFFFFF),
-          size: 20,
-        ),
-      ) : null
     );
   }
 }

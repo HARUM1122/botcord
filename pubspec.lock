@@ -480,10 +480,11 @@ packages:
   nyxx:
     dependency: "direct main"
     description:
-      name: nyxx
-      sha256: "81c34dfbcc1a7c336a19b24cb2f73455b56bf42aaabb38e6469ec4c5d3fb327f"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "patch/hang-status"
+      resolved-ref: "4a54601fc89395cf5b3970cc6ed5156e14de4ea0"
+      url: "https://github.com/abitofevrything/nyxx.git"
+    source: git
     version: "6.2.1"
   oauth2:
     dependency: transitive

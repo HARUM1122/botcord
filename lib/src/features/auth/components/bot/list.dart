@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'bot_tile.dart';
+import 'tile.dart';
 
 class BotsList extends StatelessWidget {
   final Map<String, dynamic> bots;

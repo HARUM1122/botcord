@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/theme_provider.dart';
 
-import '../../../common/utils/utils.dart';
+import '../../../../common/utils/utils.dart';
 
-import 'guild_button.dart';
+import 'button.dart';
 
 class GuildsList extends ConsumerWidget {
   final List<UserGuild> guilds;

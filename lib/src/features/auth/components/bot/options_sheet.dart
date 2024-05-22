@@ -5,14 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/theme_provider.dart';
 
-import 'login_dialog.dart';
-import '../../../common/utils/utils.dart';
-import '../../../common/utils/extensions.dart';
-import '../../../common/components/drag_handle.dart';
-import '../../../common/components/custom_button.dart';
-import '../../../common/components/profile_pic.dart';
+import '../login_dialog.dart';
+import '../../../../common/utils/utils.dart';
+import '../../../../common/utils/extensions.dart';
+import '../../../../common/components/drag_handle.dart';
+import '../../../../common/components/custom_button.dart';
+import '../../../../common/components/profile_pic.dart';
 
-import '../../../features/auth/controller/auth_controller.dart';
+import '../../controller/auth_controller.dart';
 
 class BotOptionsSheet extends ConsumerWidget {
   final ScrollController controller;
@@ -97,12 +97,10 @@ class BotOptionsSheet extends ConsumerWidget {
             BotOption(
               title: 'Login', 
               titleColor: color, 
-              onPressed: () {
-                showDialogBox(
-                  context: context,
-                  child: LoginDialog(bot: bot)
-                );
-              }, 
+              onPressed: () => showDialogBox(
+                context: context,
+                child: LoginDialog(bot: bot)
+              ),
               currPos: 'top',
               theme: theme
             ),

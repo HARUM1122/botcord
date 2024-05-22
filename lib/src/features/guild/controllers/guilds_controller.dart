@@ -1,3 +1,4 @@
+import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -21,13 +22,17 @@ class GuildsController extends ChangeNotifier {
     client?.onGuildCreate.listen((event) async {
       UserGuild guild = await event.guild.get();
       currentGuild ??= guild;
-      guildsCache.add(guild);
-      notifyListeners();
+      if (!guildsCache.contains(guild)) {
+        guildsCache.add(guild);
+        guildsCache = sortGuilds(guildsCache);
+        notifyListeners();
+      }
     });
     client?.onGuildUpdate.listen((event) {
       for (int i = 0; i < guildsCache.length; i++) {
         if (guildsCache[i].id == event.guild.id) {
           guildsCache[i] = event.guild;
+          guildsCache = sortGuilds(guildsCache);
           notifyListeners();
           break;
         }
@@ -38,12 +43,13 @@ class GuildsController extends ChangeNotifier {
         currentGuild = guildsCache.isNotEmpty ? guildsCache.first : null;
       }
       guildsCache.removeWhere((guild) => guild.id == event.guild.id);
+      guildsCache = sortGuilds(guildsCache);
       notifyListeners();
     });
   }
 
   void clearCache() {
-    guildsCache.clear();
     currentGuild = null;
+    guildsCache.clear();
   }
 }

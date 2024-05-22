@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nyxx/nyxx.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/theme_provider.dart';
+
 import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/features/guild/components/guild_list.dart';
+import 'package:discord/src/common/utils/extensions.dart';
+import 'package:discord/src/features/guild/components/guild/list.dart';
 
 
 class MenuScreen extends ConsumerWidget {
@@ -16,7 +18,6 @@ class MenuScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeProvider);
-
     return Material(
       color: appTheme<Color>(theme, light: const Color(0XFFECEEF0), dark: const Color(0XFF141318), midnight: const Color(0xFF000000)),
       child: Row(
@@ -31,7 +32,7 @@ class MenuScreen extends ConsumerWidget {
           ),
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(top: MediaQuery.paddingOf(context).top,right: 40),
+              margin: EdgeInsets.only(top: context.padding.top, right: 40),
               padding: const EdgeInsets.only(top: 10),
               decoration: BoxDecoration(
                 color: appTheme<Color>(theme, light: const Color(0XFFECEEF0), dark: const Color(0XFF1C1D23), midnight: const Color(0xFF000000)),

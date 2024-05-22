@@ -1,29 +1,20 @@
-// import 'package:http/http.dart';
-// import 'package:nyxx/nyxx.dart';
+import 'package:http/http.dart';
+import 'package:nyxx/nyxx.dart';
 
-// import 'dart:async';
+import 'dart:async';
 
-// Future<void> login(String token) async {
-//     runZonedGuarded(
-//       () async {
-//         NyxxGateway client = await Nyxx.connectGateway(token, GatewayIntents.all);
-//         User user = await client.user.get();
-//         for (UserGuild guild in await client.listGuilds()) {
-//           print(guild.name);
-//         }
-//       }, 
-//       (error, stack) {
-//         if (error is ClientException) {
-//           print("CLIENT EXCEPTION");
-//         }
-//         print(error);
-//       }
-//     );
-//   }
+Future<void> login(String token) async {
+        NyxxGateway client = await Nyxx.connectGateway(token, GatewayIntents.all);
+        User user = await client.user.get();
+        client.onGuildCreate.listen((event)  {
+          print(event.guild);
+          }
+        );
+  }
 
-// void main() {
-//   login('ODk4MzI4MjM3NTE4NzcwMTc4.GGwC7C.-DDGjDaDJvdP2u2aUkOhxm9ieZ8cQhx7-FhwkA');
-// }
+void main() {
+  login('MTAxMzcxMTEzMjIzMTQ4NzUwOA.GtdTvm.Imxg9xJOYOcZEPs3b2QLTWShVRd2iLffnCHv_Y');
+}
 
 // void main() {
 //   // List<int> values = [1, 2, 3, 4, 5];

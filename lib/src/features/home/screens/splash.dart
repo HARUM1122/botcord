@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart';
@@ -13,7 +12,9 @@ import '../../../common/utils/utils.dart';
 import '../../../common/utils/globals.dart';
 
 import '../../../features/auth/controller/auth_controller.dart';
+import '../../../features/guild/controllers/guilds_controller.dart';
 import '../../../features/profile/controller/profile_controller.dart';
+
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -42,6 +43,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       () async {
           await _authController.login(_bot);
           _profileController.botActivity = jsonDecode(prefs.getString('bot-activity')!);
+          print(_profileController.botActivity);
           _profileController.updatePresence(save: false, datetime: DateTime.now());
 
           ref.read(guildsControllerProvider).listenGuildEvents();
@@ -50,6 +52,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           }
         }, 
         (error, stack) async {
+          print("ERROR FROM SPLASH SCREEN: $error");
           Navigator.pushReplacementNamed(globalNavigatorKey.currentContext!, '/bots-route');
           await Future.delayed(const Duration(seconds: 1));
           if (error is ClientException) {
@@ -91,14 +94,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    final String theme = ref.read(themeProvider);
     return Material(
-      color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+      color: appTheme<Color>(_theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       child: Center(
         child: Icon(
           Icons.discord_outlined,
-          size: 180,
-          color: appTheme<Color>(theme, light: const Color(0xFF1A1D24), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF))
+          size: 140,
+          color: appTheme<Color>(_theme, light: const Color(0xFF1A1D24), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF))
         )
       )
     );

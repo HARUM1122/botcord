@@ -73,16 +73,7 @@ class LinkOptionsSheet extends ConsumerWidget {
               onPressed: () async {
                 Navigator.pop(context);
                 Uri uri = Uri.parse(link);
-                if (!trustedDomains.contains(uri.host)) {
-                  await launchUrl(uri);
-                  return;
-                }
-                showDialogBox(
-                  context: context,
-                  child: LinkTrustDialog(
-                    link: link,
-                  ),
-                );
+                await launchUrl(uri);
               },
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(16)

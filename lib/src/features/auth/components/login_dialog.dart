@@ -37,6 +37,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
       () async {
         await _authController.login(widget.bot);
         _profileController.botActivity = jsonDecode(prefs.getString('bot-activity')!);
+        print(_profileController.botActivity);
         _profileController.updatePresence(save: false, datetime: DateTime.now());
         ref.read(guildsControllerProvider).listenGuildEvents();
         if (mounted) {
@@ -48,6 +49,8 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
         }
       }, 
       (error, stack) async {
+        print(stack);
+        print("ERROR FROM LOGIN DIALOG: $error");
         bool isMounted = true;
         if (mounted) {
           Navigator.pop(context);
