@@ -12,4 +12,4 @@ Application? application;
 
 final globalNavigatorKey = GlobalKey<NavigatorState>();
 late final SharedPreferences prefs;
-late final List<String> trustedDomains;
+final List<String> trustedDomains = [];

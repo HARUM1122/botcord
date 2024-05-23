@@ -4,14 +4,14 @@ import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import 'package:discord/theme_provider.dart';
+import 'package:discord/src/common/providers/theme_provider.dart';
 
 import '../../controllers/guilds_controller.dart';
 
 import '../../../../common/utils/utils.dart';
 
 class GuildButton extends ConsumerWidget {
-  final UserGuild guild;
+  final Guild guild;
   final bool selected;
   const GuildButton({required this.guild, required this.selected, super.key});
 

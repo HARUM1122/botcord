@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/theme_provider.dart';
+import 'package:discord/src/common/providers/theme_provider.dart';
 
 import '../utils/utils.dart';
 

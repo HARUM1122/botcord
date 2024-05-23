@@ -9,10 +9,10 @@ import '../../../common/utils/globals.dart';
 final guildsControllerProvider = ChangeNotifierProvider((ref) => GuildsController());
 
 class GuildsController extends ChangeNotifier {
-  List<UserGuild> guildsCache = [];
-  UserGuild? currentGuild;
+  List<Guild> guildsCache = [];
+  Guild? currentGuild;
 
-  void selectGuild(UserGuild guild) {
+  void selectGuild(Guild guild) {
     if (guild.id == currentGuild?.id) return;
     currentGuild = guild;
     notifyListeners();
@@ -20,7 +20,7 @@ class GuildsController extends ChangeNotifier {
 
   void listenGuildEvents() {
     client?.onGuildCreate.listen((event) async {
-      UserGuild guild = await event.guild.get();
+      Guild guild = await event.guild.get();
       currentGuild ??= guild;
       if (!guildsCache.contains(guild)) {
         guildsCache.add(guild);
@@ -49,7 +49,6 @@ class GuildsController extends ChangeNotifier {
   }
 
   void clearCache() {
-    currentGuild = null;
     guildsCache.clear();
   }
 }

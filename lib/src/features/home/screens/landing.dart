@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../util/constants.dart';
 
-import 'package:discord/theme_provider.dart';
+import 'package:discord/src/common/providers/theme_provider.dart';
 
 import '../../../common/utils/globals.dart';
 import '../../../common/utils/utils.dart';
@@ -37,26 +37,31 @@ class LandingScreen extends ConsumerWidget {
           children: [
             const SizedBox(height: 20),
             Expanded(
-              child: GlowingOverscrollIndicator(
+              child: StretchingOverscrollIndicator(
                 axisDirection: AxisDirection.down,
-                color: Colors.white,
-                child: Markdown(
-                  data: warningMessage,
-                  styleSheet: MarkdownStyleSheet(
-                    h2: TextStyle(
-                      color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-                      fontFamily: 'GGSansBold',
-                      fontSize: 18
+                child: NotificationListener<OverscrollIndicatorNotification>(
+                  onNotification: (notification) {
+                    notification.disallowIndicator();
+                    return true;
+                  },
+                  child: Markdown(
+                    data: warningMessage,
+                    styleSheet: MarkdownStyleSheet(
+                      h2: TextStyle(
+                        color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                        fontFamily: 'GGSansBold',
+                        fontSize: 18
+                      ),
+                      strong: TextStyle(
+                        color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                        fontFamily: 'GGSansBold',
+                        fontSize: 16
+                      ),
+                      p: TextStyle(
+                        color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                        fontSize: 16
+                      )
                     ),
-                    strong: TextStyle(
-                      color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-                      fontFamily: 'GGSansBold',
-                      fontSize: 16
-                    ),
-                    p: TextStyle(
-                      color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-                      fontSize: 16
-                    )
                   ),
                 ),
               )
@@ -87,9 +92,7 @@ class LandingScreen extends ConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 10,
-            )
+            const SizedBox(height: 10)
           ],
         ),
       ),

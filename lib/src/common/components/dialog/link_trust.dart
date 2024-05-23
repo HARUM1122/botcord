@@ -5,13 +5,13 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-import 'package:discord/theme_provider.dart';
+import 'package:discord/src/common/providers/theme_provider.dart';
 
 import '../../utils/globals.dart';
 import '../../utils/utils.dart';
 import '../../utils/extensions.dart';
 
-import '../../components/custom_button.dart';
+import '../custom_button.dart';
 
 class LinkTrustDialog extends ConsumerStatefulWidget {
   final String link;

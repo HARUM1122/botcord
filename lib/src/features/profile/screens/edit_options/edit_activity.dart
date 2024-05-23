@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../components/radio_button_indicator/radio_button_indicator2.dart';
 
-import 'package:discord/theme_provider.dart';
+import 'package:discord/src/common/providers/theme_provider.dart';
 
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/components/custom_button.dart';

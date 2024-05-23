@@ -111,3 +111,8 @@ class ProfileController extends ChangeNotifier {
     });
   }
 }
+
+/// APP DATA {
+///   TRUSTED DOMAINS: 
+///   
+/// }

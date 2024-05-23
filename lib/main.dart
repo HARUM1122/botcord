@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'routes.dart';
 
-import 'theme_provider.dart';
+import 'src/common/providers/theme_provider.dart';
 
 import 'src/common/utils/globals.dart';
 
@@ -53,7 +53,7 @@ class App extends ConsumerWidget {
     String theme = ref.watch(themeProvider);
     if (!initialized) {
       initialized = true;
-      trustedDomains = prefs.getStringList('trusted-domains')!;
+      trustedDomains.addAll(prefs.getStringList('trusted-domains')!);
       ref.read(authControllerProvider).bots = jsonDecode(prefs.getString('bots')!);
       ref.read(themeProvider.notifier).setTheme(prefs.getString('app-theme')!, false, true);
       SystemChrome.setEnabledSystemUIMode(

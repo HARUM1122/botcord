@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/theme_provider.dart';
+import 'package:discord/src/common/providers/theme_provider.dart';
 
 import 'panels/panels.dart';
 
 import '../../../common/utils/utils.dart';
 import '../../../common/components/custom_button.dart';
 
-import '../../../features/home/provider/bottom_nav.dart';
+import '../../../common/providers/bottom_nav.dart';
 import '../../../features/guild/controllers/guilds_controller.dart';
 
 double translate = 0;

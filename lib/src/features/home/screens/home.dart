@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/theme_provider.dart';
+import 'package:discord/src/common/providers/theme_provider.dart';
 
 import '../components/navigation.dart';
 
@@ -53,36 +53,3 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 }
-
-// class GuildScreen extends ConsumerWidget {
-//   const GuildScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     return Center(
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           ElevatedButton(
-//             onPressed: () {
-//               ref.read(themeProvider.notifier).setTheme('light', true, false);
-//             },
-//             child: Text("LIGHT"),
-//           ),
-//           ElevatedButton(
-//             onPressed: () {
-//               ref.read(themeProvider.notifier).setTheme('dark', true, false);
-//             },
-//             child: Text("DARK"),
-//           ),
-//           ElevatedButton(
-//             onPressed: () {
-//               ref.read(themeProvider.notifier).setTheme('midnight', true, false);
-//             },
-//             child: Text("MIDNIGHT"),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }

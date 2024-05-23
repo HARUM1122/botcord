@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:discord/theme_provider.dart';
+import 'package:discord/src/common/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' show ClientException;

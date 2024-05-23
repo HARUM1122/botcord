@@ -11,7 +11,7 @@ int customSort(String key) {
     return 4;
   }
 }
-List<UserGuild> sortGuilds(List<UserGuild> guilds) {
+List<Guild> sortGuilds(List<Guild> guilds) {
   if (guilds.isEmpty) return guilds;
   return guilds..sort((a, b) {
     int aSort = customSort(a.name[0].toUpperCase());

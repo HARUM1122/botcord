@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../utils/utils.dart';
 
-import 'package:discord/theme_provider.dart';
+import 'package:discord/src/common/providers/theme_provider.dart';
 
 import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/utils.dart';
@@ -18,7 +18,7 @@ import 'package:discord/src/common/components/profile_pic.dart';
 import 'package:discord/src/common/components/online_status/status.dart';
 
 import 'package:discord/src/features/auth/utils/utils.dart';
-import 'package:discord/src/features/home/provider/bottom_nav.dart';
+import 'package:discord/src/common/providers/bottom_nav.dart';
 import 'package:discord/src/features/auth/controller/auth_controller.dart';
 import 'package:discord/src/features/profile/controller/profile_controller.dart';
 

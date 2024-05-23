@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/theme_provider.dart';
+import 'package:discord/src/common/providers/theme_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'navigation_button.dart';
 
-import '../provider/bottom_nav.dart';
+import '../../../common/providers/bottom_nav.dart';
 
 import '../../../common/utils/globals.dart';
 import '../../../common/utils/utils.dart';
