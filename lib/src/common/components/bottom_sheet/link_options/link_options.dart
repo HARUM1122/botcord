@@ -1,3 +1,4 @@
+import 'package:discord/src/common/components/bottom_sheet/link_options/component/link_option.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,14 +9,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/src/common/providers/theme_provider.dart';
 
-import '../drag_handle.dart';
+import '../../drag_handle.dart';
 
-import '../../utils/utils.dart';
-import '../../utils/extensions.dart';
-import '../../utils/asset_constants.dart';
-
-import '../custom_button.dart';
-
+import '../../../utils/utils.dart';
+import '../../../utils/extensions.dart';
+import '../../../utils/asset_constants.dart';
 
 class LinkOptionsSheet extends ConsumerWidget {
   final String link;
@@ -74,8 +72,7 @@ class LinkOptionsSheet extends ConsumerWidget {
               },
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(16)
-              ),
-              theme: theme,
+              )
             ),
             Divider(
               thickness: 1,
@@ -98,8 +95,7 @@ class LinkOptionsSheet extends ConsumerWidget {
                   msg: "Link copied"
                 );
               },
-              borderRadius: BorderRadius.zero,
-              theme: theme,
+              borderRadius: BorderRadius.zero
             ),
             Divider(
               thickness: 1,
@@ -113,7 +109,6 @@ class LinkOptionsSheet extends ConsumerWidget {
               borderRadius: const BorderRadius.vertical(
                 bottom: Radius.circular(16)
               ),
-              theme: theme,
             ),
           ]
         )
@@ -129,40 +124,40 @@ class LinkOptionsSheet extends ConsumerWidget {
 }
 
 
-class LinkOption extends StatelessWidget {
-  final String title;
-  final Function() onPressed;
-  final BorderRadius borderRadius;
-  final String theme;
-  const LinkOption({
-    required this.title,
-    required this.onPressed,
-    required this.borderRadius,
-    required this.theme,
-    super.key
-  });
-  @override
-  Widget build(BuildContext context) {
-    return CustomButton(
-      backgroundColor: Colors.transparent,
-      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
-      shape: RoundedRectangleBorder(
-        borderRadius: borderRadius
-      ),
-      onPressed: onPressed,
-      applyClickAnimation: false, 
-      child: Container(
-        margin: const EdgeInsets.all(20),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          title,
-          style: TextStyle(
-            color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-            fontSize: 16,
-            fontFamily: 'GGSansSemibold'
-          ),
-        ),
-      )
-    );
-  }
-}
+// class LinkOption extends StatelessWidget {
+//   final String title;
+//   final Function() onPressed;
+//   final BorderRadius borderRadius;
+//   final String theme;
+//   const LinkOption({
+//     required this.title,
+//     required this.onPressed,
+//     required this.borderRadius,
+//     required this.theme,
+//     super.key
+//   });
+//   @override
+//   Widget build(BuildContext context) {
+//     return CustomButton(
+//       backgroundColor: Colors.transparent,
+//       onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
+//       shape: RoundedRectangleBorder(
+//         borderRadius: borderRadius
+//       ),
+//       onPressed: onPressed,
+//       applyClickAnimation: false, 
+//       child: Container(
+//         margin: const EdgeInsets.all(20),
+//         alignment: Alignment.centerLeft,
+//         child: Text(
+//           title,
+//           style: TextStyle(
+//             color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+//             fontSize: 16,
+//             fontFamily: 'GGSansSemibold'
+//           ),
+//         ),
+//       )
+//     );
+//   }
+// }

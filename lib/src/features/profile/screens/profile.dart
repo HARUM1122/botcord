@@ -5,16 +5,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/src/common/providers/theme_provider.dart';
 
+
+import '../components/status_sheet.dart';
+import '../components/edit_option_button.dart';
+import '../controller/profile_controller.dart';
+
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/globals.dart';
 import '../../../common/utils/extensions.dart';
-import '../../../common/components/custom_button.dart';
 import '../../../common/components/profile_pic.dart';
 import '../../../common/components/online_status/status.dart';
-
-import '../../../features/profile/components/status_sheet.dart';
-import '../../../features/profile/controller/profile_controller.dart';
-
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -145,51 +145,15 @@ class ProfileScreen extends ConsumerWidget {
                           ],
                           Row(
                             children: [
-                              Expanded(
-                                child: CustomButton(
-                                  backgroundColor: appTheme<Color>(theme, light: const Color(0XFFDFE1E3), dark: const Color(0XFF373A42), midnight: const Color(0XFF2C2D36)),
-                                  onPressedColor: appTheme<Color>(theme, light: const Color(0XFFC4C6C8), dark: const Color(0XFF4D505A), midnight: const Color(0XFF373A42)), 
-                                  height: 40,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(context.getSize.width * 0.5)
-                                  ),
-                                  applyClickAnimation: true,
-                                  onPressed: () =>  Navigator.pushNamed(context, '/edit-status-route'),
-                                  child: Center(
-                                    child: Text(
-                                      "Edit Activity",
-                                      style: TextStyle(
-                                        color: color1,
-                                        fontSize: 14,
-                                        fontFamily: 'GGSansSemibold'
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                              EditOptionButton(
+                                title: 'Edit Activity',
+                                onPressed: () => Navigator.pushNamed(context, '/edit-status-route')
                               ),
                               const SizedBox(width: 10),
-                              Expanded(
-                                child: CustomButton(
-                                  height: 40,
-                                  backgroundColor: appTheme<Color>(theme, light: const Color(0XFFDFE1E3), dark: const Color(0XFF373A42), midnight: const Color(0XFF2C2D36)),
-                                  onPressedColor: appTheme<Color>(theme, light: const Color(0XFFC4C6C8), dark: const Color(0XFF4D505A), midnight: const Color(0XFF373A42)), 
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(context.getSize.width * 0.5)
-                                  ),
-                                  applyClickAnimation: true,
-                                  onPressed: () => Navigator.pushNamed(context, '/edit-profile-route'),
-                                  child: Center(
-                                    child: Text(
-                                      "Edit Profile",
-                                      style: TextStyle(
-                                        color: color1,
-                                        fontSize: 14,
-                                        fontFamily: 'GGSansSemibold'
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              EditOptionButton(
+                                title: 'Edit Profile',
+                                onPressed: () => Navigator.pushNamed(context, '/edit-profile-route')
+                              )
                             ],
                           )
                         ],

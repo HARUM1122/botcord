@@ -12,15 +12,9 @@ class GuildsController extends ChangeNotifier {
   List<Guild> guildsCache = [];
   Guild? currentGuild;
 
-  void selectGuild(Guild guild) {
-    if (guild.id == currentGuild?.id) return;
-    currentGuild = guild;
-    notifyListeners();
-  }
-
-  void listenGuildEvents() {
+  void init() {
     client?.onGuildCreate.listen((event) async {
-      Guild guild = await event.guild.get();
+      Guild guild = event is GuildCreateEvent ? event.guild : await event.guild.get();
       currentGuild ??= guild;
       if (!guildsCache.contains(guild)) {
         guildsCache.add(guild);
@@ -47,6 +41,13 @@ class GuildsController extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+  void selectGuild(Guild guild) {
+    if (guild.id == currentGuild?.id) return;
+    currentGuild = guild;
+    notifyListeners();
+  }
+
 
   void clearCache() {
     guildsCache.clear();

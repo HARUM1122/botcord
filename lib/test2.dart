@@ -6,14 +6,18 @@ import 'dart:async';
 Future<void> login(String token) async {
         NyxxGateway client = await Nyxx.connectGateway(token, GatewayIntents.all);
         User user = await client.user.get();
-        client.onGuildCreate.listen((event)  {
-          print(event.guild);
-          }
-        );
+        List<Guild> guilds = [];
+        client.onGuildCreate.listen((event) async {
+          Guild guild = await event.guild.fetch(withCounts: true);
+
+          print(guild.currentUserPermissions);
+        });
+        // print(guilds[0].approximateMemberCount);
   }
 
 void main() {
-  login('MTAxMzcxMTEzMjIzMTQ4NzUwOA.GtdTvm.Imxg9xJOYOcZEPs3b2QLTWShVRd2iLffnCHv_Y');
+  login('MTAxNDkwOTkyMTYwMDQ3NTIxOA.G3R5vy.__YiSq_aIqmujOxXjiidtaqNNVJDYU-rUeTvzk');
+  int a = 12;
 }
 
 // void main() {

@@ -1,14 +1,19 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:discord/src/common/components/drag_handle.dart';
-import 'package:discord/src/common/components/online_status/invisible.dart';
-import 'package:discord/src/common/components/online_status/online.dart';
-import 'package:discord/src/common/providers/theme_provider.dart';
-import 'package:discord/src/common/utils/extensions.dart';
-import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/src/common/utils/globals.dart';
+import 'package:discord/src/features/guild/components/bottom_sheet/guild_options/components/options_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:nyxx/nyxx.dart';
-import '../badges/badges.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
+import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/src/common/utils/extensions.dart';
+import 'package:discord/src/common/components/drag_handle.dart';
+import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/components/online_status/online.dart';
+import 'package:discord/src/common/components/online_status/invisible.dart';
+
+import '../../badges/badges.dart';
 
 class GuildOptionsSheet extends ConsumerWidget {
   final Guild guild;
@@ -19,6 +24,8 @@ class GuildOptionsSheet extends ConsumerWidget {
     required this.controller,
     super.key
   });
+
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -120,18 +127,8 @@ class GuildOptionsSheet extends ConsumerWidget {
           ],
           const OnlineStatus(radius: 8),
           const SizedBox(width: 6),
-          Text(
-            '12 Online',
-            style: TextStyle(
-              color: color2,
-              fontSize: 12
-            ),
-          ),
-          const SizedBox(width: 16),
-          const InvisibleStatus(radius: 8),
-          const SizedBox(width: 6),
           () {
-            int length = guild.members.cache.length;
+            int length = guild.approximatePresenceCount!;
             return Text(
               '$length ${length == 1 ? 'member' : 'members'}',
               style: TextStyle(
@@ -139,7 +136,43 @@ class GuildOptionsSheet extends ConsumerWidget {
                 fontSize: 12
               ),
             );
-          }()
+          }(),
+          const SizedBox(width: 16),
+          const InvisibleStatus(radius: 8),
+          const SizedBox(width: 6),
+          () {
+            int length = guild.approximateMemberCount!;
+            return Text(
+              '$length ${length == 1 ? 'member' : 'members'}',
+              style: TextStyle(
+                color: color2,
+                fontSize: 12
+              ),
+            );
+          }(),
+        ],
+      ),
+      const SizedBox(height: 20),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          OptionButton(
+            title: 'Invite',
+            onPressed: () async {
+              // print((await guild.members[user!.id].get()).permissions);
+
+              // print((await member.roles[0].get()).permissions);
+              Permissions perms = (await guild.members[user!.id].get()).permissions!;
+            }
+          ),
+          OptionButton(
+            title: 'Notifications',
+            onPressed: () {}
+          ),
+          OptionButton(
+            title: 'Settings',
+            onPressed: () {}
+          )
         ],
       )
     ];

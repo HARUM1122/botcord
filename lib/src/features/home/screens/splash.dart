@@ -46,7 +46,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           print(_profileController.botActivity);
           _profileController.updatePresence(save: false, datetime: DateTime.now());
 
-          ref.read(guildsControllerProvider).listenGuildEvents();
+          ref.read(guildsControllerProvider).init();
           if (mounted) {
             Navigator.pushReplacementNamed(context, '/home-route');
           }
