@@ -40,7 +40,6 @@ dependencies:
     git:
       url: https://github.com/abitofevrything/nyxx.git
       ref: patch/hang-status
-  nyxx_extensions: 
   internet_connection_checker: ^1.0.0+1
   image_picker: ^1.0.7
   overlapping_panels: ^0.0.3

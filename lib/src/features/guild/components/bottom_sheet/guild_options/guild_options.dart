@@ -1,5 +1,6 @@
 import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/features/guild/components/bottom_sheet/guild_options/components/options_button.dart';
+import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -24,8 +25,6 @@ class GuildOptionsSheet extends ConsumerWidget {
     required this.controller,
     super.key
   });
-
-
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -157,21 +156,13 @@ class GuildOptionsSheet extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           OptionButton(
-            title: 'Invite',
-            onPressed: () async {
-              // print((await guild.members[user!.id].get()).permissions);
-
-              // print((await member.roles[0].get()).permissions);
-              Permissions perms = (await guild.members[user!.id].get()).permissions!;
+            title: 'Notifications',
+            onPressed: () {
             }
           ),
           OptionButton(
-            title: 'Notifications',
-            onPressed: () {}
-          ),
-          OptionButton(
             title: 'Settings',
-            onPressed: () {}
+            onPressed: () => Navigator.popAndPushNamed(context, '/guild-settings-route')
           )
         ],
       )

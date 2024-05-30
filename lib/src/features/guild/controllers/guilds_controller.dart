@@ -11,7 +11,7 @@ final guildsControllerProvider = ChangeNotifierProvider((ref) => GuildsControlle
 class GuildsController extends ChangeNotifier {
   List<Guild> guildsCache = [];
   Guild? currentGuild;
-
+  
   void init() {
     client?.onGuildCreate.listen((event) async {
       Guild guild = event is GuildCreateEvent ? event.guild : await event.guild.get();
@@ -26,6 +26,7 @@ class GuildsController extends ChangeNotifier {
       for (int i = 0; i < guildsCache.length; i++) {
         if (guildsCache[i].id == event.guild.id) {
           guildsCache[i] = event.guild;
+          currentGuild = event.guild.id == currentGuild?.id ? event.guild : currentGuild;
           guildsCache = sortGuilds(guildsCache);
           notifyListeners();
           break;
@@ -33,10 +34,11 @@ class GuildsController extends ChangeNotifier {
       }
     });
     client?.onGuildDelete.listen((event) {
+      guildsCache.removeWhere((guild) => guild.id == event.guild.id);
       if (currentGuild?.id == event.guild.id) {
         currentGuild = guildsCache.isNotEmpty ? guildsCache.first : null;
+        Navigator.pushReplacementNamed(globalNavigatorKey.currentContext!, '/home-route');
       }
-      guildsCache.removeWhere((guild) => guild.id == event.guild.id);
       guildsCache = sortGuilds(guildsCache);
       notifyListeners();
     });

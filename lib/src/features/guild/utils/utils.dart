@@ -23,3 +23,16 @@ List<Guild> sortGuilds(List<Guild> guilds) {
     }
   });
 }
+
+Future<Permissions> computePermissions(Guild guild, Member member) async {
+  if (guild.ownerId == member.id) {
+    return Permissions.allPermissions;
+  }
+  Flags<Permissions> permissions = (await guild.roles[guild.id].get()).permissions;
+  for (final PartialRole role in member.roles) {
+    permissions |= (await role.get()).permissions;
+  }
+  permissions = Permissions(permissions.value);
+  permissions as Permissions;
+  return permissions.isAdministrator ? Permissions.allPermissions : permissions;
+}

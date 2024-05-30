@@ -1,4 +1,7 @@
+import 'package:discord/src/features/guild/screens/settings/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:nyxx/nyxx.dart';
+import 'package:page_animation_transition/animations/bottom_to_top_transition.dart';
 
 
 import 'package:page_animation_transition/page_animation_transition.dart';
@@ -57,6 +60,11 @@ Route<dynamic> generateRoutes(RouteSettings settings) {
     case '/invite-bot-route':
       return MaterialPageRoute(
         builder: (context) => const InviteBotScreen(),
+      );
+    case '/guild-settings-route':
+      return PageAnimationTransition(
+        page: const GuildSettingsPage(), 
+        pageAnimationType: BottomToTopTransition()
       );
     default:
       return MaterialPageRoute(

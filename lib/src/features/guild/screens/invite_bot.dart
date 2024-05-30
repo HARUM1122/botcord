@@ -307,7 +307,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
               onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
               onPressed: () async {
                 await Clipboard.setData(ClipboardData(text: getLink()));
-                if (!context.mounted) return;
+                if (!mounted) return;
                 showSnackBar(
                   context: context, 
                   theme: theme,
