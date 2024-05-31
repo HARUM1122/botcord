@@ -1,13 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/utils/asset_constants.dart';
+import 'package:discord/src/common/utils/extensions.dart';
 import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/features/guild/components/info_tile.dart';
+import 'package:discord/src/features/guild/components/settings_button.dart';
 import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
+import 'package:discord/src/features/guild/screens/settings/overview/overview.dart';
 import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nyxx/nyxx.dart';
+import 'package:page_animation_transition/animations/right_to_left_transition.dart';
+import 'package:page_animation_transition/page_animation_transition.dart';
 
 class GuildSettingsPage extends ConsumerWidget {
   const GuildSettingsPage({super.key});
@@ -25,12 +30,11 @@ class GuildSettingsPage extends ConsumerWidget {
     final Guild? guild = controller.currentGuild;
 
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-    final Color color2 = appTheme<Color>(theme, light: const Color(0XFF4C4F57), dark: const Color(0XFFC8C9D1), midnight: const Color(0xFFFFFFFF));
-    final Color color3 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
-    final Color color4 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
-    final Color color5 =  appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318));
-    final Color color6 = appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226));
-
+    final Color color2 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
+    final Color color3 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
+    final Color color4 = appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318));
+    final Color color5 = appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226));
+    
     return Scaffold(
       appBar: AppBar(
         leading:  IconButton(
@@ -65,7 +69,7 @@ class GuildSettingsPage extends ConsumerWidget {
           if (perms != null) {
             final String? guildIcon = guild?.icon?.url.toString();
             return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: EdgeInsets.only(left: 12, right: 12, bottom: context.padding.bottom + 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -77,6 +81,9 @@ class GuildSettingsPage extends ConsumerWidget {
                       height: 65,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
+                        color: guildIcon == null 
+                        ? const Color(0XFF536CF8)
+                        : Colors.transparent,
                         image: guildIcon != null 
                         ? DecorationImage(
                           image: CachedNetworkImageProvider(
@@ -87,6 +94,22 @@ class GuildSettingsPage extends ConsumerWidget {
                         )
                         : null
                       ),
+                      child: guildIcon == null 
+                      ? Center(
+                        child: Text(
+                          guild?.name[0] ?? '',
+                          style: TextStyle(
+                            color: appTheme<Color>(
+                              theme, 
+                              light: const Color(0xFF000000),
+                              dark: const Color(0xFFFFFFFF), 
+                              midnight: const Color(0xFFFFFFFF)
+                            ),
+                            fontSize: 16,
+                          ),
+                        ),
+                      )
+                      : null,
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -104,7 +127,7 @@ class GuildSettingsPage extends ConsumerWidget {
                   Text(
                     'Settings',
                     style: TextStyle(
-                      color: color3,
+                      color: color2,
                       fontSize: 14,
                       fontFamily: 'GGSansSemibold'
                     ),
@@ -114,44 +137,214 @@ class GuildSettingsPage extends ConsumerWidget {
                     width: double.infinity,
                     margin: const EdgeInsets.symmetric(horizontal: 2),
                     decoration: BoxDecoration(
-                      color: color5,
+                      color: color4,
                       borderRadius: BorderRadius.circular(16)
                     ),
                     child: Column(
                       children: [
-                        InfoTile(
-                          offstage: false,
+                        SettingsButton(
+                          enabled: perms.canManageGuild && guild != null,
                           backgroundColor: Colors.transparent,
-                          onPressedColor: color6,
+                          onPressedColor: color5,
                           borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(16),
-                            bottom: 
                           ),
-                          onPressed: () {},
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Icon(
-                                  Icons.info,
-                                  color: color2,
-                                ),
-                                const SizedBox(width: 18),
-                                Text(
-                                  'Overview',
-                                  style: TextStyle(
-                                    color: color1,
-                                    fontSize: 16,
-                                    fontFamily: 'GGSansSemibold'
-                                  ),
-                                ),
-                              ],
-                            ),
+                          title: 'Overview',
+                          assetIcon: AssetIcon.info,
+                          onPressed: () => Navigator.push(
+                            context,
+                            PageAnimationTransition(
+                              page: OverViewPage(guild: guild!), 
+                              pageAnimationType: RightToLeftTransition()
+                            )
+                          ), 
+                        ),
+                        Divider(
+                          thickness: 1,
+                          height: 0,
+                          indent: 50,
+                          color: color3,
+                        ),
+                        SettingsButton(
+                          enabled: perms.canManageGuild,
+                          backgroundColor: Colors.transparent,
+                          onPressedColor: color5,
+                          title: 'Moderation',
+                          assetIcon: AssetIcon.swords,
+                          onPressed: () {},    
+                        ),
+                        Divider(
+                          thickness: 1,
+                          height: 0,
+                          indent: 50,
+                          color: color3,
+                        ),
+                        SettingsButton(
+                          enabled: perms.canViewAuditLog,
+                          backgroundColor: Colors.transparent,
+                          onPressedColor: color5,
+                          title: 'Audit Log',
+                          assetIcon: AssetIcon.document,
+                          onPressed: () {},    
+                        ),
+                        Divider(
+                          thickness: 1,
+                          height: 0,
+                          indent: 50,
+                          color: color3,
+                        ),
+                        SettingsButton(
+                          enabled: perms.canManageChannels,
+                          backgroundColor: Colors.transparent,
+                          onPressedColor: color5,
+                          title: 'Channels',
+                          assetIcon: AssetIcon.list,
+                          onPressed: () {},    
+                        ),
+                        Divider(
+                          thickness: 1,
+                          height: 0,
+                          indent: 50,
+                          color: color3,
+                        ),
+                        SettingsButton(
+                          enabled: perms.canManageGuild,
+                          backgroundColor: Colors.transparent,
+                          onPressedColor: color5,
+                          title: 'Integrations',
+                          assetIcon: AssetIcon.gamingController,
+                          onPressed: () {},    
+                        ),
+                        Divider(
+                          thickness: 1,
+                          height: 0,
+                          indent: 50,
+                          color: color3,
+                        ),
+                        SettingsButton(
+                          enabled: perms.canManageEmojisAndStickers || perms.canCreateEmojiAndStickers,
+                          backgroundColor: Colors.transparent,
+                          onPressedColor: color5,
+                          title: 'Emojis',
+                          assetIcon: AssetIcon.emojiSmile,
+                          onPressed: () {},    
+                        ),
+                        Divider(
+                          thickness: 1,
+                          height: 0,
+                          indent: 50,
+                          color: color3,
+                        ),
+                        SettingsButton(
+                          enabled: perms.canManageWebhooks,
+                          backgroundColor: Colors.transparent,
+                          onPressedColor: color5,
+                          borderRadius: const BorderRadius.vertical(
+                            bottom: Radius.circular(16),
                           ),
+                          title: 'Webhooks',
+                          assetIcon: AssetIcon.webhook,
+                          onPressed: () {},    
+                        ),  
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Text(
+                    'User Management',
+                    style: TextStyle(
+                      color: color2,
+                      fontSize: 14,
+                      fontFamily: 'GGSansSemibold'
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.symmetric(horizontal: 2),
+                    decoration: BoxDecoration(
+                      color: color4,
+                      borderRadius: BorderRadius.circular(16)
+                    ),
+                    child: Column(
+                      children: [
+                        SettingsButton(
+                          enabled: perms.canBanMembers || perms.canKickMembers || perms.canManageNicknames,
+                          backgroundColor: Colors.transparent,
+                          onPressedColor: color5,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(16),
+                          ),
+                          title: 'Members',
+                          assetIcon: AssetIcon.users,
+                          onPressed: () {},    
+                        ),
+                        Divider(
+                          thickness: 1,
+                          height: 0,
+                          indent: 50,
+                          color: color3,
+                        ),
+                        SettingsButton(
+                          enabled: perms.canManageRoles,
+                          backgroundColor: Colors.transparent,
+                          onPressedColor: color5,
+                          title: 'Roles',
+                          assetIcon: AssetIcon.userRole,
+                          onPressed: () {},    
+                        ),
+                        Divider(
+                          thickness: 1,
+                          height: 0,
+                          indent: 50,
+                          color: color3,
+                        ),
+                        SettingsButton(
+                          enabled: perms.canManageGuild,
+                          backgroundColor: Colors.transparent,
+                          onPressedColor: color5,
+                          title: 'Invites',
+                          assetIcon: AssetIcon.link,
+                          onPressed: () {},    
+                        ),
+                        Divider(
+                          thickness: 1,
+                          height: 0,
+                          indent: 50,
+                          color: color3,
+                        ),
+                        SettingsButton(
+                          enabled: perms.canBanMembers,
+                          backgroundColor: Colors.transparent,
+                          onPressedColor: color5,
+                          borderRadius: const BorderRadius.vertical(
+                            bottom: Radius.circular(16),
+                          ),
+                          title: 'Bans',
+                          assetIcon: AssetIcon.hammer,
+                          onPressed: () {},    
                         )
                       ],
                     ),
+                  ),
+                  const SizedBox(height: 30),
+                  Text(
+                    'Community',
+                    style: TextStyle(
+                      color: color2,
+                      fontSize: 14,
+                      fontFamily: 'GGSansSemibold'
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  SettingsButton(
+                    enabled: perms.canManageGuild,
+                    backgroundColor: color4,
+                    onPressedColor: color5,
+                    borderRadius: BorderRadius.circular(16),
+                    title: 'Enable Community',
+                    assetIcon: AssetIcon.hammer,
+                    onPressed: () {},    
                   )
                 ],
               ),

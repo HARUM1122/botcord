@@ -1,4 +1,3 @@
-import 'package:discord/src/common/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -6,9 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/src/common/providers/theme_provider.dart';
 
-import '../../../../common/utils/utils.dart';
-
 import 'button.dart';
+import '../../screens/screens.dart';
+import '../../../../common/utils/utils.dart';
+import '../../../../common/utils/extensions.dart';
 
 class GuildsList extends ConsumerWidget {
   final List<Guild> guilds;
@@ -34,7 +34,12 @@ class GuildsList extends ConsumerWidget {
           selected: guilds[index].id == currentGuild.id,
         )
         : GestureDetector(
-          onTap: () => Navigator.pushNamed(context, '/invite-bot-route'),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const InviteBotScreen(),
+            )
+          ),
           child: Container(
               margin: EdgeInsets.only(bottom: 70 + context.padding.bottom,),
               width: 50,

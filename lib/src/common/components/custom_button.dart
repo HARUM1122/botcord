@@ -63,7 +63,7 @@ class CustomButtonState extends State<CustomButton> with TickerProviderStateMixi
           shape: widget.shape,
           child: InkWell(
             borderRadius: widget.shape?.borderRadius != null ? widget.shape!.borderRadius as BorderRadius : null,
-            overlayColor: MaterialStatePropertyAll(widget.onPressedColor ?? widget.backgroundColor),
+            overlayColor: MaterialStatePropertyAll(!(widget.enabled ?? true) ? widget.backgroundColor : widget.onPressedColor ?? widget.backgroundColor),
             splashFactory: NoSplash.splashFactory,
             onTapUp: (widget.enabled ?? true) ? (_) {
               _controller?.reverse();

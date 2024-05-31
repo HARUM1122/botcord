@@ -11,5 +11,5 @@ Application? application;
 (Uint8List, String)? banner;
 
 final globalNavigatorKey = GlobalKey<NavigatorState>();
+final List<dynamic> trustedDomains = [];
 late final SharedPreferences prefs;
-final List<String> trustedDomains = [];

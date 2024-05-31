@@ -1,24 +1,24 @@
-import 'package:http/http.dart';
-import 'package:nyxx/nyxx.dart';
+// import 'package:http/http.dart';
+// import 'package:nyxx/nyxx.dart';
 
-import 'dart:async';
+// import 'dart:async';
 
-Future<void> login(String token) async {
-        NyxxGateway client = await Nyxx.connectGateway(token, GatewayIntents.all);
-        User user = await client.user.get();
-        List<Guild> guilds = [];
-        client.onGuildCreate.listen((event) async {
-          Guild guild = await event.guild.fetch(withCounts: true);
+// Future<void> login(String token) async {
+//         NyxxGateway client = await Nyxx.connectGateway(token, GatewayIntents.all);
+//         User user = await client.user.get();
+//         List<Guild> guilds = [];
+//         client.onGuildCreate.listen((event) async {
+//           Guild guild = await event.guild.fetch(withCounts: true);
 
-          print(guild.currentUserPermissions);
-        });
-        // print(guilds[0].approximateMemberCount);
-  }
+//           print(guild.currentUserPermissions);
+//         });
+//         // print(guilds[0].approximateMemberCount);
+//   }
 
-void main() {
-  login('MTAxNDkwOTkyMTYwMDQ3NTIxOA.G3R5vy.__YiSq_aIqmujOxXjiidtaqNNVJDYU-rUeTvzk');
-  int a = 12;
-}
+// void main() {
+//   login('MTAxNDkwOTkyMTYwMDQ3NTIxOA.G3R5vy.__YiSq_aIqmujOxXjiidtaqNNVJDYU-rUeTvzk');
+//   int a = 12;
+// }
 
 // void main() {
 //   // List<int> values = [1, 2, 3, 4, 5];

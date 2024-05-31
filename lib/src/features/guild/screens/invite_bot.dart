@@ -93,7 +93,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                     (String, int) perm = generalPerms[i];
                     final bool selected = permissions.contains(perm.$2);
                     general.add(
-                      PermissionsTile(
+                      PermissionsButton(
                         borderRadius: BorderRadius.vertical(
                           top: i == 0 
                           ? const Radius.circular(16) 
@@ -109,21 +109,22 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                           ? permissions.remove(perm.$2) 
                           : permissions.add(perm.$2)
                         ),
-                        child: Row(
-                          children: [
-                            const SizedBox(width: 10),
-                            Text(
-                              perm.$1,
-                              style: TextStyle(
-                                color: color1,
-                                fontSize: 16,
-                                fontFamily: 'GGSansSemibold'
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                          child: Row(
+                            children: [
+                              Text(
+                                perm.$1,
+                                style: TextStyle(
+                                  color: color1,
+                                  fontSize: 16,
+                                  fontFamily: 'GGSansSemibold'
+                                ),
                               ),
-                            ),
-                            const Spacer(),
-                            CheckBoxIndicator(selected: selected),
-                            const SizedBox(width: 10)
-                          ],
+                              const Spacer(),
+                              CheckBoxIndicator(selected: selected)
+                            ],
+                          ),
                         )
                       )
                     );
@@ -133,7 +134,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                           color: color4,
                           thickness: 1,
                           height: 0,
-                          indent: 10,
+                          indent: 15,
                         ),
                       );
                     }
@@ -170,7 +171,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                     (String, int) perm = textPerms[i];
                     final bool selected = permissions.contains(perm.$2);
                     text.add(
-                      PermissionsTile(
+                      PermissionsButton(
                         borderRadius: BorderRadius.vertical(
                           top: i == 0 
                           ? const Radius.circular(16) 
@@ -186,21 +187,22 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                           ? permissions.remove(perm.$2) 
                           : permissions.add(perm.$2)
                         ),
-                        child: Row(
-                          children: [
-                            const SizedBox(width: 10),
-                            Text(
-                              perm.$1,
-                              style: TextStyle(
-                                color: color1,
-                                fontSize: 16,
-                                fontFamily: 'GGSansSemibold'
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                          child: Row(
+                            children: [
+                              Text(
+                                perm.$1,
+                                style: TextStyle(
+                                  color: color1,
+                                  fontSize: 16,
+                                  fontFamily: 'GGSansSemibold'
+                                ),
                               ),
-                            ),
-                            const Spacer(),
-                            CheckBoxIndicator(selected: selected),
-                            const SizedBox(width: 10)
-                          ],
+                              const Spacer(),
+                              CheckBoxIndicator(selected: selected),
+                            ],
+                          ),
                         )
                       )
                     );
@@ -210,7 +212,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                           color: color4,
                           thickness: 1,
                           height: 0,
-                          indent: 10,
+                          indent: 15,
                         ),
                       );
                     }
@@ -247,7 +249,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                     (String, int) perm = voicePerms[i];
                     final bool selected = permissions.contains(perm.$2);
                     voice.add(
-                      PermissionsTile(
+                      PermissionsButton(
                         borderRadius: BorderRadius.vertical(
                           top: i == 0 
                           ? const Radius.circular(16) 
@@ -263,21 +265,22 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                           ? permissions.remove(perm.$2) 
                           : permissions.add(perm.$2)
                         ),
-                        child: Row(
-                          children: [
-                            const SizedBox(width: 10),
-                            Text(
-                              perm.$1,
-                              style: TextStyle(
-                                color: color1,
-                                fontSize: 16,
-                                fontFamily: 'GGSansSemibold'
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                          child: Row(
+                            children: [
+                              Text(
+                                perm.$1,
+                                style: TextStyle(
+                                  color: color1,
+                                  fontSize: 16,
+                                  fontFamily: 'GGSansSemibold'
+                                ),
                               ),
-                            ),
-                            const Spacer(),
-                            CheckBoxIndicator(selected: selected),
-                            const SizedBox(width: 10)
-                          ],
+                              const Spacer(),
+                              CheckBoxIndicator(selected: selected)
+                            ],
+                          ),
                         )
                       )
                     );
@@ -287,7 +290,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                           color: color4,
                           thickness: 1,
                           height: 0,
-                          indent: 10,
+                          indent: 15,
                         ),
                       );
                     }
@@ -297,7 +300,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
               )
             ),
             const SizedBox(height: 30),
-            PermissionsTile(
+            PermissionsButton(
               borderRadius: BorderRadius.circular(16),
               backgroundColor: appTheme<Color>(
                 theme, light: const Color(0xFFFFFFFF), 
@@ -318,27 +321,29 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                   msg: "Link copied"
                 );
               },
-              child: Row(
-                children: [
-                  const SizedBox(width: 10),
-                  SvgPicture.asset(
-                    AssetIcon.link,
-                    colorFilter: ColorFilter.mode(color2, BlendMode.srcIn)
-                  ),
-                  const SizedBox(width: 18),
-                  Text(
-                    'Copy Link',
-                    style: TextStyle(
-                      color: color1,
-                      fontSize: 16,
-                      fontFamily: 'GGSansSemibold'
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      AssetIcon.link,
+                      colorFilter: ColorFilter.mode(color2, BlendMode.srcIn)
                     ),
-                  )
-                ],
+                    const SizedBox(width: 14),
+                    Text(
+                      'Copy Link',
+                      style: TextStyle(
+                        color: color1,
+                        fontSize: 16,
+                        fontFamily: 'GGSansSemibold'
+                      ),
+                    )
+                  ],
+                ),
               )
             ),
             const SizedBox(height: 20),
-            PermissionsTile(
+            PermissionsButton(
               borderRadius: BorderRadius.circular(16),
               backgroundColor: appTheme<Color>(
                 theme, light: const Color(0xFFFFFFFF), 
@@ -347,23 +352,25 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
               ),
               onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
               onPressed: () async => await launchUrl(Uri.parse(getLink())),
-              child: Row(
-                children: [
-                  const SizedBox(width: 10),
-                  Icon(
-                    Icons.mail,
-                    color: color2,
-                  ),
-                  const SizedBox(width: 18),
-                  Text(
-                    'Invite Bot',
-                    style: TextStyle(
-                      color: color1,
-                      fontSize: 16,
-                      fontFamily: 'GGSansSemibold'
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.mail,
+                      color: color2,
                     ),
-                  )
-                ],
+                    const SizedBox(width: 14),
+                    Text(
+                      'Invite Bot',
+                      style: TextStyle(
+                        color: color1,
+                        fontSize: 16,
+                        fontFamily: 'GGSansSemibold'
+                      ),
+                    )
+                  ],
+                ),
               )
             ),
           ],
@@ -373,14 +380,14 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
   }
 }
 
-class PermissionsTile extends StatelessWidget {
+class PermissionsButton extends StatelessWidget {
   final BorderRadius borderRadius;
   final Color backgroundColor;
   final Color onPressedColor;
   final Function() onPressed;
   final Widget child;
 
-  const PermissionsTile({
+  const PermissionsButton({
     required this.borderRadius,
     required this.backgroundColor,
     required this.onPressedColor,
@@ -392,7 +399,6 @@ class PermissionsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomButton(
-      height: 60,
       onPressed: onPressed,
       backgroundColor: backgroundColor,
       onPressedColor: onPressedColor,

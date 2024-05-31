@@ -24,26 +24,26 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
-  late final Map<String, dynamic> _bot = jsonDecode(prefs.getString('current-bot')!);
   late final AuthController _authController = ref.read(authControllerProvider);
   late final ProfileController _profileController = ref.read(profileControllerProvider);
   late final String _theme = ref.read(themeProvider);
 
+  late final Map<String, dynamic> _botData = jsonDecode(prefs.getString('bot-data')!);
+
   @override
   void initState() {
     super.initState();
-    if (_bot.isEmpty) {
+    if (_botData['current-bot'].isEmpty) {
       Future.delayed(const Duration(seconds: 2), () {
-        !prefs.getBool('is-landed')!
+        !jsonDecode(prefs.getString('app-data')!)['is-landed']
         ? Navigator.pushReplacementNamed(context, '/landing-route')
         : Navigator.pushReplacementNamed(context, '/bots-route');
       });
     } else {
       runZonedGuarded(
       () async {
-          await _authController.login(_bot);
-          _profileController.botActivity = jsonDecode(prefs.getString('bot-activity')!);
-          print(_profileController.botActivity);
+          await _authController.login(_botData['current-bot']);
+          _profileController.botActivity = _botData['activity'];
           _profileController.updatePresence(save: false, datetime: DateTime.now());
 
           ref.read(guildsControllerProvider).init();
@@ -52,7 +52,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           }
         }, 
         (error, stack) async {
-          print("ERROR FROM SPLASH SCREEN: $error");
           Navigator.pushReplacementNamed(globalNavigatorKey.currentContext!, '/bots-route');
           await Future.delayed(const Duration(seconds: 1));
           if (error is ClientException) {
@@ -66,7 +65,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               msg: 'Network error, Please login again'
             );
           } else if (error.toString().contains('401: Unauthorized')) {
-            _authController.removeBot(_bot['name'][0].toUpperCase(), _bot['id']);
+            _authController.removeBot(
+              _botData['current-bot']['name'][0].toUpperCase(),
+              _botData['current-bot']['id']
+            );
             showSnackBar(
               context: globalNavigatorKey.currentContext!,
               theme: _theme, 

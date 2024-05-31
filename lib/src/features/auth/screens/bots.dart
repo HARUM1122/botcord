@@ -6,13 +6,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/src/common/providers/theme_provider.dart';
 
+import '../controller/auth_controller.dart';
+
 import '../utils/utils.dart';
 
 import '../components/bot/list.dart';
 
 import '../../../common/utils/utils.dart';
 
-import '../controller/auth_controller.dart';
+import '../../../features/auth/screens/add_bots.dart';
 
 class BotsScreen extends ConsumerStatefulWidget {
   const BotsScreen({super.key});
@@ -26,6 +28,8 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
   Timer? _debounce;
   late final AuthController _authController = ref.read(authControllerProvider);
   late final String _theme = ref.watch(themeProvider);
+
+  late final Color color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
   
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,7 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
         title: Text(
           "Bots",
           style: TextStyle(
-            color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+            color: color1,
             fontFamily: 'GGSansBold',
             fontSize: 24
           ),
@@ -46,9 +50,11 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(
+              Navigator.push(
                 context,
-                '/add-bots-route'
+                MaterialPageRoute(
+                  builder: (context) => const AddBotsScreen(),
+                )
               );
             },
             style: const ButtonStyle(
@@ -79,17 +85,14 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
                     height: 40,
                     child: Theme(
                       data: ThemeData(
-                        textSelectionTheme: () {
-                          final Color color = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-                          return TextSelectionThemeData(
-                            selectionColor: color.withOpacity(0.3),
-                            cursorColor: color
-                          );
-                        }()
+                        textSelectionTheme: TextSelectionThemeData(
+                          selectionColor: color1.withOpacity(0.3),
+                          cursorColor: color1
+                        )
                       ),
                       child: TextField(
                         style: TextStyle(
-                          color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                          color: color1,
                           fontSize: 14
                         ),
                         onChanged: (text) {
@@ -128,7 +131,7 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
                         child: Text(
                           "You haven't added any bots",
                           style: TextStyle(
-                            color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                            color: color1,
                             fontSize: 20,
                             fontFamily: 'GGSansSemibold'
                           ),
@@ -143,7 +146,7 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
                         child: Text(
                           "No bots were found",
                           style: TextStyle(
-                            color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                            color: color1,
                             fontSize: 20,
                             fontFamily: 'GGSansSemibold'
                           ),

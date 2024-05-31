@@ -1,21 +1,22 @@
-import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/common/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'radio_button_indicator/radio_button_indicator.dart';
+import 'package:discord/src/common/providers/theme_provider.dart';
 
+import '../controller/profile_controller.dart';
+
+import '../../../common/utils/utils.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/components/drag_handle.dart';
 import '../../../common/components/custom_button.dart';
 import '../../../common/components/online_status/status.dart';
 
-import '../../../features/profile/controller/profile_controller.dart';
+import '../../../features/profile/components/radio_button_indicator/radio_button_indicator.dart';
 
-class StatusSheet extends ConsumerWidget {
+class OnlineStatusSheet extends ConsumerWidget {
   final ScrollController controller;
-  const StatusSheet({required this.controller, super.key});
+  const OnlineStatusSheet({required this.controller, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -64,7 +65,7 @@ class StatusSheet extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            StatusTile(
+            OnlineStatusRB(
               status: 'online',
               title: 'Online',
               selected: botActivity['current-online-status'] == 'online',
@@ -80,7 +81,7 @@ class StatusSheet extends ConsumerWidget {
               height: 0,
               indent: 50,
             ),
-            StatusTile(
+            OnlineStatusRB(
               status: 'idle',
               title: 'Idle',
               selected: botActivity['current-online-status'] == 'idle',
@@ -94,7 +95,7 @@ class StatusSheet extends ConsumerWidget {
               height: 0,
               indent: 50,
             ),
-            StatusTile(
+            OnlineStatusRB(
               status: 'dnd',
               title: 'Do Not Disturb',
               selected: botActivity['current-online-status'] == 'dnd',
@@ -108,7 +109,7 @@ class StatusSheet extends ConsumerWidget {
               height: 0,
               indent: 50,
             ),
-            StatusTile(
+            OnlineStatusRB(
               status: 'invisible',
               title: 'Invisible',
               selected: botActivity['current-online-status'] == 'invisible',
@@ -131,14 +132,14 @@ class StatusSheet extends ConsumerWidget {
   }
 }
 
-class StatusTile extends StatelessWidget {
+class OnlineStatusRB extends StatelessWidget {
   final String status;
   final String title;
   final BorderRadius borderRadius;
   final bool selected;
   final String theme;
   final ProfileController controller;
-  const StatusTile({
+  const OnlineStatusRB({
     required this.status,
     required this.title,
     required this.borderRadius,

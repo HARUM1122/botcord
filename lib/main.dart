@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:discord/src/common/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,9 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'routes.dart';
 
-import 'src/common/providers/theme_provider.dart';
-
+import 'src/common/utils/utils.dart';
 import 'src/common/utils/globals.dart';
+import 'src/common/providers/theme_provider.dart';
 
 import 'src/features/home/screens/splash.dart';
 import 'src/features/auth/controller/auth_controller.dart';
@@ -21,21 +20,43 @@ bool initialized = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   prefs = await SharedPreferences.getInstance();
-  if (!(prefs.getBool('is-landed') ?? false)) {
-    await prefs.setString('current-bot', '{}');
-    await prefs.setString('bots', '{}');
-    await prefs.setStringList('trusted-domains', []);
-    await prefs.setString('bot-activity', jsonEncode(
+  final String appData = prefs.getString('app-data') ?? '';
+  if (appData.isEmpty) {
+    await prefs.setString('app-data', jsonEncode(
       {
-        'current-online-status': 'online',
-        'current-activity-text': '',
-        'current-activity-type': 'custom',
-        'since': ';'
+        'theme': 'dark',
+        'is-landed': false,
+        'trusted-domains': []
       }
     ));
-    await prefs.setString('app-theme', 'dark');
-    await prefs.setBool('is-landed', false);
+    await prefs.setString('bot-data', jsonEncode(
+      {
+        'bots': {},
+        'activity': {
+          'current-online-status': 'online',
+          'current-activity-text': '',
+          'current-activity-type': 'custom',
+          'since': ';'
+        },
+        'current-bot': {},
+      }
+    ));
   }
+  // if (!(prefs.getBool('is-landed') ?? false)) {
+  //   await prefs.setString('current-bot', '{}');
+  //   await prefs.setString('bots', '{}');
+  //   await prefs.setStringList('trusted-domains', []);
+  //   await prefs.setString('bot-activity', jsonEncode(
+  //     {
+  //       'current-online-status': 'online',
+  //       'current-activity-text': '',
+  //       'current-activity-type': 'custom',
+  //       'since': ';'
+  //     }
+  //   ));
+  //   await prefs.setString('app-theme', 'dark');
+  //   await prefs.setBool('is-landed', false);
+  // }
   runApp(
     DevicePreview(
       enabled: true,
@@ -53,9 +74,9 @@ class App extends ConsumerWidget {
     String theme = ref.watch(themeProvider);
     if (!initialized) {
       initialized = true;
-      trustedDomains.addAll(prefs.getStringList('trusted-domains')!);
-      ref.read(authControllerProvider).bots = jsonDecode(prefs.getString('bots')!);
-      ref.read(themeProvider.notifier).setTheme(prefs.getString('app-theme')!, false, true);
+      trustedDomains.addAll(jsonDecode(prefs.getString('app-data')!)['trusted-domains']);
+      ref.read(authControllerProvider).bots = jsonDecode(prefs.getString('bot-data')!)['bots'];
+      ref.read(themeProvider.notifier).setTheme(jsonDecode(prefs.getString('app-data')!)['theme'], false, true);
       SystemChrome.setEnabledSystemUIMode(
         SystemUiMode.edgeToEdge,
         overlays: SystemUiOverlay.values

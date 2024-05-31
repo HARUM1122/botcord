@@ -1,0 +1,29 @@
+{
+    'app-data' : {
+        'is-landed':false,
+        'trusted-domains': false,
+        'app-theme' : dark,
+        'route': guild-id/channel-id
+    },
+    'bot-data' : {
+        current-bot: {},
+        bots: {},
+        bot-activity: {}
+    }
+}
+
+if (!(prefs.getBool('is-landed') ?? false)) {
+    await prefs.setString('current-bot', '{}');
+    await prefs.setString('bots', '{}');
+    await prefs.setStringList('trusted-domains', []);
+    await prefs.setString('bot-activity', jsonEncode(
+      {
+        'current-online-status': 'online',
+        'current-activity-text': '',
+        'current-activity-type': 'custom',
+        'since': ';'
+      }
+    ));
+    await prefs.setString('app-theme', 'dark');
+    await prefs.setBool('is-landed', false);
+  }

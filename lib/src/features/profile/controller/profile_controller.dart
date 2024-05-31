@@ -71,7 +71,9 @@ class ProfileController extends ChangeNotifier {
       startTimer();
     }
     if (save) {
-      prefs.setString('bot-activity', jsonEncode(botActivity));
+      final Map<String, dynamic> botData = jsonDecode(prefs.getString('bot-data')!);
+      botData['activity'] = botActivity;
+      prefs.setString('bot-data', jsonEncode(botData));
     }
     notifyListeners();
   }
@@ -111,8 +113,3 @@ class ProfileController extends ChangeNotifier {
     });
   }
 }
-
-/// APP DATA {
-///   TRUSTED DOMAINS: 
-///   
-/// }

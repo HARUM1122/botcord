@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:discord/src/common/utils/globals.dart';
 
@@ -10,7 +12,9 @@ class ThemeProvider extends StateNotifier<String> {
     if (init) await Future.delayed(const Duration(seconds: 1));
     state = appTheme;
     if (save) {
-      await prefs.setString('app-theme', appTheme);
+      final Map<String, dynamic> appData = jsonDecode(prefs.getString('app-data')!);
+      appData['theme'] = appTheme;
+      await prefs.setString('app-data', jsonEncode(appData));
     }
   }
 }

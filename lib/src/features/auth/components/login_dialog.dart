@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' show ClientException;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:discord/src/common/providers/theme_provider.dart';
+
+import '../../guild/controllers/guilds_controller.dart';
 
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/globals.dart';
@@ -15,7 +18,6 @@ import '../../../common/components/profile_pic.dart';
 
 
 import '../../../features/auth/controller/auth_controller.dart';
-import '../../guild/controllers/guilds_controller.dart';
 import '../../../features/profile/controller/profile_controller.dart';
 
 
@@ -27,17 +29,20 @@ class LoginDialog extends ConsumerStatefulWidget {
   ConsumerState<LoginDialog> createState() => _LoginDialogState();
 }
 class _LoginDialogState extends ConsumerState<LoginDialog> {
-  bool _running = false;
+
   late final AuthController _authController = ref.read(authControllerProvider);
   late final ProfileController _profileController = ref.read(profileControllerProvider);
   late final String _theme = ref.read(themeProvider);
+
+  late final Color _color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
   
+  bool _running = false;
+
   void login() async {
     runZonedGuarded(
       () async {
         await _authController.login(widget.bot);
-        _profileController.botActivity = jsonDecode(prefs.getString('bot-activity')!);
-        print(_profileController.botActivity);
+        _profileController.botActivity = jsonDecode(prefs.getString('bot-data')!)['activity'];
         _profileController.updatePresence(save: false, datetime: DateTime.now());
         ref.read(guildsControllerProvider).init();
         if (mounted) {
@@ -49,8 +54,6 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
         }
       }, 
       (error, stack) async {
-        print(stack);
-        print("ERROR FROM LOGIN DIALOG: $error");
         bool isMounted = true;
         if (mounted) {
           Navigator.pop(context);
@@ -68,7 +71,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
             msg: 'Network error'
           );
         } else if (error.toString().contains('401: Unauthorized') && isMounted) {
-          _authController.removeBot(widget.bot['name'][0].toUpperCase(), widget.bot['id']);
+          _authController.removeBot(widget.bot['current-bot']['name'][0].toUpperCase(), widget.bot['current-bot']['id']);
           showSnackBar(
             context: globalNavigatorKey.currentContext!,
             theme: _theme,
@@ -109,7 +112,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
           Text(
             "${widget.bot['name']}#${widget.bot['discriminator']}",
             style: TextStyle(
-              color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+              color: _color1,
               fontSize: 16,
               fontFamily: 'GGSansBold'
             ),
@@ -127,7 +130,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
                 child: Text(
                   widget.bot['name'][0],
                   style: TextStyle(
-                    color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                    color: _color1,
                     fontSize: 36,
                   ),
                 ),
@@ -192,7 +195,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
               child: Text(
                 "Go Back",
                 style: TextStyle(
-                  color: appTheme<Color>(_theme, light: const Color(0XFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                  color: _color1,
                   fontFamily: 'GGSansSemibold'
                 ),
               ),

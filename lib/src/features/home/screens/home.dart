@@ -1,4 +1,3 @@
-import 'package:discord/src/features/guild/screens/guild.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +8,7 @@ import '../components/navigation.dart';
 
 import '../../../common/utils/utils.dart';
 
+import '../../../features/guild/screens/guild.dart';
 import '../../../features/profile/screens/profile.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {

@@ -1,16 +1,14 @@
 import 'package:discord/src/common/components/custom_button.dart';
 import 'package:flutter/material.dart';
 
-class InfoTile extends StatelessWidget {
-  final bool offstage;
+class SettingsButton extends StatelessWidget {
   final Color backgroundColor;
   final Color onPressedColor;
   final BorderRadius? borderRadius;
   final Function() onPressed;
   final Widget child;
 
-  const InfoTile({
-    required this.offstage,
+  const SettingsButton({
     required this.backgroundColor,
     required this.onPressedColor,
     this.borderRadius,
@@ -21,19 +19,15 @@ class InfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Offstage(
-      offstage: offstage,
-      child: CustomButton(
-        width: double.infinity,
-        backgroundColor: backgroundColor,
-        onPressedColor: onPressedColor,
-        applyClickAnimation: false,
-        shape: RoundedRectangleBorder(
-          borderRadius: borderRadius ?? BorderRadius.zero
-        ),
-        onPressed: onPressed,
-        child: child
+    return CustomButton(
+      onPressed: onPressed,
+      backgroundColor: backgroundColor,
+      onPressedColor: onPressedColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: borderRadius ?? BorderRadius.zero
       ),
+      applyClickAnimation: false,
+      child: child,
     );
   }
 }

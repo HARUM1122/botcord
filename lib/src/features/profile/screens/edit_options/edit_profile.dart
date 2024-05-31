@@ -48,6 +48,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   late final Color _color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
   late final Color _color2 = appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFB1B1BB));
+  late final Color _color3 = appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594));
+  late final Color _color4 =  appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0XFF141318));
 
   bool _saving = false;
 
@@ -90,10 +92,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         authController.save();
       }
       ref.read(bottomNavProvider).refresh();
-      if (!context.mounted) return;
+      if (!mounted) return;
       Navigator.pop(context);
     } catch (e) {
-      if (!context.mounted) return;
+      if (!mounted) return;
       setState(() => _saving = false);
       if (e is http.ClientException) {
         showSnackBar(
@@ -145,13 +147,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           splashRadius: 18,
           icon: Icon(
             Icons.arrow_back,
-            color: appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594))
+            color: _color3
           )
         ),
         title: Text(
           "Profile",
           style: TextStyle(
-            color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+            color: _color1,
             fontFamily: 'GGSansBold',
             fontSize: 18
           ),
@@ -180,7 +182,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 width: 16,
                 height: 16,
                 child: CircularProgressIndicator(
-                  color: appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
+                  color: _color3,
                   strokeWidth: 2,
                 ),
               ),
@@ -318,7 +320,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 radius: 90, 
                 image: _avatar.$1,
                 padding: const EdgeInsets.all(6),
-                backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0XFF141318)),
+                backgroundColor: _color4,
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: Column(
@@ -328,14 +330,14 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       Container(
                         padding: const EdgeInsets.all(2),
                         decoration: BoxDecoration(
-                          color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0XFF141318)),
+                          color: _color4,
                           shape: BoxShape.circle,
                         ),
                         child: SvgPicture.asset(
-                          height: 16,
+                          height: 18,
                           AssetIcon.editPencil,
                           colorFilter: ColorFilter.mode(
-                            appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
+                            _color3,
                             BlendMode.srcIn
                           ),
                         ),
@@ -384,6 +386,7 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color color1 = appTheme<Color>(theme, light: const Color(0XFFE2E2E2), dark: const Color(0XFF333237), midnight: const Color(0XFF29282B));
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2),
       child: Theme(
@@ -409,14 +412,14 @@ class CustomTextField extends StatelessWidget {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4),
               borderSide: BorderSide(
-                color: appTheme<Color>(theme, light: const Color(0XFFE2E2E2), dark: const Color(0XFF333237), midnight: const Color(0XFF29282B)),
+                color: color1,
                 width: 0.5
               )
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4),
               borderSide: BorderSide(
-                color: appTheme<Color>(theme, light: const Color(0XFFE2E2E2), dark: const Color(0XFF333237), midnight: const Color(0XFF29282B)),
+                color: color1,
                 width: 0.5
               )
             ),

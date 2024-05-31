@@ -1,11 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../util/constants.dart';
-
 import 'package:discord/src/common/providers/theme_provider.dart';
+
+import '../util/constants.dart';
 
 import '../../../common/utils/globals.dart';
 import '../../../common/utils/utils.dart';
@@ -18,13 +20,14 @@ class LandingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.watch(themeProvider);
+    final Color color1 = appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     return Scaffold(
       backgroundColor: appTheme(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       appBar: AppBar(
         title: Text(
           "Welcome to Botcord",
           style: TextStyle(
-            color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+            color: color1,
             fontFamily: 'GGsansBold',
             fontSize: 24
           ),
@@ -48,17 +51,17 @@ class LandingScreen extends ConsumerWidget {
                     data: warningMessage,
                     styleSheet: MarkdownStyleSheet(
                       h2: TextStyle(
-                        color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                        color: color1,
                         fontFamily: 'GGSansBold',
                         fontSize: 18
                       ),
                       strong: TextStyle(
-                        color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                        color: color1,
                         fontFamily: 'GGSansBold',
                         fontSize: 16
                       ),
                       p: TextStyle(
-                        color: appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                        color: color1,
                         fontSize: 16
                       )
                     ),
@@ -69,7 +72,9 @@ class LandingScreen extends ConsumerWidget {
             const SizedBox(height: 10),
             CustomButton(
               onPressed: () {
-                prefs.setBool('is-landed', true);
+                final Map<String, dynamic> appData = jsonDecode(prefs.getString('app-data')!);
+                appData['is-landed'] = true;
+                prefs.setString('app-data', jsonEncode(appData));
                 Navigator.pushReplacementNamed(context, '/bots-route');
               },
               width: context.getSize.width * 0.90,

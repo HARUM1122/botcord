@@ -22,6 +22,8 @@ class _CreateBotAccountScreenState extends ConsumerState<CreateBotAccountScreen>
   @override
   Widget build(BuildContext context) {
     final String theme = ref.watch(themeProvider);
+    final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+
     return Scaffold(
       backgroundColor: appTheme(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       appBar: AppBar(
@@ -36,7 +38,7 @@ class _CreateBotAccountScreenState extends ConsumerState<CreateBotAccountScreen>
         title: Text(
           'Botcord',
           style: TextStyle(
-            color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+            color: color1,
             fontFamily: 'GGSansBold'
           ),
         ),
@@ -75,18 +77,18 @@ class _CreateBotAccountScreenState extends ConsumerState<CreateBotAccountScreen>
                         fontFamily: 'GGSansSemibold'
                       ),
                       h2: TextStyle(
-                        color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                        color: color1,
                         fontFamily: 'GGSansBold'
                       ),
                       a: const TextStyle(
                         color: Colors.blue
                       ),
                       p: TextStyle(
-                        color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                        color: color1,
                         fontSize: 16
                       ),
                       code: TextStyle(
-                        color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                        color: color1,
                         backgroundColor: appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF242830), midnight: const Color(0XFF151419))
                       ),
                     ),

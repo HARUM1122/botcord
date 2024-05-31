@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/src/common/providers/theme_provider.dart';
@@ -84,6 +85,8 @@ class BotInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color color1 = appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000));
+    final Color color2 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     return CustomButton(
       onPressed: () {
         showSheet(
@@ -97,7 +100,7 @@ class BotInfo extends StatelessWidget {
           ),
           height: 0.5, 
           maxHeight: 0.8,
-          color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+          color: color1,
         );
       },
       backgroundColor: Colors.transparent,
@@ -118,14 +121,14 @@ class BotInfo extends StatelessWidget {
               image: bot['avatar-url']!, 
               errorWidget: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                  color: color1,
                   shape: BoxShape.circle
                 ),
                 child: Center(
                   child: Text(
                     bot['name'][0],
                     style: TextStyle(
-                      color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                      color: color2,
                       fontSize: 16,
                     ),
                   ),
@@ -141,7 +144,7 @@ class BotInfo extends StatelessWidget {
                 bot['name']!,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                  color: color2,
                   fontSize: 16,
                   fontFamily: 'GGSansSemibold'
                 ),

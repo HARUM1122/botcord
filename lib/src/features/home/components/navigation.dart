@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/src/common/providers/theme_provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'navigation_button.dart';
 
@@ -26,8 +26,9 @@ class BottomNavigator extends ConsumerWidget {
     final BottomNavProvider navProvider = ref.watch(bottomNavProvider);
     final GuildsController guildsController = ref.watch(guildsControllerProvider);
     final String theme = ref.watch(themeProvider);
-    final Color selectedColor = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-    final Color unSelectedColor = appTheme<Color>(theme, light: const Color(0XFF9FA2A9), dark: const Color(0xFF777A81), midnight: const Color(0xFF777A81));
+    final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+    final Color color2 = appTheme<Color>(theme, light: const Color(0XFF9FA2A9), dark: const Color(0xFF777A81), midnight: const Color(0xFF777A81));
+
     return AnimatedSlide(
       offset: Offset(0, navProvider.leftMenuOpened || guildsController.currentGuild == null ? 0 : 1),
       duration: const Duration(milliseconds: 160),
@@ -42,8 +43,8 @@ class BottomNavigator extends ConsumerWidget {
                 AssetIcon.home,
                 colorFilter: ColorFilter.mode(
                   navProvider.currentPageIndex == 0 
-                  ? selectedColor
-                  : unSelectedColor, 
+                  ? color1
+                  : color2, 
                   BlendMode.srcIn
                 )
               ),
@@ -51,8 +52,8 @@ class BottomNavigator extends ConsumerWidget {
                 'Servers',
                 style: TextStyle(
                   color: navProvider.currentPageIndex == 0 
-                  ? selectedColor
-                : unSelectedColor,
+                  ? color1
+                : color2,
                   fontSize: 12
                 )
               ),
@@ -71,8 +72,8 @@ class BottomNavigator extends ConsumerWidget {
                 'You',
                 style: TextStyle(
                   color: navProvider.currentPageIndex == 1 
-                  ? selectedColor
-                  : unSelectedColor,
+                  ? color1
+                  : color2,
                   fontSize: 12
                 )
               ),

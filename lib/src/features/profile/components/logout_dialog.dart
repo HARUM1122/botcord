@@ -10,8 +10,6 @@ import '../../../common/components/custom_button.dart';
 
 import '../../../features/auth/controller/auth_controller.dart';
 
-
-
 class LogoutDialog extends ConsumerWidget {
   const LogoutDialog({super.key});
 
@@ -19,7 +17,9 @@ class LogoutDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeProvider);
     final AuthController authController = ref.read(authControllerProvider);
-    final Color textColor = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+
+    final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+
     return Container(
       height: context.getSize.height * 0.35,
       padding: const EdgeInsets.all(12),
@@ -33,7 +33,7 @@ class LogoutDialog extends ConsumerWidget {
           Text(
             'Logout',
             style: TextStyle(
-              color: textColor,
+              color: color1,
               fontSize: 16,
               fontFamily: 'GGSansBold'
             ),
@@ -42,7 +42,7 @@ class LogoutDialog extends ConsumerWidget {
           Text(
             'Are you sure you want to logout?',
             style: TextStyle(
-              color: textColor,
+              color: color1,
               fontSize: 16
             ),
           ),

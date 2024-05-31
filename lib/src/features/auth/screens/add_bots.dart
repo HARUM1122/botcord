@@ -1,3 +1,4 @@
+import 'package:discord/src/features/auth/screens/screens.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
     setState(() => _running = true);
     try {
       int value = await ref.read(authControllerProvider).addToken(_text.trim());
-      if (context.mounted) {
+      if (mounted) {
         switch (value) {
           case 200:
             showSnackBar(
@@ -86,7 +87,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
         }
       }
     } on ClientException {
-      if (context.mounted) {
+      if (mounted) {
         showSnackBar(
           context: context,
           leading: Icon(
@@ -98,7 +99,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
         );
       }
     } catch (e) {
-      if (context.mounted) {
+      if (mounted) {
         showSnackBar(
           context: context,
           leading: Icon(
@@ -122,6 +123,8 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Color color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+    final Color color2 = appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594));
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -129,7 +132,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
           splashRadius: 18,
           icon: Icon(
             Icons.arrow_back,
-            color: appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
+            color: color2,
           ),
         ),
         centerTitle: true,
@@ -146,7 +149,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                 Text(
                   'Add by Token',
                   style: TextStyle(
-                    color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                    color: color1,
                     fontFamily: 'GGSansBold',
                     fontSize: 26
                   )
@@ -158,7 +161,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                   child: Theme(
                     data: ThemeData(
                       textSelectionTheme: () {
-                        final Color color = appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594));
+                        final Color color = color2;
                         return TextSelectionThemeData(
                           selectionColor: color.withOpacity(0.3),
                           cursorColor: color
@@ -168,7 +171,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                     child: TextField(
                       controller: _controller,
                       style: TextStyle(
-                        color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                        color: color1,
                         fontSize: 14
                       ),
                       onChanged: (text) {
@@ -186,7 +189,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                         contentPadding: const EdgeInsets.all(16),
                         hintText: "Bot's token",
                         hintStyle: TextStyle(
-                          color: appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
+                          color: color2,
                           fontSize: 14
                         ),
                         filled: true,
@@ -202,7 +205,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                     text: TextSpan(
                       text: "Don't have a bot account? Click ",
                       style: TextStyle(
-                        color: appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
+                        color: color2,
                         fontSize: 12
                       ),
                       children: [
@@ -212,9 +215,11 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
                             color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0XFFC7CAD1), midnight: const Color(0xFFFFFFFF)),
                             fontSize: 12,
                           ),
-                          recognizer: TapGestureRecognizer()..onTap = () => Navigator.pushNamed(
+                          recognizer: TapGestureRecognizer()..onTap = () => Navigator.push(
                             context, 
-                            '/create-bot-account-route'
+                            MaterialPageRoute(
+                              builder: (context) => const CreateBotAccountScreen(),
+                            )
                           )
                         ),
                       ]

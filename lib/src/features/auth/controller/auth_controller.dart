@@ -41,22 +41,23 @@ class AuthController extends ChangeNotifier {
     CdnAsset? b = user!.banner;
     if (b != null) banner = (await b.fetch(), b.defaultFormat.extension);
     application = await client!.applications.fetchCurrentApplication();
-    
-    await prefs.setString('current-bot',  jsonEncode(bot));
+    final Map<String, dynamic> botData = jsonDecode(prefs.getString('bot-data')!);
+    botData['current-bot'] = bot;
+    await prefs.setString('bot-data',  jsonEncode(botData));
   }
 
   Future<void> logout(BuildContext? context) async {
     try {
       await client?.close();
-      await prefs.setString('current-bot', '{}');
-      await prefs.setString('bot-activity', jsonEncode(
-        {
-          'current-online-status': 'online',
-          'current-activity-text': '',
-          'current-activity-type': 'custom',
-          'since': ';'
-        }
-      ));
+      final Map<String, dynamic> botData = jsonDecode(prefs.getString('bot-data')!);
+      botData['activity'] =  {
+        'current-online-status': 'online',
+        'current-activity-text': '',
+        'current-activity-type': 'custom',
+        'since': ';'
+      };
+      botData['current-bot'] = {};
+      await prefs.setString('bot-data', jsonEncode(botData));
       ref.read(guildsControllerProvider).clearCache();
     } catch (e) {
       // 
@@ -127,8 +128,11 @@ class AuthController extends ChangeNotifier {
   }
 
 
-  Future<void> save() async =>
-    await prefs.setString('bots', jsonEncode(bots));
+  Future<void> save() async {
+    final Map<String, dynamic> botData = jsonDecode(prefs.getString('bot-data')!);
+    botData['bots'] = bots;
+    await prefs.setString('bot-data', jsonEncode(botData));
+  }
 
   void refresh() => notifyListeners();
 }

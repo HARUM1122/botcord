@@ -22,8 +22,9 @@ class BotOptionsSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeProvider);
-    final Color color = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-    final Color dividerColor = appTheme<Color>(theme, light: const Color(0xFFC5C8CF), dark: const Color(0xFF4C4F58), midnight: const Color(0xFF4C4F58));
+
+    final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+    final Color color2 = appTheme<Color>(theme, light: const Color(0xFFC5C8CF), dark: const Color(0xFF4C4F58), midnight: const Color(0xFF4C4F58));
     
     List<Widget> children = [
       Align(
@@ -47,7 +48,7 @@ class BotOptionsSheet extends ConsumerWidget {
                 child: Text(
                   bot['name'][0],
                   style: TextStyle(
-                    color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                    color: color1,
                     fontSize: 16,
                   ),
                 ),
@@ -60,18 +61,10 @@ class BotOptionsSheet extends ConsumerWidget {
             bot['name']!,
             style: TextStyle(
               fontSize: 18,
-              color: color,
+              color: color1,
               fontFamily: 'GGSansSemibold'
             ),
           ),
-        //   IconButton(
-        //   onPressed: () => Navigator.pop(context),
-        //   splashRadius: 18,
-        //   icon: Icon(
-        //     Icons.arrow_back,
-        //     color: appTheme(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
-        //   ),
-        // ),
           SizedBox.fromSize(
             size: const Size(30, 30),
             child: IconButton(
@@ -90,29 +83,31 @@ class BotOptionsSheet extends ConsumerWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419)),
-          borderRadius: BorderRadius.circular(20)
+          borderRadius: BorderRadius.circular(16)
         ),
         child: Column(
           children: [
             BotOption(
               title: 'Login', 
-              titleColor: color, 
+              titleColor: color1, 
               onPressed: () => showDialogBox(
                 context: context,
                 child: LoginDialog(bot: bot)
               ),
-              currPos: 'top',
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(16)
+              ),
               theme: theme
             ),
             Divider(
               thickness: 0.2,
               height: 0,
               indent: 50,
-              color:  dividerColor,
+              color:  color2,
             ),
             BotOption(
               title: 'Copy Bot Name', 
-              titleColor: color, 
+              titleColor: color1, 
               onPressed: () async {
                 await Clipboard.setData(ClipboardData(text: "${bot['name']}#${bot['discriminator']}"));
                 if (!context.mounted) return;
@@ -121,23 +116,23 @@ class BotOptionsSheet extends ConsumerWidget {
                   theme: theme,
                   leading: Icon(
                     Icons.copy,
-                    color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                    color: color1
                   ),
                   msg: "Copied Bot Name"
                 );
               }, 
-              currPos: '',
+              borderRadius: BorderRadius.zero,
               theme: theme
             ),
             Divider(
               thickness: 0.2,
               height: 0,
               indent: 50,
-              color:  dividerColor,
+              color:  color2,
             ),
             BotOption(
               title: 'Copy Bot ID', 
-              titleColor: color, 
+              titleColor: color1, 
               onPressed: () async {
                 await Clipboard.setData(ClipboardData(text: bot['id']));
                 if (!context.mounted) return;
@@ -146,23 +141,23 @@ class BotOptionsSheet extends ConsumerWidget {
                   theme: theme,
                   leading: Icon(
                     Icons.copy,
-                    color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                    color: color1,
                   ),
                   msg: "Copied Bot ID"
                 );
               }, 
-              currPos: '',
+              borderRadius: BorderRadius.zero,
               theme: theme
             ),
             Divider(
               thickness: 0.2,
               height: 0,
               indent: 50,
-              color:  dividerColor,
+              color:  color2,
             ),
             BotOption(
               title: 'Copy Bot Token', 
-              titleColor: color, 
+              titleColor: color1, 
               onPressed: () async {
                 await Clipboard.setData(ClipboardData(text: bot['token']));
                 if (!context.mounted) return;
@@ -171,19 +166,19 @@ class BotOptionsSheet extends ConsumerWidget {
                   theme: theme,
                   leading: Icon(
                     Icons.copy,
-                    color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                    color: color1,
                   ),
                   msg: 'Copied token'
                 );
               }, 
-              currPos: '',
+              borderRadius: BorderRadius.zero,
               theme: theme
             ),
             Divider(
               thickness: 0.2,
               height: 0,
               indent: 50,
-              color:  dividerColor,
+              color:  color2,
             ),
             BotOption(
               title: 'Remove Bot', 
@@ -196,7 +191,9 @@ class BotOptionsSheet extends ConsumerWidget {
                 if (!context.mounted) return;
                 Navigator.pop(context);  
               },
-              currPos: 'bottom',
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(16)
+              ),
               theme: theme
             ),
           ],
@@ -221,13 +218,13 @@ class BotOption extends StatelessWidget {
   final String title;
   final Color titleColor;
   final Function() onPressed;
-  final String currPos;
+  final BorderRadiusGeometry borderRadius;
   final String theme;
   const BotOption({
     required this.title,
     required this.titleColor,
     required this.onPressed,
-    required this.currPos,
+    required this.borderRadius,
     required this.theme,
     super.key
   });
@@ -237,10 +234,7 @@ class BotOption extends StatelessWidget {
       backgroundColor: Colors.transparent,
       onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE0E0E0), dark: const Color(0XFF32353E), midnight: const Color(0XFF232227)),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: currPos == "top" ? const Radius.circular(20) : Radius.zero,
-          bottom: currPos == "bottom" ? const Radius.circular(20) : Radius.zero,
-        ),
+        borderRadius: borderRadius
       ),
       onPressed: onPressed,
       applyClickAnimation: false, 

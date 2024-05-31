@@ -6,6 +6,7 @@ import 'package:discord/src/common/providers/theme_provider.dart';
 
 import 'panels/panels.dart';
 
+import '../screens/screens.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/components/custom_button.dart';
 
@@ -148,7 +149,12 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
                   ),
                 ),
               ),
-              onPressed: () => Navigator.pushNamed(context, '/invite-bot-route')
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const InviteBotScreen(),
+                )
+              )
             ),
           ],
         )

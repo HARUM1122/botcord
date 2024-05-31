@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:page_animation_transition/animations/right_to_left_transition.dart';
+import 'package:page_animation_transition/page_animation_transition.dart';
+import 'package:page_animation_transition/animations/bottom_to_top_transition.dart';
 
 import 'package:discord/src/common/providers/theme_provider.dart';
 
+import '../screens/screens.dart';
 
-import '../components/status_sheet.dart';
+import '../components/online_status.dart';
 import '../components/edit_option_button.dart';
 import '../controller/profile_controller.dart';
 
@@ -16,6 +20,7 @@ import '../../../common/utils/extensions.dart';
 import '../../../common/components/profile_pic.dart';
 import '../../../common/components/online_status/status.dart';
 
+
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
@@ -23,13 +28,18 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ProfileController controller = ref.watch(profileControllerProvider);
     final String theme = ref.watch(themeProvider);
+    
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D));
+    final Color color3 = appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419));
+    final Color color4 = appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419));
+    final Color color5 = appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000));
+
     final Map<String, dynamic> botActivity = controller.botActivity;
-    String seconds = controller.currentSeconds.toString().formatSeconds();
+    final String seconds = controller.currentSeconds.toString().formatSeconds();
 
     return Material(
-      color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+      color: color5,
       child: SingleChildScrollView(
         child: Stack(
           children: [
@@ -48,7 +58,12 @@ class ProfileScreen extends ConsumerWidget {
                     color: banner == null ? Colors.purple : null
                   ),
                   child: GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, '/settings-route'),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SettingsScreen(),
+                      )
+                    ),
                     child: Container(
                       width: 30,
                       height: 30,
@@ -59,7 +74,7 @@ class ProfileScreen extends ConsumerWidget {
                       child: const Center(
                         child: Icon(
                           Icons.settings,
-                          color: Colors.white,
+                          color: Color(0xFFFFFFFF),
                           size: 20,
                         ),
                       ),
@@ -73,7 +88,7 @@ class ProfileScreen extends ConsumerWidget {
                       margin: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419)),
+                        color: color3,
                         borderRadius: BorderRadius.circular(16)
                       ),
                       child: Column(
@@ -147,12 +162,24 @@ class ProfileScreen extends ConsumerWidget {
                             children: [
                               EditOptionButton(
                                 title: 'Edit Activity',
-                                onPressed: () => Navigator.pushNamed(context, '/edit-status-route')
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  PageAnimationTransition(
+                                    page: const EditActivityScreen(), 
+                                    pageAnimationType: BottomToTopTransition()
+                                  )
+                                )
                               ),
                               const SizedBox(width: 10),
                               EditOptionButton(
                                 title: 'Edit Profile',
-                                onPressed: () => Navigator.pushNamed(context, '/edit-profile-route')
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  PageAnimationTransition(
+                                    page: const EditProfileScreen(), 
+                                    pageAnimationType: RightToLeftTransition()
+                                  )
+                                )
                               )
                             ],
                           )
@@ -164,7 +191,7 @@ class ProfileScreen extends ConsumerWidget {
                       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419)),
+                        color: color3,
                         borderRadius: BorderRadius.circular(16)
                       ),
                       child: Column(
@@ -223,19 +250,19 @@ class ProfileScreen extends ConsumerWidget {
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(16)
                   ),
-                  color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
-                  builder: (context, controller, offset) => StatusSheet(controller: controller)
+                  color: color4,
+                  builder: (context, controller, offset) => OnlineStatusSheet(controller: controller)
                 ),
                 radius: 90, 
                 image: avatar?.$1 ?? (user?.avatar.url.toString() ?? ''),
                 padding: const EdgeInsets.all(6),
-                backgroundColor: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                backgroundColor: color5,
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: Container(
                     padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
-                      color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                      color: color4,
                       shape: BoxShape.circle
                     ),
                     child: getOnlineStatus(

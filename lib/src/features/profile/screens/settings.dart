@@ -24,10 +24,13 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final String theme = ref.watch(themeProvider);
+
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0XFF4C4F57), dark: const Color(0XFFC8C9D1), midnight: const Color(0xFFFFFFFF));
     final Color color3 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
     final Color color4 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
+    final Color color5 = appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318));
+    final Color color6 = appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226));
 
     return Scaffold(
       backgroundColor: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
@@ -69,12 +72,12 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
               width: double.infinity,
               margin: const EdgeInsets.symmetric(horizontal: 2),
               decoration: BoxDecoration(
-                color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
+                color: color5,
                 borderRadius: BorderRadius.circular(16)
               ),
               child: Column(
                 children: [
-                  SettingsTile(
+                  SettingsButton(
                     borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(16)
                     ),
@@ -83,29 +86,30 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                     onPressed: () => ref.read(
                       themeProvider.notifier
                     ).setTheme('light', true, false),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 10),
-                        Icon(
-                          Icons.light_mode,
-                          color: color2,
-                        ),
-                        const SizedBox(width: 18),
-                        Text(
-                          'Light',
-                          style: TextStyle(
-                            color: color1,
-                            fontSize: 16,
-                            fontFamily: 'GGSansSemibold'
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.light_mode,
+                            color: color2,
                           ),
-                        ),
-                        const Spacer(),
-                        RadioButtonIndicator(
-                          radius: 20, 
-                          selected: theme == 'light'
-                        ),
-                        const SizedBox(width: 10)
-                      ],
+                          const SizedBox(width: 10),
+                          Text(
+                            'Light',
+                            style: TextStyle(
+                              color: color1,
+                              fontSize: 16,
+                              fontFamily: 'GGSansSemibold'
+                            ),
+                          ),
+                          const Spacer(),
+                          RadioButtonIndicator(
+                            radius: 20, 
+                            selected: theme == 'light'
+                          )
+                        ],
+                      ),
                     )
                   ),
                   Divider(
@@ -114,36 +118,37 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                     height: 0,
                     indent: 50,
                   ),
-                  SettingsTile(
+                  SettingsButton(
                     borderRadius: BorderRadius.zero,
                     backgroundColor: Colors.transparent,
-                    onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
+                    onPressedColor: color6,
                     onPressed: () => ref.read(
                       themeProvider.notifier
                     ).setTheme('dark', true, false),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 10),
-                        Icon(
-                          Icons.light_mode,
-                          color: color2,
-                        ),
-                        const SizedBox(width: 18),
-                        Text(
-                          'Dark',
-                          style: TextStyle(
-                            color: color1,
-                            fontSize: 16,
-                            fontFamily: 'GGSansSemibold'
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.light_mode,
+                            color: color2,
                           ),
-                        ),
-                        const Spacer(),
-                        RadioButtonIndicator(
-                          radius: 20, 
-                          selected: theme == 'dark'
-                        ),
-                        const SizedBox(width: 10)
-                      ],
+                          const SizedBox(width: 10),
+                          Text(
+                            'Dark',
+                            style: TextStyle(
+                              color: color1,
+                              fontSize: 16,
+                              fontFamily: 'GGSansSemibold'
+                            ),
+                          ),
+                          const Spacer(),
+                          RadioButtonIndicator(
+                            radius: 20, 
+                            selected: theme == 'dark'
+                          )
+                        ],
+                      ),
                     )
                   ),
                   Divider(
@@ -152,69 +157,72 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                     height: 0,
                     indent: 50,
                   ),
-                  SettingsTile(
+                  SettingsButton(
                     borderRadius: const BorderRadius.vertical(
                       bottom: Radius.circular(16)
                     ),
                     backgroundColor: Colors.transparent,
-                    onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
+                    onPressedColor: color6,
                     onPressed: () => ref.read(
                       themeProvider.notifier
                     ).setTheme('midnight', true, false),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 10),
-                        Icon(
-                          Icons.light_mode,
-                          color: color2,
-                        ),
-                        const SizedBox(width: 18),
-                        Text(
-                          'Midnight',
-                          style: TextStyle(
-                            color: color1,
-                            fontSize: 16,
-                            fontFamily: 'GGSansSemibold'
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.light_mode,
+                            color: color2,
                           ),
-                        ),
-                        const Spacer(),
-                        RadioButtonIndicator(
-                          radius: 20, 
-                          selected: theme == 'midnight'
-                        ),
-                        const SizedBox(width: 10)
-                      ],
+                          const SizedBox(width: 10),
+                          Text(
+                            'Midnight',
+                            style: TextStyle(
+                              color: color1,
+                              fontSize: 16,
+                              fontFamily: 'GGSansSemibold'
+                            ),
+                          ),
+                          const Spacer(),
+                          RadioButtonIndicator(
+                            radius: 20, 
+                            selected: theme == 'midnight'
+                          )
+                        ],
+                      ),
                     )
                   ),
                 ],
               )
             ),
             const SizedBox(height: 30),
-            SettingsTile(
+            SettingsButton(
               borderRadius: BorderRadius.circular(16),
-              backgroundColor: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
-              onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
+              backgroundColor: color5,
+              onPressedColor: color6,
               onPressed: () => showDialogBox(
                 context: context, 
                 child: const LogoutDialog()
               ),
-              child: Row(
-                children: [
-                  const SizedBox(width: 10),
-                  Icon(
-                    Icons.logout,
-                    color: color2,
-                  ),
-                  const SizedBox(width: 18),
-                  const Text(
-                    'Log Out',
-                    style: TextStyle(
-                      color: Color(0XFFFF5340),
-                      fontSize: 16,
-                      fontFamily: 'GGSansSemibold'
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.logout,
+                      color: color2,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 10),
+                    const Text(
+                      'Log Out',
+                      style: TextStyle(
+                        color: Color(0XFFFF5340),
+                        fontSize: 16,
+                        fontFamily: 'GGSansSemibold'
+                      ),
+                    ),
+                  ],
+                ),
               )
             ),
           ],
@@ -224,14 +232,14 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
   }
 }
 
-class SettingsTile extends StatelessWidget {
+class SettingsButton extends StatelessWidget {
   final BorderRadius borderRadius;
   final Color backgroundColor;
   final Color onPressedColor;
   final Function() onPressed;
   final Widget child;
 
-  const SettingsTile({
+  const SettingsButton({
     required this.borderRadius,
     required this.backgroundColor,
     required this.onPressedColor,
