@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/components/custom_button.dart';
-import '../../../common/providers/theme_provider.dart';
+import '../../../common/controllers/theme_controller.dart';
 
 
 class EditOptionButton extends ConsumerWidget {
@@ -19,7 +19,7 @@ class EditOptionButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String theme = ref.read(themeProvider);
+    final String theme = ref.read(themeController);
     return Expanded(
       child: CustomButton(
         backgroundColor: appTheme<Color>(theme, light: const Color(0XFFDFE1E3), dark: const Color(0XFF373A42), midnight: const Color(0XFF2C2D36)),

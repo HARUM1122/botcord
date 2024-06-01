@@ -11,7 +11,7 @@ import 'routes.dart';
 
 import 'src/common/utils/utils.dart';
 import 'src/common/utils/globals.dart';
-import 'src/common/providers/theme_provider.dart';
+import 'src/common/controllers/theme_controller.dart';
 
 import 'src/features/home/screens/splash.dart';
 import 'src/features/auth/controller/auth_controller.dart';
@@ -71,12 +71,12 @@ class App extends ConsumerWidget {
   const App({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String theme = ref.watch(themeProvider);
+    String theme = ref.watch(themeController);
     if (!initialized) {
       initialized = true;
       trustedDomains.addAll(jsonDecode(prefs.getString('app-data')!)['trusted-domains']);
       ref.read(authControllerProvider).bots = jsonDecode(prefs.getString('bot-data')!)['bots'];
-      ref.read(themeProvider.notifier).setTheme(jsonDecode(prefs.getString('app-data')!)['theme'], false, true);
+      ref.read(themeController.notifier).setTheme(jsonDecode(prefs.getString('app-data')!)['theme'], false, true);
       SystemChrome.setEnabledSystemUIMode(
         SystemUiMode.edgeToEdge,
         overlays: SystemUiOverlay.values

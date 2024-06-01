@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import 'button.dart';
 import '../../screens/screens.dart';
@@ -47,7 +47,7 @@ class GuildsList extends ConsumerWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: appTheme<Color>(
-                  ref.read(themeProvider), 
+                  ref.read(themeController), 
                   light: const Color(0XFFF2F4F5), 
                   dark: const Color(0XFF1C1D23), 
                   midnight: const Color(0XFF0F1014)

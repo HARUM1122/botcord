@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../components/radio_button_indicator/radio_button_indicator.dart';
 
@@ -23,7 +23,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String theme = ref.watch(themeProvider);
+    final String theme = ref.watch(themeController);
 
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0XFF4C4F57), dark: const Color(0XFFC8C9D1), midnight: const Color(0xFFFFFFFF));
@@ -84,7 +84,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                     backgroundColor: Colors.transparent,
                     onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
                     onPressed: () => ref.read(
-                      themeProvider.notifier
+                      themeController.notifier
                     ).setTheme('light', true, false),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
@@ -123,7 +123,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                     backgroundColor: Colors.transparent,
                     onPressedColor: color6,
                     onPressed: () => ref.read(
-                      themeProvider.notifier
+                      themeController.notifier
                     ).setTheme('dark', true, false),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
@@ -164,7 +164,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                     backgroundColor: Colors.transparent,
                     onPressedColor: color6,
                     onPressed: () => ref.read(
-                      themeProvider.notifier
+                      themeController.notifier
                     ).setTheme('midnight', true, false),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),

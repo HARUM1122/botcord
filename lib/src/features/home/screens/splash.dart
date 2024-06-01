@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/globals.dart';
@@ -26,7 +26,7 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   late final AuthController _authController = ref.read(authControllerProvider);
   late final ProfileController _profileController = ref.read(profileControllerProvider);
-  late final String _theme = ref.read(themeProvider);
+  late final String _theme = ref.read(themeController);
 
   late final Map<String, dynamic> _botData = jsonDecode(prefs.getString('bot-data')!);
 
@@ -46,7 +46,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           _profileController.botActivity = _botData['activity'];
           _profileController.updatePresence(save: false, datetime: DateTime.now());
 
-          ref.read(guildsControllerProvider).init();
+          ref.read(guildsControllerProvider).listenGuildEvents();
           if (mounted) {
             Navigator.pushReplacementNamed(context, '/home-route');
           }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../controller/profile_controller.dart';
 
@@ -23,7 +23,7 @@ class OnlineStatusSheet extends ConsumerWidget {
     final ProfileController profileController = ref.read(profileControllerProvider);
     final Map<String, dynamic> botActivity = profileController.botActivity;
 
-    final String theme = ref.read(themeProvider);
+    final String theme = ref.read(themeController);
     final Color color1 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
     
     List<Widget> children = [

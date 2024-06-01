@@ -4,7 +4,7 @@ import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../../controllers/guilds_controller.dart';
 
@@ -17,11 +17,19 @@ class GuildButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String theme = ref.read(themeProvider);
+    final String theme = ref.read(themeController);
     final GuildsController guildsController = ref.read(guildsControllerProvider);
     final String? guildIcon = guild.icon?.url.toString();
+    bool running = false;
+
     return GestureDetector(
-      onTap: () => guildsController.selectGuild(guild),
+      onTap: () async {
+        if (!running) {
+          running = true;
+          await guildsController.selectGuild(guild);
+          running = false;
+        }
+      },
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
         width: 55,

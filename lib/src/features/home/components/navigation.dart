@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import 'navigation_button.dart';
 
-import '../../../common/providers/bottom_nav.dart';
+import '../../../common/controllers/bottom_nav_controller.dart';
 
 import '../../../common/utils/globals.dart';
 import '../../../common/utils/utils.dart';
@@ -23,9 +23,9 @@ class BottomNavigator extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final BottomNavProvider navProvider = ref.watch(bottomNavProvider);
+    final BottomNavController navProvider = ref.watch(bottomNavControler);
     final GuildsController guildsController = ref.watch(guildsControllerProvider);
-    final String theme = ref.watch(themeProvider);
+    final String theme = ref.watch(themeController);
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0XFF9FA2A9), dark: const Color(0xFF777A81), midnight: const Color(0xFF777A81));
 

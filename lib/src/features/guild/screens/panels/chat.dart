@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/utils/utils.dart';
 
 import '../guild.dart';
@@ -12,7 +12,7 @@ class ChatScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String theme = ref.read(themeProvider);
+    final String theme = ref.read(themeController);
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     return Scaffold(
       backgroundColor: appTheme<Color>(theme, light: const Color(0XFFFFFFFF), dark: const Color(0XFF1C1D23), midnight: const Color(0xFF000000)),

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../util/constants.dart';
 
@@ -19,7 +19,7 @@ class LandingScreen extends ConsumerWidget {
   const LandingScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String theme = ref.watch(themeProvider);
+    final String theme = ref.watch(themeController);
     final Color color1 = appTheme(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     return Scaffold(
       backgroundColor: appTheme(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),

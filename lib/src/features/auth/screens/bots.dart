@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../controller/auth_controller.dart';
 
@@ -27,7 +27,7 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
   String _name = "";
   Timer? _debounce;
   late final AuthController _authController = ref.read(authControllerProvider);
-  late final String _theme = ref.watch(themeProvider);
+  late final String _theme = ref.watch(themeController);
 
   late final Color color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
   

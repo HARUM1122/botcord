@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../../utils/utils.dart';
 
@@ -21,7 +21,7 @@ class DoNotDisturbStatus extends ConsumerWidget {
         shape: BoxShape.circle
       ),
       child: CircleAvatar(
-        backgroundColor: appTheme<Color>(ref.read(themeProvider), light: const Color(0xFFFFFFFF), dark: const Color(0xFF000000), midnight: const Color(0xFF000000))
+        backgroundColor: appTheme<Color>(ref.read(themeController), light: const Color(0xFFFFFFFF), dark: const Color(0xFF000000), midnight: const Color(0xFF000000))
       )
     );
   }

@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../../utils/globals.dart';
 import '../../utils/utils.dart';
@@ -35,7 +35,7 @@ class _LinkTrustDialogState extends ConsumerState<LinkTrustDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final String theme = ref.read(themeProvider);
+    final String theme = ref.read(themeController);
     final Uri uri = Uri.parse(widget.link);
     final List<int> indicies = widget.link.getIndicies(uri.host);
     return Container(

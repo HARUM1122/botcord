@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../utils/utils.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/utils.dart';
@@ -18,7 +18,7 @@ import 'package:discord/src/common/components/profile_pic.dart';
 import 'package:discord/src/common/components/online_status/status.dart';
 
 import 'package:discord/src/features/auth/utils/utils.dart';
-import 'package:discord/src/common/providers/bottom_nav.dart';
+import 'package:discord/src/common/controllers/bottom_nav_controller.dart';
 import 'package:discord/src/features/auth/controller/auth_controller.dart';
 import 'package:discord/src/features/profile/controller/profile_controller.dart';
 
@@ -30,7 +30,7 @@ class EditProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
-  late final String _theme = ref.read(themeProvider);
+  late final String _theme = ref.read(themeController);
   late final ProfileController _profileController = ref.read(profileControllerProvider);
 
   late final String _prevUsername = user!.username;
@@ -91,7 +91,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         authController.bots = sort(bots);
         authController.save();
       }
-      ref.read(bottomNavProvider).refresh();
+      ref.read(bottomNavControler).refresh();
       if (!mounted) return;
       Navigator.pop(context);
     } catch (e) {

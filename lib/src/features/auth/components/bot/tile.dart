@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import 'options_sheet.dart';
 
@@ -21,7 +21,7 @@ class BotTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String theme = ref.read(themeProvider);
+    final String theme = ref.read(themeController);
     return SizedBox(
       width: double.infinity,
       child: Column(

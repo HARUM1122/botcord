@@ -1,5 +1,6 @@
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/utils/extensions.dart';
+import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/features/guild/screens/settings/overview/components/settings_button.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class OverViewPage extends ConsumerStatefulWidget {
 }
 
 class _OverViewPageState extends ConsumerState<OverViewPage> {
-  late final String _theme = ref.read(themeProvider);
+  late final String _theme = ref.read(themeController);
 
   late final TextEditingController _controller = TextEditingController(text: widget.guild.name);
 
@@ -225,7 +226,8 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                     borderRadius: const BorderRadius.vertical(
                       bottom: Radius.circular(16)
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
                       child: Row(

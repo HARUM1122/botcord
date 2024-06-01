@@ -10,7 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/utils/extensions.dart';
 import 'package:discord/src/common/components/drag_handle.dart';
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/components/online_status/online.dart';
 import 'package:discord/src/common/components/online_status/invisible.dart';
 
@@ -28,7 +28,7 @@ class GuildOptionsSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String theme = ref.read(themeProvider);
+    final String theme = ref.read(themeController);
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D));
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../components/navigation.dart';
 
@@ -29,7 +29,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    final String theme = ref.watch(themeProvider);
+    final String theme = ref.watch(themeController);
     return Material(
       color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       child: Stack(

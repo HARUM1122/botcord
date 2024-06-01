@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/utils/asset_constants.dart';
 import 'package:discord/src/common/utils/extensions.dart';
 import 'package:discord/src/common/utils/globals.dart';
@@ -25,7 +25,7 @@ class GuildSettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String theme = ref.read(themeProvider);
+    final String theme = ref.read(themeController);
     final GuildsController controller = ref.watch(guildsControllerProvider);
     final Guild? guild = controller.currentGuild;
 

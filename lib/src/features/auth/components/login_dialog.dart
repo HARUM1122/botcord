@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' show ClientException;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../../guild/controllers/guilds_controller.dart';
 
@@ -32,7 +32,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
 
   late final AuthController _authController = ref.read(authControllerProvider);
   late final ProfileController _profileController = ref.read(profileControllerProvider);
-  late final String _theme = ref.read(themeProvider);
+  late final String _theme = ref.read(themeController);
 
   late final Color _color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
   
@@ -44,7 +44,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
         await _authController.login(widget.bot);
         _profileController.botActivity = jsonDecode(prefs.getString('bot-data')!)['activity'];
         _profileController.updatePresence(save: false, datetime: DateTime.now());
-        ref.read(guildsControllerProvider).init();
+        ref.read(guildsControllerProvider).listenGuildEvents();
         if (mounted) {
           Navigator.pop(context);
           Navigator.pop(context);

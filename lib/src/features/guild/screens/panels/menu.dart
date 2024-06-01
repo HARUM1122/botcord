@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/utils/extensions.dart';
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../../components/guild/list.dart';
 import '../../components/badges/badges.dart';
@@ -19,7 +19,7 @@ class MenuScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String theme = ref.read(themeProvider);
+    final String theme = ref.read(themeController);
     bool running = false;
     return Material(
       color: appTheme<Color>(
@@ -71,22 +71,34 @@ class MenuScreen extends ConsumerWidget {
                     onTap: () async {
                       if (running) return;
                       running = true;
-                      Guild guild = await currentGuild.fetch(withCounts: true);
-                      running = false;
-                      if (!context.mounted) return;
-                      showSheet(
-                        context: context,
-                        height: 0.7,
-                        maxHeight: 0.8,
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(16)
-                        ),
-                        color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
-                        builder: (context, controller, offset) => GuildOptionsSheet(
-                          guild: guild, 
-                          controller: controller
-                        )
-                      );
+                      try {
+                        Guild guild = await currentGuild.fetch(withCounts: true);
+                        running = false;
+                        if (!context.mounted) return;
+                        showSheet(
+                          context: context,
+                          height: 0.7,
+                          maxHeight: 0.8,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(16)
+                          ),
+                          color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                          builder: (context, controller, offset) => GuildOptionsSheet(
+                            guild: guild, 
+                            controller: controller
+                          )
+                        );
+                      } catch (e) {
+                        showSnackBar(
+                          theme: theme,
+                          context: context, 
+                          leading: Icon(
+                            Icons.error_outline,
+                            color: Colors.red[800],
+                          ), 
+                          msg: 'Unexpected error, Please retry.'
+                        );
+                      }
                     },
                     child: Row(
                       children: [

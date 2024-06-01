@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' show ClientException;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../controller/auth_controller.dart';
 
@@ -22,7 +22,7 @@ class AddBotsScreen extends ConsumerStatefulWidget {
 
 class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
   final TextEditingController _controller = TextEditingController();
-  late final String _theme = ref.read(themeProvider);
+  late final String _theme = ref.read(themeController);
   bool _running = false;
 
   String _text = '';

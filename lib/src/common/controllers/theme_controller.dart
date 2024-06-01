@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:discord/src/common/utils/globals.dart';
 
-final themeProvider = StateNotifierProvider<ThemeProvider, String>((ref) => ThemeProvider());
+final themeController = StateNotifierProvider<ThemeController, String>((ref) => ThemeController());
 
-class ThemeProvider extends StateNotifier<String> {
-  ThemeProvider() : super('dark');
+class ThemeController extends StateNotifier<String> {
+  ThemeController() : super('dark');
   
   Future<void> setTheme(String appTheme, bool save, bool init) async {
     if (init) await Future.delayed(const Duration(seconds: 1));

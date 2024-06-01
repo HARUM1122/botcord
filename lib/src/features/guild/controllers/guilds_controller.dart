@@ -1,3 +1,4 @@
+import 'package:discord/src/features/guild/controllers/channels_controller.dart';
 import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -6,13 +7,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common/utils/globals.dart';
 
-final guildsControllerProvider = ChangeNotifierProvider((ref) => GuildsController());
+final guildsControllerProvider = ChangeNotifierProvider<GuildsController>((ref) => GuildsController(
+  channelsControllerProvider: ref.read(guildChannelsControllerProvider)
+));
 
 class GuildsController extends ChangeNotifier {
+  final GuildChannelsController channelsControllerProvider;
+  GuildsController({
+    required this.channelsControllerProvider
+  });
+
   List<Guild> guildsCache = [];
   Guild? currentGuild;
   
-  void init() {
+  void listenGuildEvents() {
     client?.onGuildCreate.listen((event) async {
       Guild guild = event is GuildCreateEvent ? event.guild : await event.guild.get();
       currentGuild ??= guild;
@@ -44,12 +52,12 @@ class GuildsController extends ChangeNotifier {
     });
   }
 
-  void selectGuild(Guild guild) {
+  Future<void> selectGuild(Guild guild) async {
     if (guild.id == currentGuild?.id) return;
     currentGuild = guild;
+    await channelsControllerProvider.fetchAllChannels(guild);
     notifyListeners();
   }
-
 
   void clearCache() {
     guildsCache.clear();

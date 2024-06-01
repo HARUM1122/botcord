@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../components/radio_button_indicator/radio_button_indicator2.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/components/custom_button.dart';
@@ -20,7 +20,7 @@ class EditActivityScreen extends ConsumerStatefulWidget {
 }
 
 class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
-  late final String _theme = ref.read(themeProvider);
+  late final String _theme = ref.read(themeController);
   late final ProfileController _profileController = ref.read(profileControllerProvider);
 
   late final String _prevActivityText = _profileController.botActivity['current-activity-text'];

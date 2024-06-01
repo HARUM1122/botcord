@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common/utils/utils.dart';
 import '../../../common/components/custom_button.dart';
-import '../../../common/providers/theme_provider.dart';
+import '../../../common/controllers/theme_controller.dart';
 
 
 class SettingsButton extends ConsumerWidget {
@@ -30,7 +30,7 @@ class SettingsButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String theme = ref.read(themeProvider);
+    final String theme = ref.read(themeController);
     return CustomButton(
       enabled: enabled,
       width: double.infinity,

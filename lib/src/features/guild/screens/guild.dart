@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import 'panels/panels.dart';
 
@@ -10,7 +10,7 @@ import '../screens/screens.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/components/custom_button.dart';
 
-import '../../../common/providers/bottom_nav.dart';
+import '../../../common/controllers/bottom_nav_controller.dart';
 import '../../../features/guild/controllers/guilds_controller.dart';
 
 double translate = 0;
@@ -29,8 +29,8 @@ class GuildsScreen extends ConsumerStatefulWidget {
 
 class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderStateMixin {
 
-  late final String _theme = ref.read(themeProvider);
-  late final BottomNavProvider _bottomNavProv = ref.read(bottomNavProvider);
+  late final String _theme = ref.read(themeController);
+  late final BottomNavController _bottomNavProv = ref.read(bottomNavControler);
 
   double _calculateGoal(double width, int multiplier) => 
     (multiplier * width) + (-multiplier * 20);

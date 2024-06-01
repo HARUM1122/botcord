@@ -6,7 +6,7 @@ import 'package:page_animation_transition/animations/right_to_left_transition.da
 import 'package:page_animation_transition/page_animation_transition.dart';
 import 'package:page_animation_transition/animations/bottom_to_top_transition.dart';
 
-import 'package:discord/src/common/providers/theme_provider.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../screens/screens.dart';
 
@@ -27,7 +27,7 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ProfileController controller = ref.watch(profileControllerProvider);
-    final String theme = ref.watch(themeProvider);
+    final String theme = ref.watch(themeController);
     
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D));

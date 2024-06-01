@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final bottomNavProvider = ChangeNotifierProvider((ref) => BottomNavProvider());
+final bottomNavControler = ChangeNotifierProvider((ref) => BottomNavController());
 
-class BottomNavProvider extends ChangeNotifier {
+class BottomNavController extends ChangeNotifier {
   bool leftMenuOpened = false;
   int currentPageIndex = 0;
 
