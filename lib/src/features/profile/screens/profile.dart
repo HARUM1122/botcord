@@ -128,19 +128,11 @@ class ProfileScreen extends ConsumerWidget {
                                       controller.clearPresence();
                                       controller.updatePresence(save: true);
                                     },
-                                    child: Container(
-                                      width: 15,
-                                      height: 15,
-                                      decoration: BoxDecoration(
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.cancel,
                                         color: appTheme<Color>(theme, light: const Color(0XFF4C4F56), dark: const Color(0XFFC5C8CF), midnight: const Color(0XFFC9C8CD)),
-                                        shape: BoxShape.circle
-                                      ),
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.close,
-                                          color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF31343B), midnight: const Color(0XFF201F27)),
-                                          size: 12,
-                                        ),
+                                        size: 1,
                                       ),
                                     ),
                                   )
@@ -250,7 +242,7 @@ class ProfileScreen extends ConsumerWidget {
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(16)
                   ),
-                  color: color4,
+                  color: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
                   builder: (context, controller, offset) => OnlineStatusSheet(controller: controller)
                 ),
                 radius: 90, 

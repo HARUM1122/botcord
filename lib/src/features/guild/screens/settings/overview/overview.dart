@@ -2,6 +2,7 @@ import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/utils/extensions.dart';
 import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/src/features/guild/screens/settings/overview/components/bottom_sheet/inactive_channels.dart';
 import 'package:discord/src/features/guild/screens/settings/overview/components/settings_button.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,12 @@ import 'package:nyxx/nyxx.dart' as nyxx;
 
 class OverViewPage extends ConsumerStatefulWidget {
   final nyxx.Guild guild;
-  const OverViewPage({required this.guild, super.key});
+  final nyxx.GuildVoiceChannel? inactiveChannel;
+  const OverViewPage({
+    required this.guild,
+    required this.inactiveChannel,
+    super.key
+  });
   @override
   ConsumerState<OverViewPage> createState() => _OverViewPageState();
 }
@@ -24,32 +30,41 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
 
   late final Color _color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
   late final Color _color2 = appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
-  
   late final Color _color3 = appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594));
   late final Color _color4 = appTheme<Color>(_theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318));
-
   late final Color _color5 = appTheme<Color>(_theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226));
-
   late final Color _color6 = appTheme<Color>(_theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
-
-  // final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-    // final Color color2 = appTheme<Color>(theme, light: const Color(0XFF4C4F57), dark: const Color(0XFFC8C9D1), midnight: const Color(0xFFFFFFFF));
-    // final Color color3 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
-    // final Color color4 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
-    // final Color color5 =  appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318));
-    // final Color color6 = appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226));
-
+  
   late String _guildName = widget.guild.name;
+  late nyxx.GuildVoiceChannel? _afkChannel = widget.inactiveChannel;
+  late Duration _afkTimeout = widget.guild.afkTimeout;
 
-  // final Color color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-  //   final Color color2 = appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594));
   bool _saving = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  String _getDuration(Duration duration) => switch(duration.inSeconds) {
+    60 => '1 minute',
+    300 => '5 minutes',
+    900 => '15 minutes',
+    1800 => '30 minutes',
+    3600 => '1 hour',
+    _=> ''
+  };
+  
 
   void _updateSettings() {}
 
   @override
   Widget build(BuildContext context) {
-    bool hasMadeChanges = _guildName != widget.guild.name;
+    bool hasMadeChanges = _guildName != widget.guild.name 
+    || _afkChannel?.id != widget.guild.afkChannelId
+    || _afkTimeout.inSeconds != widget.guild.afkTimeout.inSeconds;
+
     return Scaffold(
       backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0XFF141318)),
       appBar: AppBar(
@@ -135,24 +150,13 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                     color: _color1,
                     fontSize: 14
                   ),
-                  onChanged: (text) {
-                    if (_guildName.isEmpty || text.isEmpty) {
-                      setState(() => _guildName = text);
-                    } else {
-                      _guildName = text;
-                    }
-                  },
+                  onChanged: (text) => setState(() => _guildName = text),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide.none
                     ),
                     contentPadding: const EdgeInsets.all(16),
-                    hintText: "Bot's token",
-                    hintStyle: TextStyle(
-                      color: _color3,
-                      fontSize: 14
-                    ),
                     filled: true,
                     fillColor: appTheme<Color>(_theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017)),
                   )
@@ -184,7 +188,23 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                     borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(16)
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final dynamic result = await showSheet(
+                        context: context, 
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(16)
+                        ),
+                        color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                        builder:(context, controller, offset) => InactiveChannelsSheet(
+                          controller: controller,
+                          selectedInactiveChannelId: _afkChannel?.id,
+                        ), 
+                        height: 0.5, 
+                        maxHeight: 0.8
+                      );
+                      if (result == null) return;
+                      setState(() => _afkChannel = result == 'No Inactive Channel' ? null : result);
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
                       child: Row(
@@ -199,7 +219,7 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                           ),
                           const Spacer(),
                           Text(
-                            'No Inactive Channel',
+                            _afkChannel?.name ?? 'No Inactive Channel',
                             style: TextStyle(
                               color: _color2,
                               fontSize: 16,
@@ -227,6 +247,7 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                       bottom: Radius.circular(16)
                     ),
                     onPressed: () {
+
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
@@ -235,16 +256,16 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                           Text(
                             'Inactive Timeout',
                             style: TextStyle(
-                              color: _color1,
+                              color: _afkChannel != null ? _color1 : _color2,
                               fontSize: 16,
                               fontFamily: 'GGSansSemibold'
                             ),
                           ),
                           const Spacer(),
                           Text(
-                            'No Inactive Channel',
+                            _afkChannel != null ? _getDuration(_afkTimeout) : '5 minutes',
                             style: TextStyle(
-                              color: _color2,
+                              color: _afkChannel != null ? _color2 : _color2.withOpacity(0.5),
                               fontSize: 16,
                             ),
                           ),
@@ -274,8 +295,6 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
     );
   }
 }
-
-
 
 // class CustomToggleSwitch extends StatefulWidget {
 //   @override

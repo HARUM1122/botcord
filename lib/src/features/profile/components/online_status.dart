@@ -12,7 +12,7 @@ import '../../../common/components/drag_handle.dart';
 import '../../../common/components/custom_button.dart';
 import '../../../common/components/online_status/status.dart';
 
-import '../../../features/profile/components/radio_button_indicator/radio_button_indicator.dart';
+import '../../../common/components/radio_button_indicator/radio_button_indicator.dart';
 
 class OnlineStatusSheet extends ConsumerWidget {
   final ScrollController controller;
@@ -20,10 +20,10 @@ class OnlineStatusSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final String theme = ref.read(themeController);
     final ProfileController profileController = ref.read(profileControllerProvider);
     final Map<String, dynamic> botActivity = profileController.botActivity;
 
-    final String theme = ref.read(themeController);
     final Color color1 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
     
     List<Widget> children = [
@@ -152,7 +152,6 @@ class OnlineStatusRB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomButton(
-      height: 60,
       onPressed: () {
         controller.botActivity['current-online-status'] = status;
         controller.updatePresence(save: true);
@@ -164,29 +163,30 @@ class OnlineStatusRB extends StatelessWidget {
         borderRadius: borderRadius
       ),
       applyClickAnimation: false,
-      child: Row(
-        children: [
-          const SizedBox(width: 10),
-          getOnlineStatus(
-            status, 
-            20
-          ),
-          const SizedBox(width: 18),
-          Text(
-            title,
-            style: TextStyle(
-              color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-              fontSize: 16,
-              fontFamily: 'GGSansSemibold'
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+        child: Row(
+          children: [
+            getOnlineStatus(
+              status, 
+              20
             ),
-          ),
-          const Spacer(),
-          RadioButtonIndicator(
-            radius: 20, 
-            selected: selected
-          ),
-          const SizedBox(width: 10),
-        ],
+            const SizedBox(width: 18),
+            Text(
+              title,
+              style: TextStyle(
+                color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                fontSize: 16,
+                fontFamily: 'GGSansSemibold'
+              ),
+            ),
+            const Spacer(),
+            RadioButtonIndicator(
+              radius: 20, 
+              selected: selected
+            ),
+          ],
+        ),
       ),
     );
   }

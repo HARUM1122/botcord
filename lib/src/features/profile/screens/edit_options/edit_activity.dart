@@ -147,13 +147,7 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
                         ),
                       );
                     },
-                    onChanged: (text) {
-                      if (_activityText.isEmpty || text.isEmpty) {
-                        setState(() => _activityText = text);
-                      } else {
-                        _activityText = text;
-                      }
-                    },
+                    onChanged: (text) => setState(() => _activityText = text),
                     style: TextStyle(
                       color: _color2,
                       fontSize: 14

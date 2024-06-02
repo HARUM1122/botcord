@@ -151,13 +151,21 @@ class GuildSettingsPage extends ConsumerWidget {
                           ),
                           title: 'Overview',
                           assetIcon: AssetIcon.info,
-                          onPressed: () => Navigator.push(
-                            context,
-                            PageAnimationTransition(
-                              page: OverViewPage(guild: guild!), 
-                              pageAnimationType: RightToLeftTransition()
-                            )
-                          ), 
+                          onPressed: () async {
+                            if (!context.mounted) return;
+                            Navigator.push(
+                              context,
+                              PageAnimationTransition(
+                                page: OverViewPage(
+                                  guild: guild!,
+                                  inactiveChannel: guild.afkChannelId != null 
+                                  ? (await guild.afkChannel!.get()) as GuildVoiceChannel 
+                                  : null,
+                                ), 
+                                pageAnimationType: RightToLeftTransition()
+                              )
+                            );
+                          } 
                         ),
                         Divider(
                           thickness: 1,

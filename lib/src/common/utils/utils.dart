@@ -17,7 +17,7 @@ void showDialogBox({required BuildContext context, required Widget child}) {
   });
 }
 
-void showSheet({
+Future<T?> showSheet<T>({
   required BuildContext context, 
   required Widget Function(BuildContext context, ScrollController controller, double offset) builder, 
   required double height,
@@ -25,7 +25,7 @@ void showSheet({
   BorderRadius? borderRadius,
   Color? color,
 }) {
-  showFlexibleBottomSheet(
+  return showFlexibleBottomSheet(
     context: context,
     minHeight: 0,
     initHeight: height,
