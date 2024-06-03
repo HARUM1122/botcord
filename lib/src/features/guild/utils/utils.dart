@@ -36,3 +36,13 @@ Future<Permissions> computePermissions(Guild guild, Member member) async {
   permissions as Permissions;
   return permissions.isAdministrator ? Permissions.allPermissions : permissions;
 }
+
+String getDuration(Duration duration) => switch(duration.inSeconds) {
+    60 => '1 minute',
+    300 => '5 minutes',
+    900 => '15 minutes',
+    1800 => '30 minutes',
+    3600 => '1 hour',
+    _=> ''
+  };
+  

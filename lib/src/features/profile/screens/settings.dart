@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
-import '../components/radio_button_indicator/radio_button_indicator.dart';
+import '../../../common/components/radio_button_indicator/radio_button_indicator.dart';
 
 import '../../../common/utils/utils.dart';
 import '../../../common/components/custom_button.dart';
@@ -86,30 +86,30 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                     onPressed: () => ref.read(
                       themeController.notifier
                     ).setTheme('light', true, false),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.light_mode,
-                            color: color2,
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 14),
+                        Icon(
+                          Icons.light_mode,
+                          color: color2,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 18),
+                        Text(
+                          'Light',
+                          style: TextStyle(
+                            color: color1,
+                            fontSize: 16,
+                            fontFamily: 'GGSansSemibold'
                           ),
-                          const SizedBox(width: 10),
-                          Text(
-                            'Light',
-                            style: TextStyle(
-                              color: color1,
-                              fontSize: 16,
-                              fontFamily: 'GGSansSemibold'
-                            ),
-                          ),
-                          const Spacer(),
-                          RadioButtonIndicator(
-                            radius: 20, 
-                            selected: theme == 'light'
-                          )
-                        ],
-                      ),
+                        ),
+                        const Spacer(),
+                        RadioButtonIndicator(
+                          radius: 24, 
+                          selected: theme == 'light'
+                        ),
+                        const SizedBox(width: 14)
+                      ],
                     )
                   ),
                   Divider(
@@ -125,30 +125,30 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                     onPressed: () => ref.read(
                       themeController.notifier
                     ).setTheme('dark', true, false),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.light_mode,
-                            color: color2,
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 14),
+                        Icon(
+                          Icons.light_mode,
+                          color: color2,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 18),
+                        Text(
+                          'Dark',
+                          style: TextStyle(
+                            color: color1,
+                            fontSize: 16,
+                            fontFamily: 'GGSansSemibold'
                           ),
-                          const SizedBox(width: 10),
-                          Text(
-                            'Dark',
-                            style: TextStyle(
-                              color: color1,
-                              fontSize: 16,
-                              fontFamily: 'GGSansSemibold'
-                            ),
-                          ),
-                          const Spacer(),
-                          RadioButtonIndicator(
-                            radius: 20, 
-                            selected: theme == 'dark'
-                          )
-                        ],
-                      ),
+                        ),
+                        const Spacer(),
+                        RadioButtonIndicator(
+                          radius: 24, 
+                          selected: theme == 'dark'
+                        ),
+                        const SizedBox(width: 14)
+                      ],
                     )
                   ),
                   Divider(
@@ -166,30 +166,30 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                     onPressed: () => ref.read(
                       themeController.notifier
                     ).setTheme('midnight', true, false),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.light_mode,
-                            color: color2,
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 14),
+                        Icon(
+                          Icons.light_mode,
+                          color: color2,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 18),
+                        Text(
+                          'Midnight',
+                          style: TextStyle(
+                            color: color1,
+                            fontSize: 16,
+                            fontFamily: 'GGSansSemibold'
                           ),
-                          const SizedBox(width: 10),
-                          Text(
-                            'Midnight',
-                            style: TextStyle(
-                              color: color1,
-                              fontSize: 16,
-                              fontFamily: 'GGSansSemibold'
-                            ),
-                          ),
-                          const Spacer(),
-                          RadioButtonIndicator(
-                            radius: 20, 
-                            selected: theme == 'midnight'
-                          )
-                        ],
-                      ),
+                        ),
+                        const Spacer(),
+                        RadioButtonIndicator(
+                          radius: 24, 
+                          selected: theme == 'midnight'
+                        ),
+                        const SizedBox(width: 14)
+                      ],
                     )
                   ),
                 ],
@@ -204,25 +204,25 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                 context: context, 
                 child: const LogoutDialog()
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.logout,
-                      color: color2,
+              child: Row(
+                children: [
+                  const SizedBox(width: 14),
+                  Icon(
+                    Icons.logout,
+                    color: color2,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 18),
+                  const Text(
+                    'Log Out',
+                    style: TextStyle(
+                      color: Color(0XFFFF5340),
+                      fontSize: 16,
+                      fontFamily: 'GGSansSemibold'
                     ),
-                    const SizedBox(width: 10),
-                    const Text(
-                      'Log Out',
-                      style: TextStyle(
-                        color: Color(0XFFFF5340),
-                        fontSize: 16,
-                        fontFamily: 'GGSansSemibold'
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(width: 14)
+                ],
               )
             ),
           ],

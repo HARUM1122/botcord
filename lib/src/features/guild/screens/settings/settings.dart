@@ -161,6 +161,9 @@ class GuildSettingsPage extends ConsumerWidget {
                                   inactiveChannel: guild.afkChannelId != null 
                                   ? (await guild.afkChannel!.get()) as GuildVoiceChannel 
                                   : null,
+                                  systemChannel: guild.systemChannelId != null 
+                                  ? (await guild.systemChannel?.get()) as GuildTextChannel 
+                                  : null,
                                 ), 
                                 pageAnimationType: RightToLeftTransition()
                               )
@@ -170,7 +173,7 @@ class GuildSettingsPage extends ConsumerWidget {
                         Divider(
                           thickness: 1,
                           height: 0,
-                          indent: 50,
+                          indent: 53,
                           color: color3,
                         ),
                         SettingsButton(
@@ -184,7 +187,7 @@ class GuildSettingsPage extends ConsumerWidget {
                         Divider(
                           thickness: 1,
                           height: 0,
-                          indent: 50,
+                          indent: 53,
                           color: color3,
                         ),
                         SettingsButton(
@@ -198,7 +201,7 @@ class GuildSettingsPage extends ConsumerWidget {
                         Divider(
                           thickness: 1,
                           height: 0,
-                          indent: 50,
+                          indent: 53,
                           color: color3,
                         ),
                         SettingsButton(
@@ -212,7 +215,7 @@ class GuildSettingsPage extends ConsumerWidget {
                         Divider(
                           thickness: 1,
                           height: 0,
-                          indent: 50,
+                          indent: 53,
                           color: color3,
                         ),
                         SettingsButton(
@@ -226,7 +229,7 @@ class GuildSettingsPage extends ConsumerWidget {
                         Divider(
                           thickness: 1,
                           height: 0,
-                          indent: 50,
+                          indent: 53,
                           color: color3,
                         ),
                         SettingsButton(
@@ -240,7 +243,7 @@ class GuildSettingsPage extends ConsumerWidget {
                         Divider(
                           thickness: 1,
                           height: 0,
-                          indent: 50,
+                          indent: 53,
                           color: color3,
                         ),
                         SettingsButton(
@@ -290,7 +293,7 @@ class GuildSettingsPage extends ConsumerWidget {
                         Divider(
                           thickness: 1,
                           height: 0,
-                          indent: 50,
+                          indent: 53,
                           color: color3,
                         ),
                         SettingsButton(
@@ -304,7 +307,7 @@ class GuildSettingsPage extends ConsumerWidget {
                         Divider(
                           thickness: 1,
                           height: 0,
-                          indent: 50,
+                          indent: 53,
                           color: color3,
                         ),
                         SettingsButton(
@@ -318,7 +321,7 @@ class GuildSettingsPage extends ConsumerWidget {
                         Divider(
                           thickness: 1,
                           height: 0,
-                          indent: 50,
+                          indent: 53,
                           color: color3,
                         ),
                         SettingsButton(

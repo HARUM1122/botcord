@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../components/radio_button_indicator/radio_button_indicator2.dart';
+import '../../../../common/components/radio_button_indicator/radio_button_indicator2.dart';
 
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
@@ -365,6 +365,7 @@ class RadioButtonTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomButton(
+      height: 60,
       onPressed: onPressed,
       backgroundColor: Colors.transparent,
       onPressedColor: appTheme<Color>(theme, light: const Color(0XFFC4C6C8), dark: const Color(0XFF212327), midnight: const Color(0XFF373A42)),
@@ -372,25 +373,24 @@ class RadioButtonTile extends StatelessWidget {
         borderRadius: borderRadius
       ),
       applyClickAnimation: false,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-        child: Row(
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-                fontSize: 16,
-                fontFamily: 'GGSansSemibold'
-              ),
+      child: Row(
+        children: [
+          const SizedBox(width: 14),
+          Text(
+            title,
+            style: TextStyle(
+              color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+              fontSize: 16,
+              fontFamily: 'GGSansSemibold'
             ),
-            const Spacer(),
-            RadioButtonIndicator2(
-              radius: 20, 
-              selected: selected
-            ),
-          ],
-        ),
+          ),
+          const Spacer(),
+          RadioButtonIndicator2(
+            radius: 24, 
+            selected: selected
+          ),
+          const SizedBox(width: 14)
+        ],
       ),
     );
   }

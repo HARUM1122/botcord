@@ -132,7 +132,7 @@ class ProfileScreen extends ConsumerWidget {
                                       child: Icon(
                                         Icons.cancel,
                                         color: appTheme<Color>(theme, light: const Color(0XFF4C4F56), dark: const Color(0XFFC5C8CF), midnight: const Color(0XFFC9C8CD)),
-                                        size: 1,
+                                        size: 16,
                                       ),
                                     ),
                                   )

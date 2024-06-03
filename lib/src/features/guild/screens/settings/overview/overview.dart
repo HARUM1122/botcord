@@ -1,9 +1,12 @@
+import 'package:discord/src/common/components/toggle_switch_indicator.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/utils/extensions.dart';
 import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/features/guild/screens/settings/overview/components/bottom_sheet/inactive_channels.dart';
+import 'package:discord/src/features/guild/screens/settings/overview/components/bottom_sheet/inactive_timeout.dart';
 import 'package:discord/src/features/guild/screens/settings/overview/components/settings_button.dart';
+import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,9 +16,11 @@ import 'package:nyxx/nyxx.dart' as nyxx;
 class OverViewPage extends ConsumerStatefulWidget {
   final nyxx.Guild guild;
   final nyxx.GuildVoiceChannel? inactiveChannel;
+  final nyxx.GuildTextChannel? systemChannel;
   const OverViewPage({
     required this.guild,
     required this.inactiveChannel,
+    required this.systemChannel,
     super.key
   });
   @override
@@ -37,7 +42,13 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
   
   late String _guildName = widget.guild.name;
   late nyxx.GuildVoiceChannel? _afkChannel = widget.inactiveChannel;
+  late nyxx.GuildTextChannel? _systemChannel = widget.systemChannel;
   late Duration _afkTimeout = widget.guild.afkTimeout;
+
+  late bool suppressJoinNotifications = widget.guild.systemChannelFlags.shouldSuppressJoinNotifications;
+  late bool suppressJoinNotificationReplies = widget.guild.systemChannelFlags.shouldSuppressJoinNotificationReplies;
+  late bool suppressPremiumSubscriptions = widget.guild.systemChannelFlags.shouldSuppressPremiumSubscriptions;
+  late bool suppressGuildReminderNotifications = widget.guild.systemChannelFlags.shouldSuppressGuildReminderNotifications;
 
   bool _saving = false;
 
@@ -47,17 +58,29 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
     _controller.dispose();
   }
 
-  String _getDuration(Duration duration) => switch(duration.inSeconds) {
-    60 => '1 minute',
-    300 => '5 minutes',
-    900 => '15 minutes',
-    1800 => '30 minutes',
-    3600 => '1 hour',
-    _=> ''
-  };
-  
+  nyxx.Flags<nyxx.SystemChannelFlags> getFlags({
+    bool suppressJoinNotis = false, 
+    bool suppressJoinNotisReplies = false, 
+    bool suppressPremiumSubscriptions = false,
+    bool suppressGuildReminderNotifications = false
+  }) {
+    const defaultFlag =  nyxx.Flag<nyxx.SystemChannelFlags>.fromOffset(32);
+    return (suppressJoinNotis ? nyxx.SystemChannelFlags.suppressJoinNotifications : defaultFlag) | 
+      (suppressJoinNotisReplies ? nyxx.SystemChannelFlags.suppressJoinNotificationReplies : defaultFlag) |
+      (suppressPremiumSubscriptions ? nyxx.SystemChannelFlags.suppressPremiumSubscriptions : defaultFlag) |
+      (suppressGuildReminderNotifications ? nyxx.SystemChannelFlags.suppressGuildReminderNotifications : defaultFlag);
+  }
 
-  void _updateSettings() {}
+  void _updateSettings() {
+
+    // List<nyxx.Flag<nyxx.SystemChannelFlags>> chs = [nyxx.SystemChannelFlags.suppressJoinNotifications];
+    // print(widget.guild.systemChannelFlags.shouldSuppressGuildReminderNotifications);
+    widget.guild.update(
+      nyxx.GuildUpdateBuilder(
+        systemChannelFlags: getFlags()
+      )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -217,12 +240,15 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                               fontFamily: 'GGSansSemibold'
                             ),
                           ),
-                          const Spacer(),
-                          Text(
-                            _afkChannel?.name ?? 'No Inactive Channel',
-                            style: TextStyle(
-                              color: _color2,
-                              fontSize: 16,
+                          Expanded(
+                            child: Text(
+                              _afkChannel?.name ?? 'No Inactive Channel',
+                              textAlign: TextAlign.right,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: _color2,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -242,12 +268,28 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                   ),
                   SettingsButton(
                     backgroundColor: Colors.transparent,
-                    onPressedColor: _color5,
+                    onPressedColor: _afkChannel != null ? _color5 : null,
                     borderRadius: const BorderRadius.vertical(
                       bottom: Radius.circular(16)
                     ),
-                    onPressed: () {
-
+                    onPressed: () async {
+                      if (_afkChannel != null) {
+                        final Duration? duration = await showSheet(
+                          context: context, 
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(16)
+                          ),
+                          color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                          builder:(context, controller, offset) => InactiveChannelsDurationSheet(
+                            controller: controller,
+                            durationInSeconds: _afkTimeout.inSeconds,
+                          ), 
+                          height: 0.5, 
+                          maxHeight: 0.8
+                        );
+                        if (duration == null) return;
+                        setState(() => _afkTimeout = duration);
+                      }
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
@@ -263,7 +305,7 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                           ),
                           const Spacer(),
                           Text(
-                            _afkChannel != null ? _getDuration(_afkTimeout) : '5 minutes',
+                            _afkChannel != null ? getDuration(_afkTimeout) : '5 minutes',
                             style: TextStyle(
                               color: _afkChannel != null ? _color2 : _color2.withOpacity(0.5),
                               fontSize: 16,
@@ -288,7 +330,215 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                 color: _color2,
                 fontSize: 15,
               ),
-            )
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'System Messages Settings',
+              style: TextStyle(
+                color: _color2,
+                fontSize: 14,
+                fontFamily: 'GGSansSemibold'
+              ),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 2),
+              decoration: BoxDecoration(
+                color: _color4,
+                borderRadius: BorderRadius.circular(16)
+              ),
+              child: Column(
+                children: [
+                  SettingsButton(
+                    backgroundColor: Colors.transparent,
+                    onPressedColor: _color5,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(16)
+                    ),
+                    onPressed: () async {
+                      final dynamic result = await showSheet(
+                        context: context, 
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(16)
+                        ),
+                        color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                        builder:(context, controller, offset) => InactiveChannelsSheet(
+                          controller: controller,
+                          selectedInactiveChannelId: _afkChannel?.id,
+                        ), 
+                        height: 0.5, 
+                        maxHeight: 0.8
+                      );
+                      if (result == null) return;
+                      setState(() => _afkChannel = result == 'No Inactive Channel' ? null : result);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Channel',
+                            style: TextStyle(
+                              color: _color1,
+                              fontSize: 16,
+                              fontFamily: 'GGSansSemibold'
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              _systemChannel != null ? _systemChannel!.name : 'No System Messages',
+                              textAlign: TextAlign.right,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: _color2,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Icon(
+                            Icons.keyboard_arrow_right,
+                            color: _color2,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 0,
+                    indent: 15,
+                    color: _color6,
+                  ),
+                  SettingsButton(
+                    backgroundColor: Colors.transparent,
+                    onPressedColor: _color5,
+                    onPressed: () async {
+                    },
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Text(
+                            'Send a random welcome message when someone joins this server.',
+                            style: TextStyle(
+                              color: _color1,
+                              fontSize: 16,
+                              fontFamily: 'GGSansSemibold'
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        ToggleSwitchIndicator(
+                          toggled: suppressJoinNotifications
+                        ),
+                        const SizedBox(width: 14),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 0,
+                    indent: 15,
+                    color: _color6,
+                  ),
+                  SettingsButton(
+                    backgroundColor: Colors.transparent,
+                    onPressedColor: _color5,
+                    onPressed: () async {
+                    },
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Text(
+                            'Send a random welcome message when someone joins this server.',
+                            style: TextStyle(
+                              color: _color1,
+                              fontSize: 16,
+                              fontFamily: 'GGSansSemibold'
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        ToggleSwitchIndicator(
+                          toggled: suppressJoinNotifications
+                        ),
+                        const SizedBox(width: 14),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 0,
+                    indent: 15,
+                    color: _color6,
+                  ),
+                  SettingsButton(
+                    backgroundColor: Colors.transparent,
+                    onPressedColor: _color5,
+                    onPressed: () async {
+                    },
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Text(
+                            'Send a random welcome message when someone joins this server.',
+                            style: TextStyle(
+                              color: _color1,
+                              fontSize: 16,
+                              fontFamily: 'GGSansSemibold'
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        ToggleSwitchIndicator(
+                          toggled: suppressJoinNotifications
+                        ),
+                        const SizedBox(width: 14),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 0,
+                    indent: 15,
+                    color: _color6,
+                  ),
+                  SettingsButton(
+                    backgroundColor: Colors.transparent,
+                    onPressedColor: _color5,
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.circular(16)
+                    ),
+                    onPressed: () async {
+                    },
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Text(
+                            'Send a random welcome message when someone joins this server.',
+                            style: TextStyle(
+                              color: _color1,
+                              fontSize: 16,
+                              fontFamily: 'GGSansSemibold'
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        ToggleSwitchIndicator(
+                          toggled: suppressJoinNotifications
+                        ),
+                        const SizedBox(width: 14),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -296,51 +546,38 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
   }
 }
 
-// class CustomToggleSwitch extends StatefulWidget {
-//   @override
-//   _CustomToggleSwitchState createState() => _CustomToggleSwitchState();
-// }
-
-// class _CustomToggleSwitchState extends State<CustomToggleSwitch> {
-//   bool isToggled = false;
-
+// class ToggleSwitchIndicator extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: () {
-//         setState(() {
-//           isToggled = !isToggled;
-//         });
-//       },
-//       child: Container(
-//         width: 100,
-//         height: 50,
-//         padding: EdgeInsets.all(4),
-//         decoration: BoxDecoration(
-//           color: isToggled ? Colors.green : Colors.grey,
-//           borderRadius: BorderRadius.circular(25),
-//         ),
-//         child: AnimatedAlign(
-//           duration: Duration(milliseconds: 300),
-//           curve: Curves.easeInOut,
-//           alignment: isToggled ? Alignment.centerRight : Alignment.centerLeft,
-//           child: Container(
-//             width: 40,
-//             height: 40,
-//             decoration: BoxDecoration(
-//               color: Colors.white,
-//               shape: BoxShape.circle,
-//             ),
-//             child: Center(
-//               child: Icon(
-//                 isToggled ? Icons.check : Icons.close,
-//                 color: isToggled ? Colors.green : Colors.red,
-//                 size: 24,
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
+//     return Container();
+//     // return Container(
+//     //   width: 100,
+//     //   height: 50,
+//     //   padding: const EdgeInsets.all(4),
+//     //   decoration: BoxDecoration(
+//     //     color: isToggled ? Colors.green : Colors.grey,
+//     //     borderRadius: BorderRadius.circular(25),
+//     //   ),
+//     //   child: AnimatedAlign(
+//     //     duration: Duration(milliseconds: 300),
+//     //     curve: Curves.easeInOut,
+//     //     alignment: toggled ? Alignment.centerRight : Alignment.centerLeft,
+//     //     child: Container(
+//     //       width: 40,
+//     //       height: 40,
+//     //       decoration: BoxDecoration(
+//     //         color: Colors.white,
+//     //         shape: BoxShape.circle,
+//     //       ),
+//     //       child: Center(
+//     //         child: Icon(
+//     //           isToggled ? Icons.check : Icons.close,
+//     //           color: isToggled ? Colors.green : Colors.red,
+//     //           size: 24,
+//     //         ),
+//     //       ),
+//     //     ),
+//     //   ),
+//     // );
 //   }
 // }

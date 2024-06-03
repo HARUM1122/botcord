@@ -47,8 +47,7 @@ class SettingsButton extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SvgPicture.asset(
-              width: 22,
-              height: 22,
+              height: 20,
               assetIcon,
               colorFilter: ColorFilter.mode(
                 appTheme<Color>(
@@ -60,7 +59,7 @@ class SettingsButton extends ConsumerWidget {
                 BlendMode.srcIn
               ),
             ),
-            const SizedBox(width: 14),
+            const SizedBox(width: 18),
             Text(
               title,
               style: TextStyle(

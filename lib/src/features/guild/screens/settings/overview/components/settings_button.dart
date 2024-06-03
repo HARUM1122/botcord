@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 class SettingsButton extends StatelessWidget {
   final Color backgroundColor;
-  final Color onPressedColor;
+  final Color? onPressedColor;
   final BorderRadius? borderRadius;
   final Function() onPressed;
   final Widget child;
 
   const SettingsButton({
     required this.backgroundColor,
-    required this.onPressedColor,
+    this.onPressedColor,
     this.borderRadius,
     required this.onPressed,
     required this.child,
@@ -20,6 +20,7 @@ class SettingsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomButton(
+      height: 60,
       onPressed: onPressed,
       backgroundColor: backgroundColor,
       onPressedColor: onPressedColor,

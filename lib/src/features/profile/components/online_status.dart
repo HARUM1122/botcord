@@ -22,6 +22,7 @@ class OnlineStatusSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeController);
     final ProfileController profileController = ref.read(profileControllerProvider);
+    
     final Map<String, dynamic> botActivity = profileController.botActivity;
 
     final Color color1 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
@@ -152,6 +153,7 @@ class OnlineStatusRB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomButton(
+      height: 60,
       onPressed: () {
         controller.botActivity['current-online-status'] = status;
         controller.updatePresence(save: true);
@@ -163,30 +165,29 @@ class OnlineStatusRB extends StatelessWidget {
         borderRadius: borderRadius
       ),
       applyClickAnimation: false,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-        child: Row(
-          children: [
-            getOnlineStatus(
-              status, 
-              20
+      child: Row(
+        children: [
+          const SizedBox(width: 14),
+          getOnlineStatus(
+            status, 
+            18
+          ),
+          const SizedBox(width: 18),
+          Text(
+            title,
+            style: TextStyle(
+              color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+              fontSize: 16,
+              fontFamily: 'GGSansSemibold'
             ),
-            const SizedBox(width: 18),
-            Text(
-              title,
-              style: TextStyle(
-                color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-                fontSize: 16,
-                fontFamily: 'GGSansSemibold'
-              ),
-            ),
-            const Spacer(),
-            RadioButtonIndicator(
-              radius: 20, 
-              selected: selected
-            ),
-          ],
-        ),
+          ),
+          const Spacer(),
+          RadioButtonIndicator(
+            radius: 24, 
+            selected: selected
+          ),
+          const SizedBox(width: 14)
+        ],
       ),
     );
   }
