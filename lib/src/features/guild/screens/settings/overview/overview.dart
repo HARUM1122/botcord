@@ -1,3 +1,4 @@
+import 'package:discord/src/common/components/radio_button_indicator/radio_button_indicator2.dart';
 import 'package:discord/src/common/components/toggle_switch_indicator.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/utils/extensions.dart';
@@ -40,15 +41,22 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
   late final Color _color5 = appTheme<Color>(_theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226));
   late final Color _color6 = appTheme<Color>(_theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
   
+  // Server name
   late String _guildName = widget.guild.name;
+
+  // Inactive Settings
   late nyxx.GuildVoiceChannel? _afkChannel = widget.inactiveChannel;
-  late nyxx.GuildTextChannel? _systemChannel = widget.systemChannel;
   late Duration _afkTimeout = widget.guild.afkTimeout;
 
-  late bool suppressJoinNotifications = widget.guild.systemChannelFlags.shouldSuppressJoinNotifications;
-  late bool suppressJoinNotificationReplies = widget.guild.systemChannelFlags.shouldSuppressJoinNotificationReplies;
-  late bool suppressPremiumSubscriptions = widget.guild.systemChannelFlags.shouldSuppressPremiumSubscriptions;
-  late bool suppressGuildReminderNotifications = widget.guild.systemChannelFlags.shouldSuppressGuildReminderNotifications;
+  // System Messages Settings
+  late nyxx.GuildTextChannel? _systemChannel = widget.systemChannel;
+  late bool _suppressJoinNotifications = widget.guild.systemChannelFlags.shouldSuppressJoinNotifications;
+  late bool _suppressJoinNotificationReplies = widget.guild.systemChannelFlags.shouldSuppressJoinNotificationReplies;
+  late bool _suppressPremiumSubscriptions = widget.guild.systemChannelFlags.shouldSuppressPremiumSubscriptions;
+  late bool _suppressGuildReminderNotifications = widget.guild.systemChannelFlags.shouldSuppressGuildReminderNotifications;
+
+  // Default Notification Settings
+  late nyxx.MessageNotificationLevel _messageNotificationLevel = widget.guild.defaultMessageNotificationLevel;
 
   bool _saving = false;
 
@@ -71,22 +79,39 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
       (suppressGuildReminderNotifications ? nyxx.SystemChannelFlags.suppressGuildReminderNotifications : defaultFlag);
   }
 
-  void _updateSettings() {
-
-    // List<nyxx.Flag<nyxx.SystemChannelFlags>> chs = [nyxx.SystemChannelFlags.suppressJoinNotifications];
-    // print(widget.guild.systemChannelFlags.shouldSuppressGuildReminderNotifications);
-    widget.guild.update(
+  void _updateSettings() async {
+    if (_saving) return;
+    _saving = true;
+    await widget.guild.update(
       nyxx.GuildUpdateBuilder(
-        systemChannelFlags: getFlags()
+        name: _guildName,
+        afkChannelId: _afkChannel?.id,
+        afkTimeout: _afkTimeout,
+        systemChannelId: _systemChannel?.id,
+        systemChannelFlags: getFlags(
+          suppressJoinNotis: _suppressJoinNotifications,
+          suppressJoinNotisReplies: _suppressJoinNotificationReplies,
+          suppressPremiumSubscriptions: _suppressPremiumSubscriptions,
+          suppressGuildReminderNotifications: _suppressGuildReminderNotifications
+        ),
+        defaultMessageNotificationLevel: _messageNotificationLevel
       )
     );
+    _saving = false;
+    if (mounted) return;
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     bool hasMadeChanges = _guildName != widget.guild.name 
     || _afkChannel?.id != widget.guild.afkChannelId
-    || _afkTimeout.inSeconds != widget.guild.afkTimeout.inSeconds;
+    || _afkTimeout.inSeconds != widget.guild.afkTimeout.inSeconds
+    || _suppressJoinNotifications != widget.guild.systemChannelFlags.shouldSuppressJoinNotifications
+    || _suppressJoinNotificationReplies != widget.guild.systemChannelFlags.shouldSuppressJoinNotificationReplies
+    || _suppressPremiumSubscriptions != widget.guild.systemChannelFlags.shouldSuppressPremiumSubscriptions
+    || _suppressGuildReminderNotifications != widget.guild.systemChannelFlags.shouldSuppressGuildReminderNotifications
+    || _messageNotificationLevel != widget.guild.defaultMessageNotificationLevel;
 
     return Scaffold(
       backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0XFF141318)),
@@ -228,36 +253,35 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                       if (result == null) return;
                       setState(() => _afkChannel = result == 'No Inactive Channel' ? null : result);
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Inactive Channel',
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 14),
+                        Text(
+                          'Inactive Channel',
+                          style: TextStyle(
+                            color: _color1,
+                            fontSize: 16,
+                            fontFamily: 'GGSansSemibold'
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            _afkChannel?.name ?? 'No Inactive Channel',
+                            textAlign: TextAlign.right,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              color: _color1,
+                              color: _color2,
                               fontSize: 16,
-                              fontFamily: 'GGSansSemibold'
                             ),
                           ),
-                          Expanded(
-                            child: Text(
-                              _afkChannel?.name ?? 'No Inactive Channel',
-                              textAlign: TextAlign.right,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: _color2,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Icon(
-                            Icons.keyboard_arrow_right,
-                            color: _color2,
-                          )
-                        ],
-                      ),
+                        ),
+                        const SizedBox(width: 8),
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          color: _color2,
+                        ),
+                        const SizedBox(width: 14)
+                      ],
                     ),
                   ),
                   Divider(
@@ -291,33 +315,32 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                         setState(() => _afkTimeout = duration);
                       }
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Inactive Timeout',
-                            style: TextStyle(
-                              color: _afkChannel != null ? _color1 : _color2,
-                              fontSize: 16,
-                              fontFamily: 'GGSansSemibold'
-                            ),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 14),
+                        Text(
+                          'Inactive Timeout',
+                          style: TextStyle(
+                            color: _afkChannel != null ? _color1 : _color2,
+                            fontSize: 16,
+                            fontFamily: 'GGSansSemibold'
                           ),
-                          const Spacer(),
-                          Text(
-                            _afkChannel != null ? getDuration(_afkTimeout) : '5 minutes',
-                            style: TextStyle(
-                              color: _afkChannel != null ? _color2 : _color2.withOpacity(0.5),
-                              fontSize: 16,
-                            ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          _afkChannel != null ? getDuration(_afkTimeout) : '5 minutes',
+                          style: TextStyle(
+                            color: _afkChannel != null ? _color2 : _color2.withOpacity(0.5),
+                            fontSize: 16,
                           ),
-                          const SizedBox(width: 8),
-                          Icon(
-                            Icons.keyboard_arrow_right,
-                            color: _color2,
-                          )
-                        ],
-                      ),
+                        ),
+                        const SizedBox(width: 8),
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          color: _color2,
+                        ),
+                        const SizedBox(width: 14)
+                      ],
                     ),
                   ),
                 ],
@@ -414,8 +437,7 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                   SettingsButton(
                     backgroundColor: Colors.transparent,
                     onPressedColor: _color5,
-                    onPressed: () async {
-                    },
+                    onPressed: () => setState(() => _suppressJoinNotifications = !_suppressJoinNotifications),
                     child: Row(
                       children: [
                         const SizedBox(width: 14),
@@ -431,7 +453,7 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                         ),
                         const SizedBox(width: 10),
                         ToggleSwitchIndicator(
-                          toggled: suppressJoinNotifications
+                          toggled: !_suppressJoinNotifications
                         ),
                         const SizedBox(width: 14),
                       ],
@@ -446,14 +468,13 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                   SettingsButton(
                     backgroundColor: Colors.transparent,
                     onPressedColor: _color5,
-                    onPressed: () async {
-                    },
+                    onPressed: () => setState(() => _suppressJoinNotificationReplies = !_suppressJoinNotificationReplies),
                     child: Row(
                       children: [
                         const SizedBox(width: 14),
                         Expanded(
                           child: Text(
-                            'Send a random welcome message when someone joins this server.',
+                            'Prompt members to reply to welcome messages with a sticker.',
                             style: TextStyle(
                               color: _color1,
                               fontSize: 16,
@@ -463,7 +484,7 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                         ),
                         const SizedBox(width: 10),
                         ToggleSwitchIndicator(
-                          toggled: suppressJoinNotifications
+                          toggled: !_suppressJoinNotificationReplies
                         ),
                         const SizedBox(width: 14),
                       ],
@@ -478,14 +499,13 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                   SettingsButton(
                     backgroundColor: Colors.transparent,
                     onPressedColor: _color5,
-                    onPressed: () async {
-                    },
+                    onPressed: () => setState(() => _suppressPremiumSubscriptions = !_suppressPremiumSubscriptions),
                     child: Row(
                       children: [
                         const SizedBox(width: 14),
                         Expanded(
                           child: Text(
-                            'Send a random welcome message when someone joins this server.',
+                            'Send a message when someone boosts this server.',
                             style: TextStyle(
                               color: _color1,
                               fontSize: 16,
@@ -495,7 +515,7 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                         ),
                         const SizedBox(width: 10),
                         ToggleSwitchIndicator(
-                          toggled: suppressJoinNotifications
+                          toggled: !_suppressPremiumSubscriptions
                         ),
                         const SizedBox(width: 14),
                       ],
@@ -513,14 +533,13 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                     borderRadius: const BorderRadius.vertical(
                       bottom: Radius.circular(16)
                     ),
-                    onPressed: () async {
-                    },
+                    onPressed: () => setState(() => _suppressGuildReminderNotifications = !_suppressGuildReminderNotifications),
                     child: Row(
                       children: [
                         const SizedBox(width: 14),
                         Expanded(
                           child: Text(
-                            'Send a random welcome message when someone joins this server.',
+                            'Send helpful tips for server setup.',
                             style: TextStyle(
                               color: _color1,
                               fontSize: 16,
@@ -530,9 +549,99 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
                         ),
                         const SizedBox(width: 10),
                         ToggleSwitchIndicator(
-                          toggled: suppressJoinNotifications
+                          toggled: !_suppressGuildReminderNotifications
                         ),
                         const SizedBox(width: 14),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'This is the channel we send system event messages to. These can be turned off at any time.',
+              style: TextStyle(
+                color: _color2,
+                fontSize: 15,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Default Notification Settings',
+              style: TextStyle(
+                color: _color2,
+                fontSize: 14,
+                fontFamily: 'GGSansSemibold'
+              ),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 2),
+              decoration: BoxDecoration(
+                color: _color4,
+                borderRadius: BorderRadius.circular(16)
+              ),
+              child: Column(
+                children: [
+                  SettingsButton(
+                    backgroundColor: Colors.transparent,
+                    onPressedColor: _color5,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(16)
+                    ),
+                    onPressed: () => setState(() => _messageNotificationLevel = nyxx.MessageNotificationLevel.allMessages),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 14),
+                        Text(
+                          'All Messages',
+                          style: TextStyle(
+                            color: _color1,
+                            fontSize: 16,
+                            fontFamily: 'GGSansSemibold'
+                          ),
+                        ),
+                        const Spacer(),
+                        RadioButtonIndicator2(
+                          radius: 24,
+                          selected: _messageNotificationLevel == nyxx.MessageNotificationLevel.allMessages
+                        ),
+                        const SizedBox(width: 14)
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 0,
+                    indent: 15,
+                    color: _color6,
+                  ),
+                  SettingsButton(
+                    backgroundColor: Colors.transparent,
+                    onPressedColor: _color5,
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.circular(16)
+                    ),
+                    onPressed: () => setState(() => _messageNotificationLevel = nyxx.MessageNotificationLevel.onlyMentions),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 14),
+                        Text(
+                          'Only @mentions',
+                          style: TextStyle(
+                            color: _color1,
+                            fontSize: 16,
+                            fontFamily: 'GGSansSemibold'
+                          ),
+                        ),
+                        const Spacer(),
+                        RadioButtonIndicator2(
+                          radius: 24,
+                          selected: _messageNotificationLevel == nyxx.MessageNotificationLevel.onlyMentions
+                        ),
+                        const SizedBox(width: 14)
                       ],
                     ),
                   ),

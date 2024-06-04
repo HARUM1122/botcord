@@ -11,7 +11,7 @@ class ToggleSwitchIndicator extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeController);
     final Color color1 = appTheme<Color>(theme, light: const Color(0XFFC4C9CF), dark: const Color(0XFF4C4F58), midnight: const Color(0XFF4C4F58));
-    
+
     return Container(
       width: 45,
       height: 30,
@@ -21,7 +21,7 @@ class ToggleSwitchIndicator extends ConsumerWidget {
         borderRadius: BorderRadius.circular(25),
       ),
       child: AnimatedAlign(
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
         alignment: toggled ? Alignment.centerRight : Alignment.centerLeft,
         child: Container(
