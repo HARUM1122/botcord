@@ -108,239 +108,248 @@ class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
         ] : null
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(top: 10, left: 12, right: 12, bottom: context.padding.bottom + 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
-                child: Theme(
-                  data: ThemeData(
-                    textSelectionTheme: () {
-                      final Color color = appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594));
-                      return TextSelectionThemeData(
-                        selectionColor: color.withOpacity(0.3),
-                        cursorColor: color
-                      );
-                    }()
-                  ),
-                  child: TextField(
-                    minLines: 4,
-                    maxLines: 10,
-                    maxLength: 128,
-                    controller: _controller,
-                    buildCounter: (context, {
-                        required int currentLength, 
-                        required bool isFocused, 
-                        int? maxLength
-                      }) {
-                      return Container(
-                        transform: Matrix4.translationValues(0, -30, 0),
-                        child: Text(
-                          (maxLength! - currentLength).toString(),
-                          style: TextStyle(
-                            color: appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF858893)),
-                            fontFamily: 'GGSansBold',
-                            fontSize: 12
-                          )
+        child: StretchingOverscrollIndicator(
+          axisDirection: AxisDirection.down,
+          child: NotificationListener<OverscrollIndicatorNotification>(
+            onNotification: (notification) {
+              notification.disallowIndicator();
+              return true;
+            },
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(top: 10, left: 12, right: 12, bottom: context.padding.bottom + 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
+                    child: Theme(
+                      data: ThemeData(
+                        textSelectionTheme: () {
+                          final Color color = appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594));
+                          return TextSelectionThemeData(
+                            selectionColor: color.withOpacity(0.3),
+                            cursorColor: color
+                          );
+                        }()
+                      ),
+                      child: TextField(
+                        minLines: 4,
+                        maxLines: 10,
+                        maxLength: 128,
+                        controller: _controller,
+                        buildCounter: (context, {
+                            required int currentLength, 
+                            required bool isFocused, 
+                            int? maxLength
+                          }) {
+                          return Container(
+                            transform: Matrix4.translationValues(0, -30, 0),
+                            child: Text(
+                              (maxLength! - currentLength).toString(),
+                              style: TextStyle(
+                                color: appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF858893)),
+                                fontFamily: 'GGSansBold',
+                                fontSize: 12
+                              )
+                            ),
+                          );
+                        },
+                        onChanged: (text) => setState(() => _activityText = text),
+                        style: TextStyle(
+                          color: _color2,
+                          fontSize: 14
                         ),
-                      );
-                    },
-                    onChanged: (text) => setState(() => _activityText = text),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide.none
+                          ),
+                          contentPadding: const EdgeInsets.all(16),
+                          hintText: "What you're up to?",
+                          hintStyle: TextStyle(
+                            color: appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
+                            fontSize: 16
+                          ),
+                          filled: true,
+                          fillColor: appTheme<Color>(_theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017))
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Activity Type',
                     style: TextStyle(
-                      color: _color2,
+                      color: _color4,
+                      fontFamily: 'GGSansSemibold',
                       fontSize: 14
                     ),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide.none
-                      ),
-                      contentPadding: const EdgeInsets.all(16),
-                      hintText: "What you're up to?",
-                      hintStyle: TextStyle(
-                        color: appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594)),
-                        fontSize: 16
-                      ),
-                      filled: true,
-                      fillColor: appTheme<Color>(_theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017))
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.symmetric(horizontal: 2),
+                    decoration: BoxDecoration(
+                      color: _color3,
+                      borderRadius: BorderRadius.circular(16)
+                    ),
+                    child: Column(
+                      children: [
+                        RadioButtonTile(
+                          title: 'Playing',
+                          theme: _theme,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(16)
+                          ),
+                          selected: _activityType == 'playing',
+                          onPressed: () => setState(() => _activityType = 'playing')
+                        ),
+                        Divider(
+                          color: _color1,
+                          thickness: 1,
+                          height: 0,
+                          indent: 15,
+                        ),
+                        RadioButtonTile(
+                          title: 'Watching',
+                          theme: _theme,
+                          borderRadius: BorderRadius.zero,
+                          selected: _activityType == 'watching',
+                          onPressed: () => setState(() => _activityType = 'watching')
+                        ),
+                        Divider(
+                          color: _color1,
+                          thickness: 1,
+                          height: 0,
+                          indent: 15,
+                        ),
+                        RadioButtonTile(
+                          title: 'Listening',
+                          theme: _theme,
+                          borderRadius: BorderRadius.zero,
+                          selected: _activityType == 'listening',
+                          onPressed: () => setState(() => _activityType = 'listening')
+                        ),
+                        Divider(
+                          color: _color1,
+                          thickness: 1,
+                          height: 0,
+                          indent: 15,
+                        ),
+                        RadioButtonTile(
+                          title: 'Competing',
+                          theme: _theme,
+                          borderRadius: BorderRadius.zero,
+                          selected: _activityType == 'competing',
+                          onPressed: () => setState(() => _activityType = 'competing')
+                        ),
+                        Divider(
+                          color: _color1,
+                          thickness: 1,
+                          height: 0,
+                          indent: 15,
+                        ),
+                        RadioButtonTile(
+                          title: "Custom",
+                          theme: _theme,
+                          borderRadius: const BorderRadius.vertical(
+                            bottom: Radius.circular(16)
+                          ),
+                          selected: _activityType == 'custom',
+                          onPressed: () => setState(() => _activityType = 'custom')
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'Activity Type',
-                style: TextStyle(
-                  color: _color4,
-                  fontFamily: 'GGSansSemibold',
-                  fontSize: 14
-                ),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 2),
-                decoration: BoxDecoration(
-                  color: _color3,
-                  borderRadius: BorderRadius.circular(16)
-                ),
-                child: Column(
-                  children: [
-                    RadioButtonTile(
-                      title: 'Playing',
-                      theme: _theme,
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(16)
-                      ),
-                      selected: _activityType == 'playing',
-                      onPressed: () => setState(() => _activityType = 'playing')
+                  const SizedBox(height: 30),
+                  Text(
+                    'Status Duration',
+                    style: TextStyle(
+                      color: _color4,
+                      fontFamily: 'GGSansSemibold',
+                      fontSize: 14
                     ),
-                    Divider(
-                      color: _color1,
-                      thickness: 1,
-                      height: 0,
-                      indent: 15,
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.symmetric(horizontal: 2),
+                    decoration: BoxDecoration(
+                      color: _color3,
+                      borderRadius: BorderRadius.circular(16)
                     ),
-                    RadioButtonTile(
-                      title: 'Watching',
-                      theme: _theme,
-                      borderRadius: BorderRadius.zero,
-                      selected: _activityType == 'watching',
-                      onPressed: () => setState(() => _activityType = 'watching')
+                    child: Column(
+                      children: [
+                        RadioButtonTile(
+                          title: 'Clear in 24 hours',
+                          theme: _theme,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(16)
+                          ),
+                          selected: _duration == '24',
+                          onPressed: () => setState(() => _duration = '24')
+                        ),
+                        Divider(
+                          color: _color1,
+                          thickness: 1,
+                          height: 0,
+                          indent: 15,
+                        ),
+                        RadioButtonTile(
+                          title: 'Clear in 4 hours',
+                          theme: _theme,
+                          borderRadius: BorderRadius.zero,
+                          selected: _duration == '4',
+                          onPressed: () => setState(() => _duration = '4')
+                        ),
+                        Divider(
+                          color: _color1,
+                          thickness: 1,
+                          height: 0,
+                          indent: 15,
+                        ),
+                        RadioButtonTile(
+                          title: 'Clear in 1 hour',
+                          theme: _theme,
+                          borderRadius: BorderRadius.zero,
+                          selected: _duration == '1',
+                          onPressed: () => setState(() => _duration = '1')
+                        ),
+                        Divider(
+                          color: _color1,
+                          thickness: 1,
+                          height: 0,
+                          indent: 15,
+                        ),
+                        RadioButtonTile(
+                          title: 'Clear in 30 minutes',
+                          theme: _theme,
+                          borderRadius: BorderRadius.zero,
+                          selected: _duration == '30',
+                          onPressed: () => setState(() => _duration = '30')
+                        ),
+                        Divider(
+                          color: _color1,
+                          thickness: 1,
+                          height: 0,
+                          indent: 15,
+                        ),
+                        RadioButtonTile(
+                          title: "Don't clear",
+                          theme: _theme,
+                          borderRadius: const BorderRadius.vertical(
+                            bottom: Radius.circular(16)
+                          ),
+                          selected: _duration.isEmpty,
+                          onPressed: () => setState(() => _duration = '')
+                        ),
+                      ],
                     ),
-                    Divider(
-                      color: _color1,
-                      thickness: 1,
-                      height: 0,
-                      indent: 15,
-                    ),
-                    RadioButtonTile(
-                      title: 'Listening',
-                      theme: _theme,
-                      borderRadius: BorderRadius.zero,
-                      selected: _activityType == 'listening',
-                      onPressed: () => setState(() => _activityType = 'listening')
-                    ),
-                    Divider(
-                      color: _color1,
-                      thickness: 1,
-                      height: 0,
-                      indent: 15,
-                    ),
-                    RadioButtonTile(
-                      title: 'Competing',
-                      theme: _theme,
-                      borderRadius: BorderRadius.zero,
-                      selected: _activityType == 'competing',
-                      onPressed: () => setState(() => _activityType = 'competing')
-                    ),
-                    Divider(
-                      color: _color1,
-                      thickness: 1,
-                      height: 0,
-                      indent: 15,
-                    ),
-                    RadioButtonTile(
-                      title: "Custom",
-                      theme: _theme,
-                      borderRadius: const BorderRadius.vertical(
-                        bottom: Radius.circular(16)
-                      ),
-                      selected: _activityType == 'custom',
-                      onPressed: () => setState(() => _activityType = 'custom')
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 30),
-              Text(
-                'Status Duration',
-                style: TextStyle(
-                  color: _color4,
-                  fontFamily: 'GGSansSemibold',
-                  fontSize: 14
-                ),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 2),
-                decoration: BoxDecoration(
-                  color: _color3,
-                  borderRadius: BorderRadius.circular(16)
-                ),
-                child: Column(
-                  children: [
-                    RadioButtonTile(
-                      title: 'Clear in 24 hours',
-                      theme: _theme,
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(16)
-                      ),
-                      selected: _duration == '24',
-                      onPressed: () => setState(() => _duration = '24')
-                    ),
-                    Divider(
-                      color: _color1,
-                      thickness: 1,
-                      height: 0,
-                      indent: 15,
-                    ),
-                    RadioButtonTile(
-                      title: 'Clear in 4 hours',
-                      theme: _theme,
-                      borderRadius: BorderRadius.zero,
-                      selected: _duration == '4',
-                      onPressed: () => setState(() => _duration = '4')
-                    ),
-                    Divider(
-                      color: _color1,
-                      thickness: 1,
-                      height: 0,
-                      indent: 15,
-                    ),
-                    RadioButtonTile(
-                      title: 'Clear in 1 hour',
-                      theme: _theme,
-                      borderRadius: BorderRadius.zero,
-                      selected: _duration == '1',
-                      onPressed: () => setState(() => _duration = '1')
-                    ),
-                    Divider(
-                      color: _color1,
-                      thickness: 1,
-                      height: 0,
-                      indent: 15,
-                    ),
-                    RadioButtonTile(
-                      title: 'Clear in 30 minutes',
-                      theme: _theme,
-                      borderRadius: BorderRadius.zero,
-                      selected: _duration == '30',
-                      onPressed: () => setState(() => _duration = '30')
-                    ),
-                    Divider(
-                      color: _color1,
-                      thickness: 1,
-                      height: 0,
-                      indent: 15,
-                    ),
-                    RadioButtonTile(
-                      title: "Don't clear",
-                      theme: _theme,
-                      borderRadius: const BorderRadius.vertical(
-                        bottom: Radius.circular(16)
-                      ),
-                      selected: _duration.isEmpty,
-                      onPressed: () => setState(() => _duration = '')
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )
+                  ),
+                ],
+              )
+            ),
+          ),
         ),
       ),
     );

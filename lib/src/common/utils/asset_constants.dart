@@ -20,4 +20,6 @@ class AssetIcon {
   static const String users = '$_svgPath/users.svg';
   static const String webhook = '$_svgPath/webhook.svg';
   static const String list = '$_svgPath/list.svg';
+  static const String speakerWave = '$_svgPath/speaker.svg';
+  static const String hash = '$_svgPath/hash.svg';
 }

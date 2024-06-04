@@ -112,7 +112,7 @@ class _LinkTrustDialogState extends ConsumerState<LinkTrustDialog> {
                       ), 
                     ),
                   ),
-                  CheckBoxIndicator(selected: _domainTrusted)
+                  CheckBoxIndicator(selected: _domainTrusted, circular: false)
                 ],
               ),
             )

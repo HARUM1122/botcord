@@ -1,23 +1,22 @@
-import 'package:discord/src/common/utils/asset_constants.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
-import 'package:nyxx/nyxx.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:discord/src/features/guild/controllers/channels_controller.dart';
-
-import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/common/utils/extensions.dart';
-import 'package:discord/src/common/components/drag_handle.dart';
 import 'package:discord/src/common/components/custom_button.dart';
-import 'package:discord/src/common/controllers/theme_controller.dart';
+import 'package:discord/src/common/components/drag_handle.dart';
 import 'package:discord/src/common/components/radio_button_indicator/radio_button_indicator.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
+import 'package:discord/src/common/utils/asset_constants.dart';
+import 'package:discord/src/common/utils/extensions.dart';
+import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/src/features/guild/controllers/channels_controller.dart';
+import 'package:flutter/material.dart';
 
-class InactiveChannelsSheet extends ConsumerWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nyxx/nyxx.dart';
+
+
+class SystemChannelsSheet extends ConsumerWidget {
   final ScrollController controller;
-  final Snowflake? selectedInactiveChannelId;
-  const InactiveChannelsSheet({required this.controller, required this.selectedInactiveChannelId, super.key});
+  final Snowflake? selectedSystemChannelId;
+  const SystemChannelsSheet({required this.controller, required this.selectedSystemChannelId, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,33 +62,33 @@ class InactiveChannelsSheet extends ConsumerWidget {
             child: Column(
               children: [
                 ...() {
-                  final List<GuildVoiceChannel> voiceChannels = [
+                  final List<GuildTextChannel> textChannels = [
                     for (GuildChannel channel in channelsController.channels) 
-                      if (channel.type == ChannelType.guildVoice) 
-                        channel as GuildVoiceChannel
+                      if (channel.type == ChannelType.guildText) 
+                        channel as GuildTextChannel
                   ];
-                  final List<Widget> voiceChannelWidgets = [
-                    VoiceChannelRadioButton(
-                      title: 'No Inactive Channel',
+                  final List<Widget> textChannelWidgets = [
+                    TextChannelRadioButton(
+                      title: 'No System Messages',
                       leading: Icon(
                         Icons.cancel,
                         color: color2,
                         size: 22,
                       ),
-                      borderRadius: voiceChannels.isEmpty 
+                      borderRadius: textChannels.isEmpty 
                       ? BorderRadius.circular(16) 
                       : const BorderRadius.vertical(
                         top: Radius.circular(16)
                       ),
-                      selected: selectedInactiveChannelId == null,
-                      onPressed: () => Navigator.pop(context, 'No Inactive Channel')
+                      selected: selectedSystemChannelId == null,
+                      onPressed: () => Navigator.pop(context, 'No System Messages')
                     )
                   ];
-                  int length = voiceChannels.length;
+                  int length = textChannels.length;
                   for (int i = 0; i < length; i++) {
-                    final GuildVoiceChannel voiceChannel = voiceChannels[i];
+                    final GuildTextChannel textChannel = textChannels[i];
                     if (i < length) {
-                      voiceChannelWidgets.add(
+                      textChannelWidgets.add(
                         Divider(
                           color: appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21)),
                           thickness: 1,
@@ -98,11 +97,11 @@ class InactiveChannelsSheet extends ConsumerWidget {
                         )
                       ); 
                     }
-                    voiceChannelWidgets.add(
-                      VoiceChannelRadioButton(
-                        title: voiceChannel.name,
+                    textChannelWidgets.add(
+                      TextChannelRadioButton(
+                        title: textChannel.name,
                         leading: SvgPicture.asset(
-                          AssetIcon.speakerWave,
+                          AssetIcon.hash,
                           height: 22,
                           colorFilter: ColorFilter.mode(color2, BlendMode.srcIn),
                         ),
@@ -111,12 +110,12 @@ class InactiveChannelsSheet extends ConsumerWidget {
                           bottom: Radius.circular(16)
                         ) 
                         : null,
-                        selected: voiceChannels[i].id == selectedInactiveChannelId,
-                        onPressed: () => Navigator.pop(context, voiceChannel)
+                        selected: textChannels[i].id == selectedSystemChannelId,
+                        onPressed: () => Navigator.pop(context, textChannel)
                       )
                     );
                   }
-                  return voiceChannelWidgets;
+                  return textChannelWidgets;
                 }(),
               ],
             ),
@@ -133,14 +132,14 @@ class InactiveChannelsSheet extends ConsumerWidget {
   }
 }
 
-class VoiceChannelRadioButton extends ConsumerWidget {
+class TextChannelRadioButton extends ConsumerWidget {
   final String title;
   final Widget leading;
   final bool selected;
   final BorderRadius? borderRadius;
   final Function() onPressed;
 
-  const VoiceChannelRadioButton({
+  const TextChannelRadioButton({
     required this.title,
     required this.leading,
     required this.selected,

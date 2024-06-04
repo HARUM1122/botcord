@@ -52,9 +52,9 @@ class SettingsButton extends ConsumerWidget {
               colorFilter: ColorFilter.mode(
                 appTheme<Color>(
                   theme, 
-                  light: Color(enabled ? 0xFF000000 : 0XFF818181),
-                  dark: Color(enabled ? 0xFFFFFFFF : 0XFF868990),
-                  midnight: Color(enabled ? 0xFFFFFFFF : 0XFF7F7E83)
+                  light: const Color(0xFF000000).withOpacity(enabled ? 1 : 0.5),
+                  dark: const Color(0xFFFFFFFF).withOpacity(enabled ? 1 : 0.5),
+                  midnight: const Color(0xFFFFFFFF).withOpacity(enabled ? 1 : 0.5)
                 ),
                 BlendMode.srcIn
               ),
@@ -65,9 +65,9 @@ class SettingsButton extends ConsumerWidget {
               style: TextStyle(
                 color: appTheme<Color>(
                   theme, 
-                  light: enabled ? const Color(0xFF000000) : const Color(0XFF818181).withOpacity(0.5),
-                  dark: enabled ? const Color(0xFFFFFFFF) : const Color(0XFF868990).withOpacity(0.5),
-                  midnight: enabled ? const Color(0xFFFFFFFF) : const Color(0XFF7F7E83).withOpacity(0.5)
+                  light: const Color(0xFF000000).withOpacity(enabled ? 1 : 0.4),
+                  dark: const Color(0xFFFFFFFF).withOpacity(enabled ? 1 : 0.4),
+                  midnight: const Color(0xFFFFFFFF).withOpacity(enabled ? 1 : 0.4)
                 ),
                 fontSize: 16,
                 fontFamily: 'GGSansSemibold'

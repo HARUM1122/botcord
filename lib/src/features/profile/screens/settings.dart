@@ -53,6 +53,14 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
         ),
         centerTitle: true,
       ),
+      
+    // StretchingOverscrollIndicator(
+    //             axisDirection: AxisDirection.down,
+    //             child: NotificationListener<OverscrollIndicatorNotification>(
+    //               onNotification: (notification) {
+    //                 notification.disallowIndicator();
+    //                 return true;
+    //               },
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Column(

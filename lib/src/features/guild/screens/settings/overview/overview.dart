@@ -1,17 +1,21 @@
-import 'package:discord/src/common/components/radio_button_indicator/radio_button_indicator2.dart';
-import 'package:discord/src/common/components/toggle_switch_indicator.dart';
-import 'package:discord/src/common/controllers/theme_controller.dart';
-import 'package:discord/src/common/utils/extensions.dart';
-import 'package:discord/src/common/utils/globals.dart';
-import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/features/guild/screens/settings/overview/components/bottom_sheet/inactive_channels.dart';
-import 'package:discord/src/features/guild/screens/settings/overview/components/bottom_sheet/inactive_timeout.dart';
-import 'package:discord/src/features/guild/screens/settings/overview/components/settings_button.dart';
-import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nyxx/nyxx.dart' as nyxx;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/src/common/utils/globals.dart';
+import 'package:discord/src/common/utils/extensions.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
+import 'package:discord/src/common/components/toggle_switch_indicator.dart';
+import 'package:discord/src/common/components/radio_button_indicator/radio_button_indicator2.dart';
+
+import 'components/settings_button.dart';
+import 'components/bottom_sheet/system_channels.dart';
+import 'components/bottom_sheet/inactive_timeout.dart';
+import 'components/bottom_sheet/inactive_channels.dart';
+
+import '../../../utils/utils.dart';
 
 
 class OverViewPage extends ConsumerStatefulWidget {
@@ -81,24 +85,37 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
 
   void _updateSettings() async {
     if (_saving) return;
-    _saving = true;
-    await widget.guild.update(
-      nyxx.GuildUpdateBuilder(
-        name: _guildName,
-        afkChannelId: _afkChannel?.id,
-        afkTimeout: _afkTimeout,
-        systemChannelId: _systemChannel?.id,
-        systemChannelFlags: getFlags(
-          suppressJoinNotis: _suppressJoinNotifications,
-          suppressJoinNotisReplies: _suppressJoinNotificationReplies,
-          suppressPremiumSubscriptions: _suppressPremiumSubscriptions,
-          suppressGuildReminderNotifications: _suppressGuildReminderNotifications
+    setState(() => _saving = true);
+    try {
+      await widget.guild.update(
+        nyxx.GuildUpdateBuilder(
+          name: _guildName,
+          afkChannelId: _afkChannel?.id,
+          afkTimeout: _afkTimeout,
+          systemChannelId: _systemChannel?.id,
+          systemChannelFlags: getFlags(
+            suppressJoinNotis: _suppressJoinNotifications,
+            suppressJoinNotisReplies: _suppressJoinNotificationReplies,
+            suppressPremiumSubscriptions: _suppressPremiumSubscriptions,
+            suppressGuildReminderNotifications: _suppressGuildReminderNotifications
+          ),
+          defaultMessageNotificationLevel: _messageNotificationLevel
+        )
+      );
+    } catch (e) {
+      if (!mounted) return;
+      showSnackBar(
+        context: context, 
+        theme: _theme,
+        leading: Icon(
+          Icons.error_outline,
+          color: Colors.red[800],
         ),
-        defaultMessageNotificationLevel: _messageNotificationLevel
-      )
-    );
-    _saving = false;
-    if (mounted) return;
+        msg: 'Unexpected Error, Please try again.'
+      );
+    }
+    setState(() => _saving = false);
+    if (!mounted) return;
     Navigator.pop(context);
   }
 
@@ -107,6 +124,7 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
     bool hasMadeChanges = _guildName != widget.guild.name 
     || _afkChannel?.id != widget.guild.afkChannelId
     || _afkTimeout.inSeconds != widget.guild.afkTimeout.inSeconds
+    || _systemChannel?.id != widget.guild.systemChannelId
     || _suppressJoinNotifications != widget.guild.systemChannelFlags.shouldSuppressJoinNotifications
     || _suppressJoinNotificationReplies != widget.guild.systemChannelFlags.shouldSuppressJoinNotificationReplies
     || _suppressPremiumSubscriptions != widget.guild.systemChannelFlags.shouldSuppressPremiumSubscriptions
@@ -114,7 +132,7 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
     || _messageNotificationLevel != widget.guild.defaultMessageNotificationLevel;
 
     return Scaffold(
-      backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0XFF141318)),
+      backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
@@ -146,7 +164,7 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
               style: TextStyle(
                 color: () {
                   Color color = appTheme<Color>(_theme, light: const Color(0xFF5964F4), dark: const Color(0xFF969BF6), midnight: const Color(0XFF6E82F4));
-                  return hasMadeChanges ? color : color.withOpacity(0.5);
+                  return color.withOpacity(hasMadeChanges ? 1 : 0.5);
                 }(),
                 fontSize: 16,
                 fontFamily: 'GGSansSemibold'
@@ -165,528 +183,533 @@ class _OverViewPageState extends ConsumerState<OverViewPage> {
         ],
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.only(top: 10, left: 12, right: 12, bottom: context.padding.bottom + 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Server Name',
-              style: TextStyle(
-                color: _color2,
-                fontSize: 14,
-                fontFamily: 'GGSansSemibold'
-              ),
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: Theme(
-                data: ThemeData(
-                  textSelectionTheme: () {
-                    final Color color = _color3;
-                    return TextSelectionThemeData(
-                      selectionColor: color.withOpacity(0.3),
-                      cursorColor: color
-                    );
-                  }()
-                ),
-                child: TextField(
-                  controller: _controller,
+      body: StretchingOverscrollIndicator(
+        axisDirection: AxisDirection.down,
+        child: NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (notification) {
+            notification.disallowIndicator();
+            return true;
+          },
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(top: 10, left: 12, right: 12, bottom: context.padding.bottom + 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Server Name',
                   style: TextStyle(
-                    color: _color1,
-                    fontSize: 14
+                    color: _color2,
+                    fontSize: 14,
+                    fontFamily: 'GGSansSemibold'
                   ),
-                  onChanged: (text) => setState(() => _guildName = text),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none
-                    ),
-                    contentPadding: const EdgeInsets.all(16),
-                    filled: true,
-                    fillColor: appTheme<Color>(_theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017)),
-                  )
                 ),
-              ),
-            ),
-            const SizedBox(height: 30),
-            Text(
-              'Inactive Settings',
-              style: TextStyle(
-                color: _color2,
-                fontSize: 14,
-                fontFamily: 'GGSansSemibold'
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 2),
-              decoration: BoxDecoration(
-                color: _color4,
-                borderRadius: BorderRadius.circular(16)
-              ),
-              child: Column(
-                children: [
-                  SettingsButton(
-                    backgroundColor: Colors.transparent,
-                    onPressedColor: _color5,
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(16)
-                    ),
-                    onPressed: () async {
-                      final dynamic result = await showSheet(
-                        context: context, 
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(16)
-                        ),
-                        color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
-                        builder:(context, controller, offset) => InactiveChannelsSheet(
-                          controller: controller,
-                          selectedInactiveChannelId: _afkChannel?.id,
-                        ), 
-                        height: 0.5, 
-                        maxHeight: 0.8
-                      );
-                      if (result == null) return;
-                      setState(() => _afkChannel = result == 'No Inactive Channel' ? null : result);
-                    },
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 14),
-                        Text(
-                          'Inactive Channel',
-                          style: TextStyle(
-                            color: _color1,
-                            fontSize: 16,
-                            fontFamily: 'GGSansSemibold'
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            _afkChannel?.name ?? 'No Inactive Channel',
-                            textAlign: TextAlign.right,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: _color2,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Icon(
-                          Icons.keyboard_arrow_right,
-                          color: _color2,
-                        ),
-                        const SizedBox(width: 14)
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    thickness: 1,
-                    height: 0,
-                    indent: 15,
-                    color: _color6,
-                  ),
-                  SettingsButton(
-                    backgroundColor: Colors.transparent,
-                    onPressedColor: _afkChannel != null ? _color5 : null,
-                    borderRadius: const BorderRadius.vertical(
-                      bottom: Radius.circular(16)
-                    ),
-                    onPressed: () async {
-                      if (_afkChannel != null) {
-                        final Duration? duration = await showSheet(
-                          context: context, 
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(16)
-                          ),
-                          color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
-                          builder:(context, controller, offset) => InactiveChannelsDurationSheet(
-                            controller: controller,
-                            durationInSeconds: _afkTimeout.inSeconds,
-                          ), 
-                          height: 0.5, 
-                          maxHeight: 0.8
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  height: 60,
+                  child: Theme(
+                    data: ThemeData(
+                      textSelectionTheme: () {
+                        final Color color = _color3;
+                        return TextSelectionThemeData(
+                          selectionColor: color.withOpacity(0.3),
+                          cursorColor: color
                         );
-                        if (duration == null) return;
-                        setState(() => _afkTimeout = duration);
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 14),
-                        Text(
-                          'Inactive Timeout',
-                          style: TextStyle(
-                            color: _afkChannel != null ? _color1 : _color2,
-                            fontSize: 16,
-                            fontFamily: 'GGSansSemibold'
-                          ),
+                      }()
+                    ),
+                    child: TextField(
+                      controller: _controller,
+                      style: TextStyle(
+                        color: _color1,
+                        fontSize: 14
+                      ),
+                      onChanged: (text) => setState(() => _guildName = text),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none
                         ),
-                        const Spacer(),
-                        Text(
-                          _afkChannel != null ? getDuration(_afkTimeout) : '5 minutes',
-                          style: TextStyle(
-                            color: _afkChannel != null ? _color2 : _color2.withOpacity(0.5),
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Icon(
-                          Icons.keyboard_arrow_right,
-                          color: _color2,
-                        ),
-                        const SizedBox(width: 14)
-                      ],
+                        contentPadding: const EdgeInsets.all(16),
+                        filled: true,
+                        fillColor: appTheme<Color>(_theme, light: const Color(0XFFDDE1E4), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0D1017)),
+                      )
                     ),
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Automatically move members to this channel and mute then when they have been idle for longer than the inactive timeout. This does not affect browsers.',
-              style: TextStyle(
-                color: _color2,
-                fontSize: 15,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'System Messages Settings',
-              style: TextStyle(
-                color: _color2,
-                fontSize: 14,
-                fontFamily: 'GGSansSemibold'
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 2),
-              decoration: BoxDecoration(
-                color: _color4,
-                borderRadius: BorderRadius.circular(16)
-              ),
-              child: Column(
-                children: [
-                  SettingsButton(
-                    backgroundColor: Colors.transparent,
-                    onPressedColor: _color5,
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(16)
-                    ),
-                    onPressed: () async {
-                      final dynamic result = await showSheet(
-                        context: context, 
+                ),
+                const SizedBox(height: 30),
+                Text(
+                  'Inactive Settings',
+                  style: TextStyle(
+                    color: _color2,
+                    fontSize: 14,
+                    fontFamily: 'GGSansSemibold'
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
+                  decoration: BoxDecoration(
+                    color: _color4,
+                    borderRadius: BorderRadius.circular(16)
+                  ),
+                  child: Column(
+                    children: [
+                      SettingsButton(
+                        backgroundColor: Colors.transparent,
+                        onPressedColor: _color5,
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(16)
                         ),
-                        color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
-                        builder:(context, controller, offset) => InactiveChannelsSheet(
-                          controller: controller,
-                          selectedInactiveChannelId: _afkChannel?.id,
-                        ), 
-                        height: 0.5, 
-                        maxHeight: 0.8
-                      );
-                      if (result == null) return;
-                      setState(() => _afkChannel = result == 'No Inactive Channel' ? null : result);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Channel',
-                            style: TextStyle(
-                              color: _color1,
-                              fontSize: 16,
-                              fontFamily: 'GGSansSemibold'
+                        onPressed: () async {
+                          final dynamic result = await showSheet(
+                            context: context, 
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(16)
                             ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              _systemChannel != null ? _systemChannel!.name : 'No System Messages',
-                              textAlign: TextAlign.right,
-                              overflow: TextOverflow.ellipsis,
+                            color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                            builder:(context, controller, offset) => InactiveChannelsSheet(
+                              controller: controller,
+                              selectedInactiveChannelId: _afkChannel?.id,
+                            ), 
+                            height: 0.5, 
+                            maxHeight: 0.8
+                          );
+                          if (result == null) return;
+                          setState(() => _afkChannel = result == 'No Inactive Channel' ? null : result);
+                        },
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 14),
+                            Text(
+                              'Inactive Channel',
                               style: TextStyle(
-                                color: _color2,
+                                color: _color1,
+                                fontSize: 16,
+                                fontFamily: 'GGSansSemibold'
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                _afkChannel?.name ?? 'No Inactive Channel',
+                                textAlign: TextAlign.right,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: _color2,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Icon(
+                              Icons.keyboard_arrow_right,
+                              color: _color2,
+                            ),
+                            const SizedBox(width: 14)
+                          ],
+                        ),
+                      ),
+                      Divider(
+                        thickness: 1,
+                        height: 0,
+                        indent: 15,
+                        color: _color6,
+                      ),
+                      SettingsButton(
+                        backgroundColor: Colors.transparent,
+                        onPressedColor: _afkChannel != null ? _color5 : null,
+                        borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(16)
+                        ),
+                        onPressed: () async {
+                          if (_afkChannel != null) {
+                            final Duration? duration = await showSheet(
+                              context: context, 
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(16)
+                              ),
+                              color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                              builder:(context, controller, offset) => InactiveChannelsDurationSheet(
+                                controller: controller,
+                                durationInSeconds: _afkTimeout.inSeconds,
+                              ), 
+                              height: 0.5, 
+                              maxHeight: 0.8
+                            );
+                            if (duration == null) return;
+                            setState(() => _afkTimeout = duration);
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 14),
+                            Text(
+                              'Inactive Timeout',
+                              style: TextStyle(
+                                color: _color1.withOpacity(_afkChannel != null ? 1 : 0.4),
+                                fontSize: 16,
+                                fontFamily: 'GGSansSemibold'
+                              ),
+                            ),
+                            const Spacer(),
+                            Text(
+                              _afkChannel != null ? getDuration(_afkTimeout) : '5 minutes',
+                              style: TextStyle(
+                                color: _afkChannel != null ? _color2 : _color2.withOpacity(0.5),
                                 fontSize: 16,
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          Icon(
-                            Icons.keyboard_arrow_right,
-                            color: _color2,
-                          )
-                        ],
+                            const SizedBox(width: 8),
+                            Icon(
+                              Icons.keyboard_arrow_right,
+                              color: _color2,
+                            ),
+                            const SizedBox(width: 14)
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                  Divider(
-                    thickness: 1,
-                    height: 0,
-                    indent: 15,
-                    color: _color6,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Automatically move members to this channel and mute then when they have been idle for longer than the inactive timeout. This does not affect browsers.',
+                  style: TextStyle(
+                    color: _color2,
+                    fontSize: 14,
                   ),
-                  SettingsButton(
-                    backgroundColor: Colors.transparent,
-                    onPressedColor: _color5,
-                    onPressed: () => setState(() => _suppressJoinNotifications = !_suppressJoinNotifications),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Text(
-                            'Send a random welcome message when someone joins this server.',
-                            style: TextStyle(
-                              color: _color1,
-                              fontSize: 16,
-                              fontFamily: 'GGSansSemibold'
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'System Messages Settings',
+                  style: TextStyle(
+                    color: _color2,
+                    fontSize: 14,
+                    fontFamily: 'GGSansSemibold'
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
+                  decoration: BoxDecoration(
+                    color: _color4,
+                    borderRadius: BorderRadius.circular(16)
+                  ),
+                  child: Column(
+                    children: [
+                      SettingsButton(
+                        backgroundColor: Colors.transparent,
+                        onPressedColor: _color5,
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(16)
+                        ),
+                        onPressed: () async {
+                          final dynamic result = await showSheet(
+                            context: context, 
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(16)
                             ),
+                            color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                            builder:(context, controller, offset) => SystemChannelsSheet(
+                              controller: controller,
+                              selectedSystemChannelId: _systemChannel?.id,
+                              // selectedInactiveChannelId: _afkChannel?.id,
+                            ), 
+                            height: 0.5, 
+                            maxHeight: 0.8
+                          );
+                          if (result == null) return;
+                          setState(() => _systemChannel = result == 'No System Messages' ? null : result);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Channel',
+                                style: TextStyle(
+                                  color: _color1,
+                                  fontSize: 16,
+                                  fontFamily: 'GGSansSemibold'
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  _systemChannel != null ? _systemChannel!.name : 'No System Messages',
+                                  textAlign: TextAlign.right,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: _color2,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Icon(
+                                Icons.keyboard_arrow_right,
+                                color: _color2,
+                              )
+                            ],
                           ),
                         ),
-                        const SizedBox(width: 10),
-                        ToggleSwitchIndicator(
-                          toggled: !_suppressJoinNotifications
-                        ),
-                        const SizedBox(width: 14),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    thickness: 1,
-                    height: 0,
-                    indent: 15,
-                    color: _color6,
-                  ),
-                  SettingsButton(
-                    backgroundColor: Colors.transparent,
-                    onPressedColor: _color5,
-                    onPressed: () => setState(() => _suppressJoinNotificationReplies = !_suppressJoinNotificationReplies),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Text(
-                            'Prompt members to reply to welcome messages with a sticker.',
-                            style: TextStyle(
-                              color: _color1,
-                              fontSize: 16,
-                              fontFamily: 'GGSansSemibold'
+                      ),
+                      Divider(
+                        thickness: 1,
+                        height: 0,
+                        indent: 15,
+                        color: _color6,
+                      ),
+                      SettingsButton(
+                        backgroundColor: Colors.transparent,
+                        onPressedColor: _color5,
+                        onPressed: () => setState(() => _suppressJoinNotifications = !_suppressJoinNotifications),
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 14),
+                            Expanded(
+                              child: Text(
+                                'Send a random welcome message when someone joins this server.',
+                                style: TextStyle(
+                                  color: _color1,
+                                  fontSize: 16,
+                                  fontFamily: 'GGSansSemibold'
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        ToggleSwitchIndicator(
-                          toggled: !_suppressJoinNotificationReplies
-                        ),
-                        const SizedBox(width: 14),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    thickness: 1,
-                    height: 0,
-                    indent: 15,
-                    color: _color6,
-                  ),
-                  SettingsButton(
-                    backgroundColor: Colors.transparent,
-                    onPressedColor: _color5,
-                    onPressed: () => setState(() => _suppressPremiumSubscriptions = !_suppressPremiumSubscriptions),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Text(
-                            'Send a message when someone boosts this server.',
-                            style: TextStyle(
-                              color: _color1,
-                              fontSize: 16,
-                              fontFamily: 'GGSansSemibold'
+                            const SizedBox(width: 10),
+                            ToggleSwitchIndicator(
+                              toggled: !_suppressJoinNotifications
                             ),
-                          ),
+                            const SizedBox(width: 14),
+                          ],
                         ),
-                        const SizedBox(width: 10),
-                        ToggleSwitchIndicator(
-                          toggled: !_suppressPremiumSubscriptions
-                        ),
-                        const SizedBox(width: 14),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    thickness: 1,
-                    height: 0,
-                    indent: 15,
-                    color: _color6,
-                  ),
-                  SettingsButton(
-                    backgroundColor: Colors.transparent,
-                    onPressedColor: _color5,
-                    borderRadius: const BorderRadius.vertical(
-                      bottom: Radius.circular(16)
-                    ),
-                    onPressed: () => setState(() => _suppressGuildReminderNotifications = !_suppressGuildReminderNotifications),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Text(
-                            'Send helpful tips for server setup.',
-                            style: TextStyle(
-                              color: _color1,
-                              fontSize: 16,
-                              fontFamily: 'GGSansSemibold'
+                      ),
+                      Divider(
+                        thickness: 1,
+                        height: 0,
+                        indent: 15,
+                        color: _color6,
+                      ),
+                      SettingsButton(
+                        backgroundColor: Colors.transparent,
+                        onPressedColor: _color5,
+                        onPressed: () => setState(() => _suppressJoinNotificationReplies = !_suppressJoinNotificationReplies),
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 14),
+                            Expanded(
+                              child: Text(
+                                'Prompt members to reply to welcome messages with a sticker.',
+                                style: TextStyle(
+                                  color: _color1,
+                                  fontSize: 16,
+                                  fontFamily: 'GGSansSemibold'
+                                ),
+                              ),
                             ),
-                          ),
+                            const SizedBox(width: 10),
+                            ToggleSwitchIndicator(
+                              toggled: !_suppressJoinNotificationReplies
+                            ),
+                            const SizedBox(width: 14),
+                          ],
                         ),
-                        const SizedBox(width: 10),
-                        ToggleSwitchIndicator(
-                          toggled: !_suppressGuildReminderNotifications
+                      ),
+                      Divider(
+                        thickness: 1,
+                        height: 0,
+                        indent: 15,
+                        color: _color6,
+                      ),
+                      SettingsButton(
+                        backgroundColor: Colors.transparent,
+                        onPressedColor: _color5,
+                        onPressed: () => setState(() => _suppressPremiumSubscriptions = !_suppressPremiumSubscriptions),
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 14),
+                            Expanded(
+                              child: Text(
+                                'Send a message when someone boosts this server.',
+                                style: TextStyle(
+                                  color: _color1,
+                                  fontSize: 16,
+                                  fontFamily: 'GGSansSemibold'
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            ToggleSwitchIndicator(
+                              toggled: !_suppressPremiumSubscriptions
+                            ),
+                            const SizedBox(width: 14),
+                          ],
                         ),
-                        const SizedBox(width: 14),
-                      ],
-                    ),
+                      ),
+                      Divider(
+                        thickness: 1,
+                        height: 0,
+                        indent: 15,
+                        color: _color6,
+                      ),
+                      SettingsButton(
+                        backgroundColor: Colors.transparent,
+                        onPressedColor: _color5,
+                        borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(16)
+                        ),
+                        onPressed: () => setState(() => _suppressGuildReminderNotifications = !_suppressGuildReminderNotifications),
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 14),
+                            Expanded(
+                              child: Text(
+                                'Send helpful tips for server setup.',
+                                style: TextStyle(
+                                  color: _color1,
+                                  fontSize: 16,
+                                  fontFamily: 'GGSansSemibold'
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            ToggleSwitchIndicator(
+                              toggled: !_suppressGuildReminderNotifications
+                            ),
+                            const SizedBox(width: 14),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'This is the channel we send system event messages to. These can be turned off at any time.',
-              style: TextStyle(
-                color: _color2,
-                fontSize: 15,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Default Notification Settings',
-              style: TextStyle(
-                color: _color2,
-                fontSize: 14,
-                fontFamily: 'GGSansSemibold'
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 2),
-              decoration: BoxDecoration(
-                color: _color4,
-                borderRadius: BorderRadius.circular(16)
-              ),
-              child: Column(
-                children: [
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'This is the channel we send system event messages to. These can be turned off at any time.',
+                  style: TextStyle(
+                    color: _color2,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Default Notification Settings',
+                  style: TextStyle(
+                    color: _color2,
+                    fontSize: 14,
+                    fontFamily: 'GGSansSemibold'
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
+                  decoration: BoxDecoration(
+                    color: _color4,
+                    borderRadius: BorderRadius.circular(16)
+                  ),
+                  child: Column(
+                    children: [
+                      SettingsButton(
+                        backgroundColor: Colors.transparent,
+                        onPressedColor: _color5,
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(16)
+                        ),
+                        onPressed: () => setState(() => _messageNotificationLevel = nyxx.MessageNotificationLevel.allMessages),
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 14),
+                            Text(
+                              'All Messages',
+                              style: TextStyle(
+                                color: _color1,
+                                fontSize: 16,
+                                fontFamily: 'GGSansSemibold'
+                              ),
+                            ),
+                            const Spacer(),
+                            RadioButtonIndicator2(
+                              radius: 24,
+                              selected: _messageNotificationLevel == nyxx.MessageNotificationLevel.allMessages
+                            ),
+                            const SizedBox(width: 14)
+                          ],
+                        ),
+                      ),
+                      Divider(
+                        thickness: 1,
+                        height: 0,
+                        indent: 15,
+                        color: _color6,
+                      ),
+                      SettingsButton(
+                        backgroundColor: Colors.transparent,
+                        onPressedColor: _color5,
+                        borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(16)
+                        ),
+                        onPressed: () => setState(() => _messageNotificationLevel = nyxx.MessageNotificationLevel.onlyMentions),
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 14),
+                            Text(
+                              'Only @mentions',
+                              style: TextStyle(
+                                color: _color1,
+                                fontSize: 16,
+                                fontFamily: 'GGSansSemibold'
+                              ),
+                            ),
+                            const Spacer(),
+                            RadioButtonIndicator2(
+                              radius: 24,
+                              selected: _messageNotificationLevel == nyxx.MessageNotificationLevel.onlyMentions
+                            ),
+                            const SizedBox(width: 14)
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'This will determine whether members who have not explicity set their notification settings recieve a notification for every message sent in this server or not. We highly recommend setting this to only @mentions for a Community Server.',
+                  style: TextStyle(
+                    color: _color2,
+                    fontSize: 14,
+                  ),
+                ),
+                if (widget.guild.ownerId == user!.id) ...[
+                  const SizedBox(height: 20),
                   SettingsButton(
-                    backgroundColor: Colors.transparent,
+                    backgroundColor: _color4,
                     onPressedColor: _color5,
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(16)
-                    ),
-                    onPressed: () => setState(() => _messageNotificationLevel = nyxx.MessageNotificationLevel.allMessages),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 14),
-                        Text(
-                          'All Messages',
-                          style: TextStyle(
-                            color: _color1,
-                            fontSize: 16,
-                            fontFamily: 'GGSansSemibold'
-                          ),
-                        ),
-                        const Spacer(),
-                        RadioButtonIndicator2(
-                          radius: 24,
-                          selected: _messageNotificationLevel == nyxx.MessageNotificationLevel.allMessages
-                        ),
-                        const SizedBox(width: 14)
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    thickness: 1,
-                    height: 0,
-                    indent: 15,
-                    color: _color6,
-                  ),
-                  SettingsButton(
-                    backgroundColor: Colors.transparent,
-                    onPressedColor: _color5,
-                    borderRadius: const BorderRadius.vertical(
-                      bottom: Radius.circular(16)
-                    ),
+                    borderRadius: BorderRadius.circular(16),
                     onPressed: () => setState(() => _messageNotificationLevel = nyxx.MessageNotificationLevel.onlyMentions),
-                    child: Row(
+                    child: const Row(
                       children: [
-                        const SizedBox(width: 14),
+                        SizedBox(width: 14),
                         Text(
-                          'Only @mentions',
+                          'Delete Server',
                           style: TextStyle(
-                            color: _color1,
+                            color: Color(0XFFE8413A),
                             fontSize: 16,
                             fontFamily: 'GGSansSemibold'
                           ),
                         ),
-                        const Spacer(),
-                        RadioButtonIndicator2(
-                          radius: 24,
-                          selected: _messageNotificationLevel == nyxx.MessageNotificationLevel.onlyMentions
-                        ),
-                        const SizedBox(width: 14)
+                        SizedBox(width: 14),
                       ],
                     ),
                   ),
-                ],
-              ),
+                ]
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
-
-// class ToggleSwitchIndicator extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container();
-//     // return Container(
-//     //   width: 100,
-//     //   height: 50,
-//     //   padding: const EdgeInsets.all(4),
-//     //   decoration: BoxDecoration(
-//     //     color: isToggled ? Colors.green : Colors.grey,
-//     //     borderRadius: BorderRadius.circular(25),
-//     //   ),
-//     //   child: AnimatedAlign(
-//     //     duration: Duration(milliseconds: 300),
-//     //     curve: Curves.easeInOut,
-//     //     alignment: toggled ? Alignment.centerRight : Alignment.centerLeft,
-//     //     child: Container(
-//     //       width: 40,
-//     //       height: 40,
-//     //       decoration: BoxDecoration(
-//     //         color: Colors.white,
-//     //         shape: BoxShape.circle,
-//     //       ),
-//     //       child: Center(
-//     //         child: Icon(
-//     //           isToggled ? Icons.check : Icons.close,
-//     //           color: isToggled ? Colors.green : Colors.red,
-//     //           size: 24,
-//     //         ),
-//     //       ),
-//     //     ),
-//     //   ),
-//     // );
-//   }
-// }

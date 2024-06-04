@@ -9,8 +9,10 @@ import '../utils/utils.dart';
 
 class CheckBoxIndicator extends ConsumerWidget {
   final bool selected;
+  final bool circular;
   const CheckBoxIndicator({
     required this.selected,
+    required this.circular,
     super.key,
   });
 
@@ -22,7 +24,7 @@ class CheckBoxIndicator extends ConsumerWidget {
       height: 20,
       decoration: BoxDecoration(
         color: selected ? const Color(0xFF5964F4) : Colors.transparent,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(circular ? 10 : 4),
         border: !selected 
         ? Border.all(
           color: appTheme<Color>(theme, light: const Color(0xFF31343D), dark: const Color(0xFFC5C8CF), midnight: const Color(0xFFC5C8CF)),
@@ -30,11 +32,11 @@ class CheckBoxIndicator extends ConsumerWidget {
         )
         : null
       ),
-      child: selected ? const Center(
+      child: selected ? Center(
         child: Icon(
           Icons.check,
-          color: Color(0xFFFFFFFF),
-          size: 20,
+          color: const Color(0xFFFFFFFF),
+          size: circular ? 14 : 20,
         ),
       ) : null
     );

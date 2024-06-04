@@ -30,7 +30,7 @@ class InactiveChannelsDurationSheet extends ConsumerWidget {
           color: appTheme<Color>(theme, light: const Color(0XFFD8DADD), dark: const Color(0XFF2F3039), midnight: const Color(0XFF151518))
         )
       ),
-      const SizedBox(height: 20),
+      const SizedBox(height: 10),
       Align(
         alignment: Alignment.topCenter,
         child: Text(
@@ -42,7 +42,7 @@ class InactiveChannelsDurationSheet extends ConsumerWidget {
           ),
         ),
       ),
-      const SizedBox(height: 20),
+      const SizedBox(height: 10),
       SingleChildScrollView(
         child: Container(
           width: double.infinity,
@@ -118,6 +118,7 @@ class DurationRadioButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeController);
     return CustomButton(
+      height: 60,
       onPressed: () => Navigator.pop(context, Duration(seconds: durationInSeconds)),
       backgroundColor: Colors.transparent,
       onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
@@ -125,28 +126,27 @@ class DurationRadioButton extends ConsumerWidget {
         borderRadius: borderRadius ?? BorderRadius.zero
       ),
       applyClickAnimation: false,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                getDuration(Duration(seconds: durationInSeconds)),
-                style: TextStyle(
-                  color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-                  fontSize: 16,
-                  fontFamily: 'GGSansSemibold'
-                ),
-                overflow: TextOverflow.ellipsis,
+      child: Row(
+        children: [
+          const SizedBox(width: 14),
+          Expanded(
+            child: Text(
+              getDuration(Duration(seconds: durationInSeconds)),
+              style: TextStyle(
+                color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+                fontSize: 16,
+                fontFamily: 'GGSansSemibold'
               ),
+              overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(width: 6),
-            RadioButtonIndicator(
-              radius: 24, 
-              selected: selected
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(width: 6),
+          RadioButtonIndicator(
+            radius: 24, 
+            selected: selected
+          ),
+          const SizedBox(width: 14)
+        ],
       ),
     );
   }
