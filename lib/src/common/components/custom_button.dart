@@ -47,8 +47,8 @@ class CustomButtonState extends State<CustomButton> with TickerProviderStateMixi
   }
   @override
   void dispose() {
-    super.dispose();
     _controller?.dispose();
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {

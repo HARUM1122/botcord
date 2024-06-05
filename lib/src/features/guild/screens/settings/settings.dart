@@ -6,6 +6,7 @@ import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/features/guild/components/settings_button.dart';
 import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
+import 'package:discord/src/features/guild/screens/settings/audit_log/audit_log.dart';
 import 'package:discord/src/features/guild/screens/settings/moderation/moderation.dart';
 import 'package:discord/src/features/guild/screens/settings/overview/overview.dart';
 import 'package:discord/src/features/guild/utils/utils.dart';
@@ -213,7 +214,46 @@ class GuildSettingsPage extends ConsumerWidget {
                               onPressedColor: color5,
                               title: 'Audit Log',
                               assetIcon: AssetIcon.document,
-                              onPressed: () {},    
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AuditLogPage(guild: guild)
+                                  )
+                                );
+
+                                // List<AuditLogEntry>? auditLogs = await guild?.auditLogs.list();
+                                // for (AuditLogEntry log in auditLogs ?? []) {
+                                //   // print("${(log.user) as User} : ${log.targetId}");
+                                //   print((await log.user?.get())!.username);
+                                // } 
+                                // AuditLogEntry log = auditLogs![0];
+                                // print("REASON: ${log.reason}");
+                                // print(log.targetId);
+                                // print((await log.user?.get())?.username);
+                                // print("CHANGES\n");
+                                //  for (AuditLogChange changes in log.changes?.toList() ?? []) {
+                                //   print("${changes.key} : ${changes.newValue}");
+                                // }
+                                // print(log.)
+                                // log.op
+                                // for ()
+                                // print(log.actionType.index);
+                                // print(log.actionType.value);
+                                // print(log.actionType.name);
+                                // print(log.)
+                                // for (AuditLogChange changes in log.changes!.toList()) {
+                                //   print(changes.newValue);
+                                // }
+                                // for (final info in log.options) {
+                                //   // print(info.);
+                                // }
+                                // print(log.actionType);
+                                // print(log.actionType.name);
+                                // print(log.actionType);
+                                // print(log.changes);
+                                // print(log.reason);
+                              },    
                             ),
                             Divider(
                               thickness: 1,

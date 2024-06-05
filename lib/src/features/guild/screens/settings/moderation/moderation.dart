@@ -198,7 +198,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                                       'None',
                                       style: TextStyle(
                                         color: _color1,
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         fontFamily: 'GGSansSemibold'
                                       ),
                                     ),
@@ -245,7 +245,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                                       'Low',
                                       style: TextStyle(
                                         color: Colors.greenAccent[700],
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         fontFamily: 'GGSansSemibold'
                                       ),
                                     ),
@@ -291,7 +291,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                                       'Medium',
                                       style: TextStyle(
                                         color: Colors.yellow[700],
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         fontFamily: 'GGSansSemibold'
                                       ),
                                     ),
@@ -337,7 +337,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                                       'High',
                                       style: TextStyle(
                                         color: Colors.yellow[900],
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         fontFamily: 'GGSansSemibold'
                                       ),
                                     ),
@@ -386,7 +386,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                                       'Highest',
                                       style: TextStyle(
                                         color: Colors.red[600],
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         fontFamily: 'GGSansSemibold'
                                       ),
                                     ),
@@ -460,7 +460,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                                       'Filter messages from all members',
                                       style: TextStyle(
                                         color: _color1,
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         fontFamily: 'GGSansSemibold'
                                       ),
                                     ),
@@ -507,7 +507,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                                       'Filter messages from server members without roles',
                                       style: TextStyle(
                                         color: _color1,
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         fontFamily: 'GGSansSemibold'
                                       ),
                                     ),
@@ -556,7 +556,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                                       'Do not filter',
                                       style: TextStyle(
                                         color: _color1,
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         fontFamily: 'GGSansSemibold'
                                       ),
                                     ),
