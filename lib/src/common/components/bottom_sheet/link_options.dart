@@ -1,4 +1,3 @@
-import 'package:discord/src/common/components/bottom_sheet/link_options/components/link_option.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,11 +8,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
-import '../../drag_handle.dart';
+import '../drag_handle.dart';
+import '../custom_button.dart';
 
-import '../../../utils/utils.dart';
-import '../../../utils/extensions.dart';
-import '../../../utils/asset_constants.dart';
+import '../../utils/utils.dart';
+import '../../utils/extensions.dart';
+import '../../utils/asset_constants.dart';
 
 class LinkOptionsSheet extends ConsumerWidget {
   final String link;
@@ -25,6 +25,7 @@ class LinkOptionsSheet extends ConsumerWidget {
     final String theme = ref.read(themeController);
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
+
     List<Widget> children = [
       Align(
         alignment: Alignment.topCenter,
@@ -32,7 +33,7 @@ class LinkOptionsSheet extends ConsumerWidget {
           color: appTheme<Color>(theme, light: const Color(0XFFD8DADD), dark: const Color(0XFF2F3039), midnight: const Color(0XFF151518))
         )
       ),
-      const SizedBox(height: 8),
+      const SizedBox(height: 10),
       Align(
         alignment: Alignment.topCenter,
         child: Text(
@@ -123,41 +124,39 @@ class LinkOptionsSheet extends ConsumerWidget {
   }
 }
 
-
-// class LinkOption extends StatelessWidget {
-//   final String title;
-//   final Function() onPressed;
-//   final BorderRadius borderRadius;
-//   final String theme;
-//   const LinkOption({
-//     required this.title,
-//     required this.onPressed,
-//     required this.borderRadius,
-//     required this.theme,
-//     super.key
-//   });
-//   @override
-//   Widget build(BuildContext context) {
-//     return CustomButton(
-//       backgroundColor: Colors.transparent,
-//       onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
-//       shape: RoundedRectangleBorder(
-//         borderRadius: borderRadius
-//       ),
-//       onPressed: onPressed,
-//       applyClickAnimation: false, 
-//       child: Container(
-//         margin: const EdgeInsets.all(20),
-//         alignment: Alignment.centerLeft,
-//         child: Text(
-//           title,
-//           style: TextStyle(
-//             color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-//             fontSize: 16,
-//             fontFamily: 'GGSansSemibold'
-//           ),
-//         ),
-//       )
-//     );
-//   }
-// }
+class LinkOption extends ConsumerWidget {
+  final String title;
+  final Function() onPressed;
+  final BorderRadius borderRadius;
+  const LinkOption({
+    required this.title,
+    required this.onPressed,
+    required this.borderRadius,
+    super.key
+  });
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final String theme = ref.read(themeController);
+    return CustomButton(
+      backgroundColor: Colors.transparent,
+      onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
+      shape: RoundedRectangleBorder(
+        borderRadius: borderRadius
+      ),
+      onPressed: onPressed,
+      applyClickAnimation: false, 
+      child: Container(
+        margin: const EdgeInsets.all(20),
+        alignment: Alignment.centerLeft,
+        child: Text(
+          title,
+          style: TextStyle(
+            color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
+            fontSize: 16,
+            fontFamily: 'GGSansSemibold'
+          ),
+        ),
+      )
+    );
+  }
+}

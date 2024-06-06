@@ -55,9 +55,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _usernameController.dispose();
     _descriptionController.dispose();
+    super.dispose();
   }
 
 

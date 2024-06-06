@@ -55,7 +55,7 @@
 //     });
 // }
 
-void main() {
-  List<int> lst = [];
-  print("abcdef".compareTo('abcd'));
-}
+// void main() {
+//   List<int> lst = [];
+//   print("abcdef".compareTo('abcd'));
+// }

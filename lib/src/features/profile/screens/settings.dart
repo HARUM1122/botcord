@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/controllers/theme_controller.dart';
-
-import '../../../common/components/radio_button_indicator/radio_button_indicator.dart';
-
 import '../../../common/utils/utils.dart';
 import '../../../common/components/custom_button.dart';
+import '../../../common/controllers/theme_controller.dart';
+import '../../../common/components/radio_button_indicator/radio_button_indicator.dart';
 
 import '../../../features/profile/components/logout_dialog.dart';
 

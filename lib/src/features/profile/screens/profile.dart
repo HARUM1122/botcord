@@ -6,8 +6,6 @@ import 'package:page_animation_transition/animations/right_to_left_transition.da
 import 'package:page_animation_transition/page_animation_transition.dart';
 import 'package:page_animation_transition/animations/bottom_to_top_transition.dart';
 
-import 'package:discord/src/common/controllers/theme_controller.dart';
-
 import '../screens/screens.dart';
 
 import '../components/online_status.dart';
@@ -18,6 +16,7 @@ import '../../../common/utils/utils.dart';
 import '../../../common/utils/globals.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/components/profile_pic.dart';
+import '../../../common/controllers/theme_controller.dart';
 import '../../../common/components/online_status/status.dart';
 
 

@@ -29,7 +29,7 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
   late final AuthController _authController = ref.read(authControllerProvider);
   late final String _theme = ref.watch(themeController);
 
-  late final Color color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+  late final Color _color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
   
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
         title: Text(
           "Bots",
           style: TextStyle(
-            color: color1,
+            color: _color1,
             fontFamily: 'GGSansBold',
             fontSize: 24
           ),
@@ -86,13 +86,13 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
                     child: Theme(
                       data: ThemeData(
                         textSelectionTheme: TextSelectionThemeData(
-                          selectionColor: color1.withOpacity(0.3),
-                          cursorColor: color1
+                          selectionColor: _color1.withOpacity(0.3),
+                          cursorColor: _color1
                         )
                       ),
                       child: TextField(
                         style: TextStyle(
-                          color: color1,
+                          color: _color1,
                           fontSize: 14
                         ),
                         onChanged: (text) {
@@ -131,7 +131,7 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
                         child: Text(
                           "You haven't added any bots",
                           style: TextStyle(
-                            color: color1,
+                            color: _color1,
                             fontSize: 20,
                             fontFamily: 'GGSansSemibold'
                           ),
@@ -146,7 +146,7 @@ class _BotsScreenState extends ConsumerState<BotsScreen> {
                         child: Text(
                           "No bots were found",
                           style: TextStyle(
-                            color: color1,
+                            color: _color1,
                             fontSize: 20,
                             fontFamily: 'GGSansSemibold'
                           ),

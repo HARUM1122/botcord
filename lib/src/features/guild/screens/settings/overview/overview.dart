@@ -18,21 +18,21 @@ import 'components/bottom_sheet/inactive_channels.dart';
 import '../../../utils/utils.dart';
 
 
-class OverViewPage extends ConsumerStatefulWidget {
+class OverViewScreen extends ConsumerStatefulWidget {
   final nyxx.Guild guild;
   final nyxx.GuildVoiceChannel? inactiveChannel;
   final nyxx.GuildTextChannel? systemChannel;
-  const OverViewPage({
+  const OverViewScreen({
     required this.guild,
     required this.inactiveChannel,
     required this.systemChannel,
     super.key
   });
   @override
-  ConsumerState<OverViewPage> createState() => _OverViewPageState();
+  ConsumerState<OverViewScreen> createState() => _OverViewPageState();
 }
 
-class _OverViewPageState extends ConsumerState<OverViewPage> {
+class _OverViewPageState extends ConsumerState<OverViewScreen> {
   late final String _theme = ref.read(themeController);
 
   late final TextEditingController _controller = TextEditingController(text: widget.guild.name);

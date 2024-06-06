@@ -1,18 +1,20 @@
-import 'package:discord/src/common/utils/asset_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/features/guild/controllers/channels_controller.dart';
+
 
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/utils/extensions.dart';
+import 'package:discord/src/common/utils/asset_constants.dart';
 import 'package:discord/src/common/components/drag_handle.dart';
 import 'package:discord/src/common/components/custom_button.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/components/radio_button_indicator/radio_button_indicator.dart';
+
+import 'package:discord/src/features/guild/controllers/channels_controller.dart';
 
 class InactiveChannelsSheet extends ConsumerWidget {
   final ScrollController controller;

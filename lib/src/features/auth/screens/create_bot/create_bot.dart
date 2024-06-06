@@ -9,7 +9,7 @@ import '../../utils/constants.dart';
 
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/components/custom_button.dart';
-import 'package:discord/src/common/components/bottom_sheet/link_options/link_options.dart';
+import 'package:discord/src/common/components/bottom_sheet/link_options.dart';
 
 class CreateBotAccountScreen extends ConsumerStatefulWidget {
   const CreateBotAccountScreen({super.key});

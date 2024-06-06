@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:discord/src/common/components/checkbox_indicator.dart';
 import 'package:flutter/material.dart';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
+import '../checkbox_indicator.dart';
 import '../../utils/globals.dart';
 import '../../utils/utils.dart';
 import '../../utils/extensions.dart';

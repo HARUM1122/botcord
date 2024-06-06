@@ -30,7 +30,7 @@ class LinkOptionsSheet extends ConsumerWidget {
           color: appTheme<Color>(theme, light: const Color(0XFFD8DADD), dark: const Color(0XFF2F3039), midnight: const Color(0XFF151518))
         )
       ),
-      const SizedBox(height: 8),
+      const SizedBox(height: 10),
       Align(
         alignment: Alignment.topCenter,
         child: Text(

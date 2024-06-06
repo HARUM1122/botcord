@@ -16,10 +16,10 @@ class EditActivityScreen extends ConsumerStatefulWidget {
   const EditActivityScreen({super.key});
 
   @override
-  ConsumerState<EditActivityScreen> createState() => _EditStatusPageState();
+  ConsumerState<EditActivityScreen> createState() => _EditActivityScreenState();
 }
 
-class _EditStatusPageState extends ConsumerState<EditActivityScreen> {
+class _EditActivityScreenState extends ConsumerState<EditActivityScreen> {
   late final String _theme = ref.read(themeController);
   late final ProfileController _profileController = ref.read(profileControllerProvider);
 

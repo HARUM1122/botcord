@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:discord/src/common/controllers/theme_controller.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../utils/utils.dart';
 

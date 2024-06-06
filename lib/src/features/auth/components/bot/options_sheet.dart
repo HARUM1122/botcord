@@ -25,6 +25,7 @@ class BotOptionsSheet extends ConsumerWidget {
 
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0xFFC5C8CF), dark: const Color(0xFF4C4F58), midnight: const Color(0xFF4C4F58));
+    final Color color3 = appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419));
     
     List<Widget> children = [
       Align(
@@ -33,7 +34,7 @@ class BotOptionsSheet extends ConsumerWidget {
           color: appTheme<Color>(theme, light: const Color(0XFFD8DADD), dark: const Color(0XFF2F3039), midnight: const Color(0XFF151518))
         )
       ),
-      const SizedBox(height: 8),
+      const SizedBox(height: 10),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -41,7 +42,7 @@ class BotOptionsSheet extends ConsumerWidget {
             image: bot['avatar-url']!, 
             errorWidget: DecoratedBox(
               decoration: BoxDecoration(
-                color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419)),
+                color: color3,
                 shape: BoxShape.circle
               ),
               child: Center(
@@ -82,7 +83,7 @@ class BotOptionsSheet extends ConsumerWidget {
       Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419)),
+          color: color3,
           borderRadius: BorderRadius.circular(16)
         ),
         child: Column(

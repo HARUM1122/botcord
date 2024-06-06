@@ -1,31 +1,23 @@
-import 'package:discord/src/common/components/checkbox_indicator.dart';
-import 'package:discord/src/common/components/option_button.dart';
-// import 'package:discord/src/common/components/radio_button_indicator/radio_button_indicator2.dart';
-// import 'package:discord/src/common/components/toggle_switch_indicator.dart';
-import 'package:discord/src/common/controllers/theme_controller.dart';
-import 'package:discord/src/common/utils/extensions.dart';
-// import 'package:discord/src/common/utils/globals.dart';
-import 'package:discord/src/common/utils/utils.dart';
-// import 'package:discord/src/features/guild/components/bottom_sheet/guild_options/components/options_button.dart';
-// import 'package:discord/src/features/guild/screens/settings/overview/components/bottom_sheet/inactive_channels.dart';
-// import 'package:discord/src/features/guild/screens/settings/overview/components/bottom_sheet/inactive_timeout.dart';
-// import 'package:discord/src/features/guild/screens/settings/overview/components/bottom_sheet/system_channels.dart';
-import 'package:discord/src/features/guild/screens/settings/overview/components/settings_button.dart';
-// import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nyxx/nyxx.dart' as nyxx;
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ModerationPage extends ConsumerStatefulWidget {
+import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/src/common/utils/extensions.dart';
+import 'package:discord/src/common/components/custom_button.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
+import 'package:discord/src/common/components/checkbox_indicator.dart';
+
+class ModerationScreen extends ConsumerStatefulWidget {
   final nyxx.Guild guild;
-  const ModerationPage({required this.guild, super.key});
+  const ModerationScreen({required this.guild, super.key});
   @override
-  ConsumerState<ModerationPage> createState() => _OverViewPageState();
+  ConsumerState<ModerationScreen> createState() => _OverViewPageState();
 }
 
-class _OverViewPageState extends ConsumerState<ModerationPage> {
+class _OverViewPageState extends ConsumerState<ModerationScreen> {
   late final String _theme = ref.read(themeController);
 
   late final Color _color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
@@ -39,25 +31,6 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
   late nyxx.VerificationLevel _verificationLevel = widget.guild.verificationLevel;
   late nyxx.ExplicitContentFilterLevel _explicitContentFilterLevel = widget.guild.explicitContentFilterLevel;
   
-  // // Server name
-  // late String _guildName = widget.guild.name;
-
-  // // Inactive Settings
-  // late nyxx.GuildVoiceChannel? _afkChannel = widget.inactiveChannel;
-  // late Duration _afkTimeout = widget.guild.afkTimeout;
-
-  // // System Messages Settings
-  // late nyxx.GuildTextChannel? _systemChannel = widget.systemChannel;
-  // late bool _suppressJoinNotifications = widget.guild.systemChannelFlags.shouldSuppressJoinNotifications;
-  // late bool _suppressJoinNotificationReplies = widget.guild.systemChannelFlags.shouldSuppressJoinNotificationReplies;
-  // late bool _suppressPremiumSubscriptions = widget.guild.systemChannelFlags.shouldSuppressPremiumSubscriptions;
-  // late bool _suppressGuildReminderNotifications = widget.guild.systemChannelFlags.shouldSuppressGuildReminderNotifications;
-
-  // // Default Notification Settings
-  // late nyxx.MessageNotificationLevel _messageNotificationLevel = widget.guild.defaultMessageNotificationLevel;
-
-
-
   bool _saving = false;
 
 
@@ -173,7 +146,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                   ),
                   child: Column(
                     children: [
-                      OptionButton(
+                      ModerationOptionButton(
                         backgroundColor: Colors.transparent,
                         onPressedColor: _color5,
                         borderRadius: const BorderRadius.vertical(
@@ -223,7 +196,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                         indent: 50,
                         color: _color6,
                       ),
-                      OptionButton(
+                      ModerationOptionButton(
                         backgroundColor: Colors.transparent,
                         onPressedColor: _color5,
                         onPressed: () => setState(() => _verificationLevel = nyxx.VerificationLevel.low),
@@ -270,7 +243,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                         indent: 50,
                         color: _color6,
                       ),
-                      OptionButton(
+                      ModerationOptionButton(
                         backgroundColor: Colors.transparent,
                         onPressedColor: _color5,
                         onPressed: () => setState(() => _verificationLevel = nyxx.VerificationLevel.medium),
@@ -316,7 +289,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                         indent: 50,
                         color: _color6,
                       ),
-                      OptionButton(
+                      ModerationOptionButton(
                         backgroundColor: Colors.transparent,
                         onPressedColor: _color5,
                         onPressed: () => setState(() => _verificationLevel = nyxx.VerificationLevel.high),
@@ -362,7 +335,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                         indent: 50,
                         color: _color6,
                       ),
-                      OptionButton(
+                      ModerationOptionButton(
                         backgroundColor: Colors.transparent,
                         onPressedColor: _color5,
                         borderRadius: const BorderRadius.vertical(
@@ -435,7 +408,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                   ),
                   child: Column(
                     children: [
-                      OptionButton(
+                      ModerationOptionButton(
                         backgroundColor: Colors.transparent,
                         onPressedColor: _color5,
                         borderRadius: const BorderRadius.vertical(
@@ -485,7 +458,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                         indent: 50,
                         color: _color6,
                       ),
-                      OptionButton(
+                      ModerationOptionButton(
                         backgroundColor: Colors.transparent,
                         onPressedColor: _color5,
                         onPressed: () => setState(() => _explicitContentFilterLevel = nyxx.ExplicitContentFilterLevel.membersWithoutRoles),
@@ -532,7 +505,7 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
                         indent: 50,
                         color: _color6,
                       ),
-                      OptionButton(
+                      ModerationOptionButton(
                         backgroundColor: Colors.transparent,
                         onPressedColor: _color5,
                         borderRadius: const BorderRadius.vertical(
@@ -591,6 +564,37 @@ class _OverViewPageState extends ConsumerState<ModerationPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ModerationOptionButton extends StatelessWidget {
+  final Color backgroundColor;
+  final Color? onPressedColor;
+  final BorderRadius? borderRadius;
+  final Function() onPressed;
+  final Widget child;
+
+  const ModerationOptionButton({
+    required this.backgroundColor,
+    this.onPressedColor,
+    this.borderRadius,
+    required this.onPressed,
+    required this.child,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomButton(
+      onPressed: onPressed,
+      backgroundColor: backgroundColor,
+      onPressedColor: onPressedColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: borderRadius ?? BorderRadius.zero
+      ),
+      applyClickAnimation: false,
+      child: child,
     );
   }
 }
