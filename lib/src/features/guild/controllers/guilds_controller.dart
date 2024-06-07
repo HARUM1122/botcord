@@ -52,6 +52,7 @@ class GuildsController extends ChangeNotifier {
     });
   }
 
+
   Future<void> selectGuild(Guild guild) async {
     if (guild.id == currentGuild?.id) return;
     currentGuild = guild;

@@ -50,6 +50,9 @@ const List<(String, String, AuditLogEvent?)> actions = [
   ('Update Thread', 'UPDATE', AuditLogEvent.threadUpdate),
   ('Delete Thread', 'REMOVE', AuditLogEvent.threadDelete)
 ];
+void main() {
+  print(actions.length);
+}
 
 // const Map<int, (String, String, AuditLogEvent)> actions = {
 //   1 : ('Update Server', 'UPDATE', AuditLogEvent.guildUpdate),
@@ -112,3 +115,5 @@ const List<(String, String, AuditLogEvent?)> actions = [
 //   autoModerationUserCommunicationDisabled._(145),
 //   creatorMonetizationRequestCreated._(150),
 //   creatorMonetizationTermsAccepted._(151);
+
+

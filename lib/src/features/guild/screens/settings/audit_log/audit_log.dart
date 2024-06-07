@@ -1,10 +1,14 @@
+import 'package:flutter/material.dart';
+
+import 'package:nyxx/nyxx.dart' as nyxx;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+
+import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/components/custom_button.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
-import 'package:discord/src/common/utils/globals.dart';
-import 'package:discord/src/common/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nyxx/nyxx.dart' as nyxx;
+
+import 'package:discord/src/features/guild/screens/settings/audit_log/components/filter_options_sheet.dart';
 
 class AuditLogPage extends ConsumerStatefulWidget {
   final nyxx.Guild? guild;
@@ -21,7 +25,7 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
   late final Color _color2 = appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D));
   
   nyxx.Snowflake? _userId;
-  nyxx.AuditLogEvent? _auditLogEvent;
+  (String, nyxx.AuditLogEvent?) _actionType = ('All Actions', null);
 
   Future<List<nyxx.AuditLogEntry>> test() async {
     await Future.delayed(const Duration(seconds: 1));
@@ -51,7 +55,23 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () async {
+              final dynamic result = await showSheet(
+                context: context, 
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16)
+                ),
+                color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                builder:(context, controller, offset) => FilterOptions(
+                  actionType: _actionType,
+                  controller: controller,
+                ), 
+                height: 0.3, 
+                maxHeight: 0.6
+              );
+              if (result == null) return;
+              setState(() =>  _actionType = result);
+            },
             style: const ButtonStyle(
               overlayColor: MaterialStatePropertyAll(Colors.transparent)
             ),
@@ -85,7 +105,7 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
                 const Spacer(),
                 const FilterTypeHeader(title: 'All Users'),
                 const SizedBox(width: 10),
-                const FilterTypeHeader(title: 'All Actions'),
+                FilterTypeHeader(title: _actionType.$1),
                 const SizedBox(width: 10),
                 Icon(
                   Icons.keyboard_arrow_right,

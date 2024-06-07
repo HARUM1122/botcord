@@ -1,17 +1,19 @@
-import 'dart:async';
-
-import 'package:discord/src/common/components/checkbox_indicator.dart';
-import 'package:discord/src/common/components/custom_button.dart';
-import 'package:discord/src/common/controllers/theme_controller.dart';
-import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/features/guild/screens/settings/audit_log/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nyxx/nyxx.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+
+import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/src/common/components/custom_button.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
+import 'package:discord/src/common/components/checkbox_indicator.dart';
+
+import 'package:discord/src/features/guild/screens/settings/audit_log/utils/utils.dart';
+
 
 class FilterByActionsPage extends ConsumerStatefulWidget {
-  final AuditLogEvent? actionType;
+  final (String, AuditLogEvent?) actionType;
   const FilterByActionsPage({required this.actionType, super.key});
 
   @override
@@ -23,14 +25,10 @@ class _FilterByActionsPageState extends ConsumerState<FilterByActionsPage> {
 
   late final Color _color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
   late final Color _color2 = appTheme<Color>(_theme, light: const Color(0XFF4C4F57), dark: const Color(0XFFC8C9D1), midnight: const Color(0xFFFFFFFF));
-  
-  late final Color _color3 = appTheme<Color>(_theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
-  late final Color _color4 = appTheme<Color>(_theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318));
-  late final Color _color5 = appTheme<Color>(_theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226));
 
   String _actionName = '';
 
-  Icon getIcon(String type) => switch(type) {
+  Icon _getIcon(String type) => switch(type) {
     'ALL' => Icon(
       Icons.list,
       color: _color2,
@@ -119,14 +117,17 @@ class _FilterByActionsPageState extends ConsumerState<FilterByActionsPage> {
           const SizedBox(height: 20),
           () {
             List<(String, String, AuditLogEvent?)> filteredActions = actions.where((element) => element.$1.toLowerCase().contains(_actionName.toLowerCase())).toList();
-      
+            int index = filteredActions.indexWhere((element) => element.$3 == widget.actionType.$2);
+            if (index != -1) {
+              filteredActions.insert(0, filteredActions.removeAt(index));
+            }
             return Expanded(
               child: ListView.builder(
                 itemCount: filteredActions.length,
                 itemBuilder: (context, index) => ActionWidget(
-                  leading: getIcon(filteredActions[index].$2),
+                  leading: _getIcon(filteredActions[index].$2),
                   action: filteredActions[index],
-                  selected: filteredActions[index].$3 == widget.actionType,
+                  selected: filteredActions[index].$3 == widget.actionType.$2,
                 )
               ),
             );
@@ -152,7 +153,10 @@ class ActionWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeController);
     return CustomButton(
-      onPressed: () => Navigator.pop(context, action.$3),
+      onPressed: () => Navigator.pop(
+        context,
+        (action.$1, action.$3)
+      ),
       backgroundColor: Colors.transparent,
       onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
       applyClickAnimation: false,

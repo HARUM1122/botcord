@@ -26,6 +26,44 @@ class GuildSettingsPage extends ConsumerWidget {
     return computePermissions(guild, member);
   }
 
+//   CHANNEL CREATE EVENT INFO
+
+
+// flutter: name : fasdfadsf
+// flutter: type : 0
+// flutter: permission_overwrites : []
+// flutter: nsfw : false
+// flutter: rate_limit_per_user : 0
+// flutter: flags : 0
+
+
+// VOICE CHANNEL CREATE EVENT
+
+// flutter: name : asdfasdf
+// flutter: type : 2
+// flutter: bitrate : 64000
+// flutter: user_limit : 0
+// flutter: permission_overwrites : []
+// flutter: nsfw : false
+// flutter: rate_limit_per_user : 0
+// flutter: flags : 0
+
+// flutter: name : asdff
+// flutter: type : 4
+// flutter: permission_overwrites : []
+// flutter: flags : 0
+
+
+/// CHANNEL UPDATE INFO
+/// flutter: nsfw : false
+// flutter: name : fasdfadsfsfdasdfasdf
+// flutter: default_auto_archive_duration : 10080
+// flutter: topic : asdfasdfasdfasdfasfasdfasdf
+// flutter: rate_limit_per_user : 120
+
+
+
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeController);
@@ -215,35 +253,47 @@ class GuildSettingsPage extends ConsumerWidget {
                               onPressedColor: color5,
                               title: 'Audit Log',
                               assetIcon: AssetIcon.document,
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => FilterByActionsPage(actionType: null)
-                                  )
-                                );
+                              onPressed: () async {
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => AuditLogPage(guild: guild)
+                                //   )
+                                // );
 
                                 // MaterialPageRoute(
                                 //     builder: (context) => AuditLogPage(guild: guild)
                                 //   )
 
 
-                                // List<AuditLogEntry>? auditLogs = await guild?.auditLogs.list();
+                                List<AuditLogEntry>? auditLogs = await guild?.auditLogs.list();
+                                AuditLogEntry log = auditLogs![0];
+                                print(log.actionType.name);
+                                for (final change in log.changes!) {
+                                  print("${change.key} : ${change.oldValue} : ${change.newValue}");
+                                }
+                                // final a = await createChannelAuditInfo(log);
+                                // print("${a.$1.username} ${a.$2}");
+                                // print("ALL CHANGES:");
+                                // List<String> changes = a.$3;
+                                // for (int i = 0; i < changes.length; i++) {
+                                //   print("0$i ${changes[i]}");
+                                // }
+                                // print(log.actionType.name);
+                                // for (final option in log)
                                 // for (AuditLogEntry log in auditLogs ?? []) {
-                                //   print("${(log.user) as User} : ${log.targetId}");
-                                //   print((await log.user?.get())!.username);
+                                //   print(log.actionType);
                                 // } 
-                                // AuditLogEntry log = auditLogs![0];
-                                // // print("REASON: ${log.reason}");
-                                // // print(log.targetId);
-                                // // print((await log.user?.get())?.username);
-                                // // print("CHANGES\n");
-                                // //  for (AuditLogChange changes in log.changes?.toList() ?? []) {
-                                // //   print("${changes.key} : ${changes.newValue}");
-                                // // }
-                                // // print(log.)
-                                // // log.op
-                                // // for ()
+                                // print("REASON: ${log.reason}");
+                                // print(log.targetId);
+                                // print((await log.user?.get())?.username);
+                                // print("CHANGES\n");
+                                //  for (AuditLogChange changes in log.changes?.toList() ?? []) {
+                                //   print("${changes.key} : ${changes.newValue}");
+                                // }
+                                // print(log.)
+                                // log.op
+                                // for ()
                                 // print(log.actionType);
                                 // print(log.actionType.value);
                                 // print(log.actionType.name);
@@ -432,3 +482,13 @@ class GuildSettingsPage extends ConsumerWidget {
     );
   }
 }
+
+
+/// helinity updated channel ovverides for #adfasd
+/// 
+/// 
+/// HELINIFTY created a text channel
+/// Changed the name to `name`
+/// Set the type to 0 1 or 2
+/// Set the channel to private
+/// Allowed `length` users to access this channel

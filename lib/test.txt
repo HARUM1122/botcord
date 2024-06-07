@@ -30,31 +30,38 @@ if (!(prefs.getBool('is-landed') ?? false)) {
 
 
 
-
-I'll answer you in 2 - 3 parts,
-
-PART ONE,
-
-FYI, Quran comes first for muslims so if a hadith contradicts with Quran, that hadith would automatically become unauthentic.  Quran comes first for us, then authentic hadiths. If you want to go in more detail, go and learn what Islamic epistemology is.
-
-First of all, nowhere it is written in sahih Muslim 1:33 that go and st*eal from unbelievers. The problem here is simple, you people are super d*umb and don't even properly check the references before quoting them. You simply copy and pasted from an islamophobic website. 
-
-Here's what sahih muslim 1:33 actually says,
-
-"I have been commanded to f!*ght a*g*ainst people so long as they do not declare that there is no god but Allah, and he who professed it was guaranteed the protection of his property and life on my behalf except for the right affairs rest with Allah."
-
-Now before you use this hadith against me, let me tell you that i can say that this hadith is unauthentic because this hadith contradicts with Quran and as i mentioned earlier that if a hadith contradicts with Quran, that hadith would be considered unauthentic and no one can use that hadith to prove that what's written on that hadith is the absolute message of Islam.
-
-Allah Says in (Quran 2:190) F!*ght in the cause of Allah ˹only˺ a*ga!nst those who w*age w*ar a*ga!nst you, but do not exceed the limits. Allah does not like tr*ansgressors
-
-So as you can see that this verse of the Quran clearly says that f!ight only those WHO FIGHT YOU.
-
-Here's an another verse from Holy Quran which says 'THERE'S NO COMPULSION IN RELIGION'
-
-Quran(2:256) Let there be no compulsion in religion, for the truth stands out clearly from falsehood.1 So whoever renounces false gods and believes in Allah has certainly grasped the firmest, unfailing hand-hold. And Allah is All-Hearing, All-Knowing.
-
-So, that hadith is unauthentic and yes, kindly check the references before you quote them. !d!iot.
+(String, List<String>) createChannelEventInfo(AuditLogEntry createChannelLog) async {
+  
+  List<String> allChanges = [];
+  
+}
 
 
 
 
+CHANNEL CREATE EVENT INFO
+
+
+flutter: name : fasdfadsf
+flutter: type : 0
+flutter: permission_overwrites : []
+flutter: nsfw : false
+flutter: rate_limit_per_user : 0
+flutter: flags : 0
+
+
+VOICE CHANNEL CREATE EVENT
+
+flutter: name : asdfasdf
+flutter: type : 2
+flutter: bitrate : 64000
+flutter: user_limit : 0
+flutter: permission_overwrites : []
+flutter: nsfw : false
+flutter: rate_limit_per_user : 0
+flutter: flags : 0
+
+flutter: name : asdff
+flutter: type : 4
+flutter: permission_overwrites : []
+flutter: flags : 0
