@@ -59,3 +59,26 @@
 //   List<int> lst = [];
 //   print("abcdef".compareTo('abcd'));
 // }
+
+String addCommas(String number) {
+  int count = 0;
+  String res = "";
+  for (int i = number.length - 1; i >= 0; i--) {
+    res = number[i] + res;
+    count++;
+    if (count % 3 == 0 && i != 0) {
+      res = ',$res';
+    }
+  }
+  return res;
+}
+
+void main() {
+  print(addCommas('1000'));
+  print(addCommas('100'));
+  print(addCommas('10'));
+  print(addCommas('60'));
+  print(addCommas('60100'));
+  print(addCommas('60100120310'));
+  print(addCommas('1230123'));
+}
