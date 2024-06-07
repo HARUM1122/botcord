@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:intl/intl.dart';
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
@@ -105,4 +106,22 @@ Future<(Uint8List, String)?> pickImage() async {
     : null;
   }
   return null;
+}
+
+String formatDateTime(DateTime dateTime) {
+  final now = DateTime.now();
+  final difference = now.difference(dateTime);
+  final dayDifference = difference.inDays;
+  final hourFormat = DateFormat('h:mm a');
+
+  if (dayDifference == 0) {
+    return 'Today at ${hourFormat.format(dateTime)}';
+  } else if (dayDifference == 1) {
+    return 'Yesterday at ${hourFormat.format(dateTime)}';
+  } else if (dayDifference < 7) {
+    final weekdayFormat = DateFormat('EEEE');
+    return 'Last ${weekdayFormat.format(dateTime)} at ${hourFormat.format(dateTime)}';
+  } else {
+    return DateFormat('M/d/yyyy').format(dateTime);
+  }
 }

@@ -8,7 +8,7 @@ import 'package:discord/src/features/guild/components/settings_button.dart';
 import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
 import 'package:discord/src/features/guild/screens/settings/audit_log/audit_log.dart';
 import 'package:discord/src/features/guild/screens/settings/audit_log/filter_pages/actions.dart';
-import 'package:discord/src/features/guild/screens/settings/audit_log/utils/audit_log/channel_log_info.dart';
+import 'package:discord/src/features/guild/screens/settings/audit_log/utils/audit_log_info/info/channel_log_info.dart';
 import 'package:discord/src/features/guild/screens/settings/moderation/moderation.dart';
 import 'package:discord/src/features/guild/screens/settings/overview/overview.dart';
 import 'package:discord/src/features/guild/utils/utils.dart';
@@ -255,30 +255,32 @@ class GuildSettingsPage extends ConsumerWidget {
                               title: 'Audit Log',
                               assetIcon: AssetIcon.document,
                               onPressed: () async {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => AuditLogPage(guild: guild)
-                                //   )
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AuditLogPage(guild: guild)
+                                  )
+                                );
 
                                 // MaterialPageRoute(
                                 //     builder: (context) => AuditLogPage(guild: guild)
                                 //   )
 
 
-                                List<AuditLogEntry>? auditLogs = await guild?.auditLogs.list();
-                                AuditLogEntry log = auditLogs![0];
-                                (User, String, List<String>) info = await getUpdateChannelAuditInfo(log);
-                                print("${info.$1.username} ${info.$2}");
-                                print('------------------------------');
-                                for (String change in info.$3) {
-                                  print(change);
-                                }
+                              
                                 // GuildChannel channel = await client!.channels.get(log.targetId!) as GuildChannel;
                                 // print(channel.name);
                                 // print(log.manager.);
                                 // updateChannelAuditInfo(log);
+                              
+                                // (User, String, List<String>) deletedChannelInfo = await getDeleteChannelLogEntryInfo(logs[2]);
+                                // print(deletedChannelInfo.$1.username);
+                                // print(deletedChannelInfo.$2);
+                                // log.
+                                // for (final change in log.changes!) {
+                                //   print("${change.key} : ${change.oldValue} : ${change.newValue}");
+                                // }
+                                // print(getDeleteChannelLogEntryInfo(log));
                                 // print(log.actionType.name);
                                 // for (final change in log.changes!) {
                                 //   print("${change.key} : ${change.oldValue} : ${change.newValue}");

@@ -1,9 +1,8 @@
-import 'package:discord/src/common/utils/globals.dart';
 import 'package:nyxx/nyxx.dart';
 
 String addCommas(String number) {
   int count = 0;
-  String res = "";
+  String res = '';
   for (int i = number.length - 1; i >= 0; i--) {
     res = number[i] + res;
     count++;
@@ -14,9 +13,9 @@ String addCommas(String number) {
   return res;
 }
 
-Future<(User, String, List<String>)> getCreateChannelAuditInfo(AuditLogEntry log) async {
+Future<(User, String, List<String>)> getCreateChannelLogEntryInfo(AuditLogEntry log) async {
   final User user = await log.user!.get();
-  final GuildChannel channel = await client!.channels.get(log.targetId!) as GuildChannel;
+  final GuildChannel channel = await log.options!.channel!.get() as GuildChannel;
   final List<String> allChanges = [];
   final List<AuditLogChange> changes = log.changes!;
   String channelCreated = '';
@@ -56,9 +55,9 @@ Future<(User, String, List<String>)> getCreateChannelAuditInfo(AuditLogEntry log
   return (user, '**created a $channelCreated** ${channel.type == ChannelType.guildText ? '#' : ''}${channel.name}' ,allChanges);
 }
 
-Future<(User, String, List<String>)> getUpdateChannelAuditInfo(AuditLogEntry log) async {
+Future<(User, String, List<String>)> getUpdateChannelLogEntryInfo(AuditLogEntry log) async {
   final User user = await log.user!.get();
-  final GuildChannel channel = await client!.channels.get(log.targetId!) as GuildChannel;
+  final GuildChannel channel = await log.options!.channel!.get() as GuildChannel;
   final List<String> allChanges = [];
   final List<AuditLogChange> changes = log.changes!;
 
@@ -96,4 +95,19 @@ Future<(User, String, List<String>)> getUpdateChannelAuditInfo(AuditLogEntry log
     }
   }
   return (user, '**made changes to** ${channel.type == ChannelType.guildText ? '#' : ''}${channel.name}' ,allChanges);
+}
+
+Future<(User, String, List<String>)> getDeleteChannelLogEntryInfo(AuditLogEntry log) async  {
+  final User user = await log.user!.get();
+  final List<String> allChanges = [];
+  String channelName = log.changes![0].oldValue;
+  int channelType = log.changes![1].oldValue;
+  
+  final String channelDeleted = switch(channelType) {
+    0 => 'text channel',
+    2 => 'voice channel',
+    4 => 'category',
+    _ => 'channel'
+  };
+  return (user, '**deleted a $channelDeleted** $channelName', allChanges);
 }

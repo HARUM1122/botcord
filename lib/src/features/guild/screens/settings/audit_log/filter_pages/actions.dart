@@ -116,7 +116,7 @@ class _FilterByActionsPageState extends ConsumerState<FilterByActionsPage> {
           ),
           const SizedBox(height: 20),
           () {
-            List<(String, String, AuditLogEvent?)> filteredActions = actions.where((element) => element.$1.toLowerCase().contains(_actionName.toLowerCase())).toList();
+            List<(String, String, AuditLogEvent?, Future<(User, String, List<String>)> Function(AuditLogEntry))> filteredActions = actions.values.where((element) => element.$1.toLowerCase().contains(_actionName.toLowerCase())).toList();
             int index = filteredActions.indexWhere((element) => element.$3 == widget.actionType.$2);
             if (index != -1) {
               filteredActions.insert(0, filteredActions.removeAt(index));
@@ -140,7 +140,7 @@ class _FilterByActionsPageState extends ConsumerState<FilterByActionsPage> {
 
 class ActionWidget extends ConsumerWidget {
   final Icon leading;
-  final (String, String, AuditLogEvent?) action;
+  final (String, String, AuditLogEvent?, Future<(User, String, List<String>)> Function(AuditLogEntry)) action;
   final bool selected;
   const ActionWidget({
     required this.leading,

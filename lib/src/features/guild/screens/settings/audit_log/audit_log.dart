@@ -1,3 +1,4 @@
+import 'package:discord/src/features/guild/screens/settings/audit_log/components/audit_log/list.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart' as nyxx;
@@ -9,7 +10,7 @@ import 'package:discord/src/common/components/custom_button.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import 'package:discord/src/features/guild/screens/settings/audit_log/components/filter_options_sheet.dart';
-
+import 'package:flutter_shimmer/flutter_shimmer.dart';
 class AuditLogPage extends ConsumerStatefulWidget {
   final nyxx.Guild? guild;
   const AuditLogPage({required this.guild, super.key});
@@ -28,8 +29,7 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
   (String, nyxx.AuditLogEvent?) _actionType = ('All Actions', null);
 
   Future<List<nyxx.AuditLogEntry>> test() async {
-    await Future.delayed(const Duration(seconds: 1));
-    return [];
+    return await widget.guild?.auditLogs.list() ?? [];
   }
 
   @override
@@ -199,9 +199,7 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
                       ),
                     );
                   }
-                  return Center(
-                    child: Text("AUDIT LOG"),
-                  );
+                  return AuditLogList();
                 }
                 else {
                   return const SizedBox();
