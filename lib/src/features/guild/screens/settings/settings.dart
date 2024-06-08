@@ -8,7 +8,7 @@ import 'package:discord/src/features/guild/components/settings_button.dart';
 import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
 import 'package:discord/src/features/guild/screens/settings/audit_log/audit_log.dart';
 import 'package:discord/src/features/guild/screens/settings/audit_log/filter_pages/actions.dart';
-import 'package:discord/src/features/guild/screens/settings/audit_log/utils/audit_log_info/info/channel_log_info.dart';
+import 'package:discord/src/features/guild/screens/settings/audit_log/utils/audit_log_info/info/channel_info.dart';
 import 'package:discord/src/features/guild/screens/settings/moderation/moderation.dart';
 import 'package:discord/src/features/guild/screens/settings/overview/overview.dart';
 import 'package:discord/src/features/guild/utils/utils.dart';
@@ -26,44 +26,6 @@ class GuildSettingsPage extends ConsumerWidget {
     final Member member = await guild.members[user.id].get();
     return computePermissions(guild, member);
   }
-
-//   CHANNEL CREATE EVENT INFO
-
-
-// flutter: name : fasdfadsf
-// flutter: type : 0
-// flutter: permission_overwrites : []
-// flutter: nsfw : false
-// flutter: rate_limit_per_user : 0
-// flutter: flags : 0
-
-
-// VOICE CHANNEL CREATE EVENT
-
-// flutter: name : asdfasdf
-// flutter: type : 2
-// flutter: bitrate : 64000
-// flutter: user_limit : 0
-// flutter: permission_overwrites : []
-// flutter: nsfw : false
-// flutter: rate_limit_per_user : 0
-// flutter: flags : 0
-
-// flutter: name : asdff
-// flutter: type : 4
-// flutter: permission_overwrites : []
-// flutter: flags : 0
-
-
-/// CHANNEL UPDATE INFO
-/// flutter: nsfw : false
-// flutter: name : fasdfadsfsfdasdfasdf
-// flutter: default_auto_archive_duration : 10080
-// flutter: topic : asdfasdfasdfasdfasfasdfasdf
-// flutter: rate_limit_per_user : 120
-
-
-
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -256,6 +218,15 @@ class GuildSettingsPage extends ConsumerWidget {
                               title: 'Audit Log',
                               assetIcon: AssetIcon.document,
                               onPressed: () async {
+                                // List<AuditLogEntry> entries = await guild!.auditLogs.list();
+                                // AuditLogEntry entry = entries[0];
+                                // for (AuditLogChange change in entry.changes!) {
+                                //   print(change.key);
+                                //   print(change.newValue);
+                                // }
+                                // for (AuditLogEntry entry in entries) {
+                                  
+                                // }
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

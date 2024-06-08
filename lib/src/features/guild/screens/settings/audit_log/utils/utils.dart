@@ -1,3 +1,4 @@
+import 'package:discord/src/features/guild/screens/settings/audit_log/utils/audit_log_info/info/invite_info.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -62,7 +63,7 @@ import 'audit_log_info/audit_log_info.dart';
 
 const Map<int, (String, String, AuditLogEvent?, Future<(User, String, List<String>)> Function(AuditLogEntry)?)> actions = {
   0 : ('All Actions', 'ALL', null, null),
-  // 1 : ('Update Server', 'UPDATE', AuditLogEvent.guildUpdate, func),
+  1 : ('Update Server', 'UPDATE', AuditLogEvent.guildUpdate, getUpdateGuildSettingsLogEntryInfo),
   10 : ('Create Channel', 'ADD', AuditLogEvent.channelCreate, getCreateChannelLogEntryInfo),
   11 : ('Update Channel', 'UPDATE', AuditLogEvent.channelUpdate, getUpdateChannelLogEntryInfo),
   12 : ('Delete Channel', 'REMOVE', AuditLogEvent.channelDelete, getDeleteChannelLogEntryInfo),
@@ -81,7 +82,7 @@ const Map<int, (String, String, AuditLogEvent?, Future<(User, String, List<Strin
   // 30 : ('Create Role', 'ADD', AuditLogEvent.roleCreate),
   // 31 : ('Update Role', 'UPDATE', AuditLogEvent.roleUpdate),
   // 32 : ('Delete Role', 'REMOVE', AuditLogEvent.roleDelete),
-  // 40 : ('Create Invite', 'ADD', AuditLogEvent.inviteCreate),
+  40 : ('Create Invite', 'ADD', AuditLogEvent.inviteCreate, getCreateInviteLogEntryInfo),
   // 41 : ('Update Invite', 'UPDATE', AuditLogEvent.inviteUpdate),
   // 42 : ('Delete Invite', 'REMOVE', AuditLogEvent.inviteDelete),
   // 50 : ('Create Webhook', 'ADD', AuditLogEvent.webhookCreate),

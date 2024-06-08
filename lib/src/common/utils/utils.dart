@@ -125,3 +125,18 @@ String formatDateTime(DateTime dateTime) {
     return DateFormat('M/d/yyyy').format(dateTime);
   }
 }
+
+String formatDuration(int seconds) {
+  if (seconds < 60) {
+    return '$seconds seconds';
+  } else if (seconds < 3600) {
+    int minutes = seconds ~/ 60;
+    return minutes == 1 ? '1 minute' : '$minutes minutes';
+  } else if (seconds < 86400) {
+    int hours = seconds ~/ 3600;
+    return hours == 1 ? '1 hour' : '$hours hours';
+  } else {
+    int days = seconds ~/ 86400;
+    return days == 1 ? '1 day' : '$days days';
+  }
+}

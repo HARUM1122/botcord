@@ -137,6 +137,7 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
                   );
                 }
                 else if (snapshot.hasError) {
+                  print(snapshot.error);
                   return Expanded(
                     child: Center(
                       child: Column(

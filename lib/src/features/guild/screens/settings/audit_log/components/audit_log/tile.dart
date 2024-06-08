@@ -24,7 +24,7 @@ class _AuditLogTileState extends ConsumerState<AuditLogTile> {
 
   late final Color _color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
   late final Color _color2 = appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
-  
+
   bool _showAdditionalInfo = false;
 
   Icon _getIcon(String type) => switch(type) {
@@ -165,23 +165,25 @@ class _AuditLogTileState extends ConsumerState<AuditLogTile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     for (int i = 1; i <= allChanges.length; i++)
-                      MarkdownBody(
-                        data: '`${i < 10 ? '0$i' : i} -` ${allChanges[i - 1]}',
-                        styleSheet: MarkdownStyleSheet(
-                          p: TextStyle(
-                            color: _color2,
-                            fontSize: 14
-                          ),
-                          strong: TextStyle(
-                            color: _color1,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 14,
-                          ),
-                          code: TextStyle(
-                            color: _getColor(widget.auditLogInfo.$3),
-                            fontFamily: 'GGSansSemibold',
-                            fontSize: 14,
-                            backgroundColor: Colors.transparent,
+                      Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: MarkdownBody(
+                          data: '`${i < 10 ? '0$i' : i} -` ${allChanges[i - 1]}',
+                          styleSheet: MarkdownStyleSheet(
+                            p: TextStyle(
+                              color: _color1.withOpacity(0.8),
+                              fontSize: 14
+                            ),
+                            strong: TextStyle(
+                              color: _color1,
+                              fontSize: 14,
+                            ),
+                            code: TextStyle(
+                              color: _getColor(widget.auditLogInfo.$3),
+                              fontFamily: 'GGSansSemibold',
+                              fontSize: 14,
+                              backgroundColor: Colors.transparent,
+                            ),
                           ),
                         ),
                       ),
