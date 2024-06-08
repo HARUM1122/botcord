@@ -8,7 +8,7 @@ import 'options_sheet.dart';
 
 import '../../../../common/utils/utils.dart';
 import '../../../../common/components/custom_button.dart';
-import '../../../../common/components/profile_pic.dart';
+import '../../../../common/components/avatar.dart';
 
 class BotTile extends ConsumerWidget {
   final String title;
@@ -85,8 +85,9 @@ class BotInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color1 = appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000));
-    final Color color2 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+
+    final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+    final Color color2 = appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000));
     return CustomButton(
       onPressed: () {
         showSheet(
@@ -100,7 +101,7 @@ class BotInfo extends StatelessWidget {
           ),
           height: 0.5, 
           maxHeight: 0.8,
-          color: color1,
+          color: color2,
         );
       },
       backgroundColor: Colors.transparent,
@@ -117,11 +118,11 @@ class BotInfo extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ProfilePicWidget(
+            AvatarWidget(
               image: bot['avatar-url']!, 
               errorWidget: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: color1,
+                  color: color2,
                   shape: BoxShape.circle
                 ),
                 child: Center(
@@ -144,7 +145,7 @@ class BotInfo extends StatelessWidget {
                 bot['name']!,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color: color2,
+                  color: color1,
                   fontSize: 16,
                   fontFamily: 'GGSansSemibold'
                 ),

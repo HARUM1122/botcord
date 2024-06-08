@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
 
@@ -56,15 +57,11 @@ import 'audit_log_info/audit_log_info.dart';
 //   print(actions.length);
 // }
 
-Future<(User, String, List<String>)> func(AuditLogEntry log) async {
-  List<String> l = [];
-  return ((await log.user!.get()),'', l);
-}
-
 
 // The element type '(String, String, AuditLogEvent, Future<(User, String, List<String>)> Function(AuditLogEntry))' can't be assigned to the map value type '(String, String, AuditLogEvent, Future<(User, String, List<String>)>)
 
-const Map<int, (String, String, AuditLogEvent, Future<(User, String, List<String>)> Function(AuditLogEntry))> actions = {
+const Map<int, (String, String, AuditLogEvent?, Future<(User, String, List<String>)> Function(AuditLogEntry)?)> actions = {
+  0 : ('All Actions', 'ALL', null, null),
   // 1 : ('Update Server', 'UPDATE', AuditLogEvent.guildUpdate, func),
   10 : ('Create Channel', 'ADD', AuditLogEvent.channelCreate, getCreateChannelLogEntryInfo),
   11 : ('Update Channel', 'UPDATE', AuditLogEvent.channelUpdate, getUpdateChannelLogEntryInfo),

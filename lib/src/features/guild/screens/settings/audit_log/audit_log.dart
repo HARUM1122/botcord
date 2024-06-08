@@ -1,4 +1,6 @@
+import 'package:discord/src/common/utils/extensions.dart';
 import 'package:discord/src/features/guild/screens/settings/audit_log/components/audit_log/list.dart';
+import 'package:discord/src/features/guild/screens/settings/audit_log/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart' as nyxx;
@@ -10,7 +12,6 @@ import 'package:discord/src/common/components/custom_button.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import 'package:discord/src/features/guild/screens/settings/audit_log/components/filter_options_sheet.dart';
-import 'package:flutter_shimmer/flutter_shimmer.dart';
 class AuditLogPage extends ConsumerStatefulWidget {
   final nyxx.Guild? guild;
   const AuditLogPage({required this.guild, super.key});
@@ -28,10 +29,18 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
   nyxx.Snowflake? _userId;
   (String, nyxx.AuditLogEvent?) _actionType = ('All Actions', null);
 
-  Future<List<nyxx.AuditLogEntry>> test() async {
-    return await widget.guild?.auditLogs.list() ?? [];
+  Future<List<(nyxx.User, String, String, nyxx.Snowflake, List<String>)>> getLogs() async {
+    List<nyxx.AuditLogEntry> auditLogEntries = await widget.guild?.auditLogs.list(type: _actionType.$2) ?? [];
+    List<(nyxx.User, String, String, nyxx.Snowflake, List<String>)> logs = [];
+    for (final nyxx.AuditLogEntry auditLogEntry in auditLogEntries) {
+      if (actions.containsKey(auditLogEntry.actionType.value)) {
+        final action = actions[auditLogEntry.actionType.value]!;
+        final (nyxx.User, String, List<String>) info = await action.$4!(auditLogEntry);
+        logs.add((info.$1, info.$2, action.$2, auditLogEntry.id, info.$3));
+      }
+    }
+    return logs;
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +98,7 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
         centerTitle: true
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 12),
+        padding: EdgeInsets.only(left: 12, right: 12, bottom: context.padding.bottom + 12),
         child: Column(
           children: [
             Row(
@@ -114,8 +123,9 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
                 )
               ],  
             ),
+            const SizedBox(height: 12),
             FutureBuilder(
-              future: test(),
+              future: getLogs(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Expanded(
@@ -199,7 +209,9 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
                       ),
                     );
                   }
-                  return AuditLogList();
+                  return AuditLogList(
+                    auditLogInfoList: snapshot.data!,
+                  );
                 }
                 else {
                   return const SizedBox();

@@ -15,7 +15,7 @@ import '../controller/profile_controller.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/globals.dart';
 import '../../../common/utils/extensions.dart';
-import '../../../common/components/profile_pic.dart';
+import '../../../common/components/avatar.dart';
 import '../../../common/controllers/theme_controller.dart';
 import '../../../common/components/online_status/status.dart';
 
@@ -238,7 +238,7 @@ class ProfileScreen extends ConsumerWidget {
               Positioned(
                 left: 20,
                 top: 105,
-                child: ProfilePicWidget(
+                child: AvatarWidget(
                   onPressed: () => showSheet(
                     context: context,
                     height: 0.5,

@@ -10,7 +10,7 @@ import '../../../../common/utils/utils.dart';
 import '../../../../common/utils/extensions.dart';
 import '../../../../common/components/drag_handle.dart';
 import '../../../../common/components/custom_button.dart';
-import '../../../../common/components/profile_pic.dart';
+import '../../../../common/components/avatar.dart';
 
 import '../../controller/auth_controller.dart';
 
@@ -38,7 +38,7 @@ class BotOptionsSheet extends ConsumerWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ProfilePicWidget(
+          AvatarWidget(
             image: bot['avatar-url']!, 
             errorWidget: DecoratedBox(
               decoration: BoxDecoration(

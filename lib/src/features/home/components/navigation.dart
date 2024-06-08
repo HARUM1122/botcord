@@ -13,7 +13,7 @@ import '../../../common/utils/globals.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/utils/asset_constants.dart';
-import '../../../common/components/profile_pic.dart';
+import '../../../common/components/avatar.dart';
 
 import '../../../features/guild/controllers/guilds_controller.dart';
 
@@ -63,7 +63,7 @@ class BottomNavigator extends ConsumerWidget {
               }
             ),
             NavigationButton(
-              widget: ProfilePicWidget(
+              widget: AvatarWidget(
                 image: avatar?.$1 ?? (user?.avatar.url.toString() ?? ''),
                 radius: 24,
                 backgroundColor: Colors.transparent,

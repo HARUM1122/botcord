@@ -14,7 +14,7 @@ import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/utils/asset_constants.dart';
 
-import 'package:discord/src/common/components/profile_pic.dart';
+import 'package:discord/src/common/components/avatar.dart';
 import 'package:discord/src/common/components/online_status/status.dart';
 
 import 'package:discord/src/features/auth/utils/utils.dart';
@@ -311,7 +311,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             Positioned(
               left: 20,
               top: 95,
-              child: ProfilePicWidget(
+              child: AvatarWidget(
                 onPressed: () async {
                   (Uint8List, String)? selectedAvatar = await pickImage();
                   if (selectedAvatar == null) return;

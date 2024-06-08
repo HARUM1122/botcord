@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+
+import 'package:nyxx/nyxx.dart';
+
 import 'tile.dart';
 
 class AuditLogList extends StatelessWidget {
+  final List<(User, String, String, Snowflake, List<String>)> auditLogInfoList;
   const AuditLogList({
+    required this.auditLogInfoList,
     super.key
   });
 
@@ -10,8 +15,10 @@ class AuditLogList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-        itemCount: 3,
-        itemBuilder: (context, index) => AuditLogTile()
+        itemCount: auditLogInfoList.length,
+        itemBuilder: (context, index) => AuditLogTile(
+          auditLogInfo: auditLogInfoList[index],
+        )
       ),
     );
   }

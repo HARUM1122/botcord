@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 
-class ProfilePicWidget extends StatelessWidget {
+class AvatarWidget extends StatelessWidget {
   final dynamic image;
   final double radius;
   final Color backgroundColor;
@@ -11,7 +11,7 @@ class ProfilePicWidget extends StatelessWidget {
   final Widget ? errorWidget;
   final Widget? child;
 
-  const ProfilePicWidget({
+  const AvatarWidget({
     required this.image, 
     required this.radius,
     required this.backgroundColor,

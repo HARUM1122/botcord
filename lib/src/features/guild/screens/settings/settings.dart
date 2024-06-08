@@ -95,6 +95,7 @@ class GuildSettingsPage extends ConsumerWidget {
             fontSize: 18
           ),
         ),
+        centerTitle: true
       ),
       backgroundColor: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
       body: FutureBuilder(

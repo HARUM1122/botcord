@@ -14,7 +14,7 @@ import '../../../common/utils/utils.dart';
 import '../../../common/utils/globals.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/components/custom_button.dart';
-import '../../../common/components/profile_pic.dart';
+import '../../../common/components/avatar.dart';
 
 
 import '../../../features/auth/controller/auth_controller.dart';
@@ -119,7 +119,7 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
           ),
           const SizedBox(height: 30),
           Center(
-            child: ProfilePicWidget(
+            child: AvatarWidget(
               image: widget.bot['avatar-url'],
               errorWidget: DecoratedBox(
               decoration: BoxDecoration(
