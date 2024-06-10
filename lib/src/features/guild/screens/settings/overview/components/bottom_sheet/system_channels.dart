@@ -45,7 +45,7 @@ class SystemChannelsSheet extends ConsumerWidget {
           ),
         ),
       ),
-      const SizedBox(height: 10),
+      const SizedBox(height: 20),
       NotificationListener<OverscrollIndicatorNotification>(
         onNotification: (notification) {
           notification.disallowIndicator();

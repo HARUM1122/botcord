@@ -1,7 +1,10 @@
 import 'package:discord/src/common/utils/extensions.dart';
+import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/features/guild/screens/settings/audit_log/components/audit_log/list.dart';
 import 'package:discord/src/features/guild/screens/settings/audit_log/utils/utils.dart';
+import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:nyxx/nyxx.dart' as nyxx;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -101,27 +104,65 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
         padding: EdgeInsets.only(left: 12, right: 12, bottom: context.padding.bottom + 12),
         child: Column(
           children: [
-            Row(
-              children: [
-                Text(
-                  'Filter',
-                  style: TextStyle(
-                    color: _color1,
-                    fontSize: 14,
-                    fontFamily: 'GGSansSemibold'
+            GestureDetector(
+              onTap: () async {
+                  List<nyxx.AuditLogEntry> entries = await widget.guild!.auditLogs.list();
+                  print(client!.channels.get(entries[1].targetId!));
+                  print(entries[1].options?.roleName);
+                  for (nyxx.AuditLogChange change in entries[1].changes!) {
+                    print(change.key);
+                    // if (change.key == 'allow') {
+                    //   print("ALLOWED");
+                    //   print(getAllPermissions(nyxx.Permissions(int.parse(change.newValue))));
+                    // } 
+                    // if (change.key == 'deny') {
+                    //   print("DENIED");
+                    //   print(getAllPermissions(nyxx.Permissions(int.parse(change.newValue))));
+                    // }
+                    // if (change.key == 'id') {
+                    //   print(widget.guild!.roles.get(nyxx.Snowflake(int.parse(change.newValue))));
+                    // }
+                  }
+                  // for (nyxx.Flag<nyxx.Permissions> permission in nyxx.Permissions(275146377232)) {
+                  //    switch (permission) {
+                  //         case nyxx.Permissions.administrator:
+                  //           print('Administrator Perm');
+                  //         case  nyxx.Permissions.sendMessages:
+                  //           print('Send messages Perm');
+                  //         case nyxx.Permissions.attachFiles:
+                  //           print("Can attach files");
+                  //       }
+                  // }
+                  // print(nyxx.Permissions(536874000));
+                  // for (final change in entries[0].changes!) {
+                  //   print("${change.key} : ${change.newValue}");
+                  // }
+                  // for (nyxx.AuditLogEntry entry in entries) {
+                  //   print(entry);
+                  // }
+                                // nyxx.AuditLogEntry entry = entries[0];
+                                // print(entry.actionType.name);
+                                // for (nyxx.AuditLogChange change in entry.changes!) {
+                                //   print(change.key);
+                                //   print(change.oldValue);
+                                // }
+              },
+              child: Row(
+                children: [
+                  Text(
+                    'Filter',
+                    style: TextStyle(
+                      color: _color1,
+                      fontSize: 14,
+                      fontFamily: 'GGSansSemibold'
+                    ),
                   ),
-                ),
-                const Spacer(),
-                const FilterTypeHeader(title: 'All Users'),
-                const SizedBox(width: 10),
-                FilterTypeHeader(title: _actionType.$1),
-                const SizedBox(width: 10),
-                Icon(
-                  Icons.keyboard_arrow_right,
-                  color: _color1,
-                  size: 18,
-                )
-              ],  
+                  const Spacer(),
+                  const FilterTypeHeader(title: 'All Users'),
+                  const SizedBox(width: 10),
+                  FilterTypeHeader(title: _actionType.$1)
+                ],  
+              ),
             ),
             const SizedBox(height: 12),
             FutureBuilder(
@@ -137,7 +178,6 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
                   );
                 }
                 else if (snapshot.hasError) {
-                  print(snapshot.error);
                   return Expanded(
                     child: Center(
                       child: Column(
@@ -249,3 +289,6 @@ class FilterTypeHeader extends ConsumerWidget {
     );
   }
 }
+
+  // —) vs. En Dash (—) | How to Use in Sentences
+  // August 25, 202 - 

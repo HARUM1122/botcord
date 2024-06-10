@@ -42,7 +42,7 @@ class InactiveChannelsDurationSheet extends ConsumerWidget {
           ),
         ),
       ),
-      const SizedBox(height: 10),
+      const SizedBox(height: 20),
       SingleChildScrollView(
         child: Container(
           width: double.infinity,

@@ -8,7 +8,7 @@ import 'package:discord/src/features/guild/components/settings_button.dart';
 import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
 import 'package:discord/src/features/guild/screens/settings/audit_log/audit_log.dart';
 import 'package:discord/src/features/guild/screens/settings/audit_log/filter_pages/actions.dart';
-import 'package:discord/src/features/guild/screens/settings/audit_log/utils/audit_log_info/info/channel_info.dart';
+import 'package:discord/src/features/guild/screens/settings/audit_log/utils/audit_log_info/info/channel.dart';
 import 'package:discord/src/features/guild/screens/settings/moderation/moderation.dart';
 import 'package:discord/src/features/guild/screens/settings/overview/overview.dart';
 import 'package:discord/src/features/guild/utils/utils.dart';
@@ -220,12 +220,10 @@ class GuildSettingsPage extends ConsumerWidget {
                               onPressed: () async {
                                 // List<AuditLogEntry> entries = await guild!.auditLogs.list();
                                 // AuditLogEntry entry = entries[0];
+                                // print(entry.actionType.name);
                                 // for (AuditLogChange change in entry.changes!) {
                                 //   print(change.key);
-                                //   print(change.newValue);
-                                // }
-                                // for (AuditLogEntry entry in entries) {
-                                  
+                                //   print(change.oldValue);
                                 // }
                                 Navigator.push(
                                   context,

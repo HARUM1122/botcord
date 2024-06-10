@@ -1,3 +1,4 @@
+import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:nyxx/nyxx.dart';
 
 String addCommas(String number) {
@@ -17,13 +18,15 @@ Future<(User, String, List<String>)> getCreateChannelLogEntryInfo(AuditLogEntry 
   final User user = await log.user!.get();
   final List<String> allChanges = [];
   final List<AuditLogChange> changes = log.changes!;
-  String channelCreated = '';
+  String channelName = '';
   String channelType = '';
   for (int i = 0; i < changes.length; i++) {
     final AuditLogChange auditLogChange = changes[i];
     switch (auditLogChange.key) {
       case 'name':
-        allChanges.add('Set the name to **${auditLogChange.newValue}**');
+        final String name = auditLogChange.newValue;
+        channelName = name;
+        allChanges.add('Set the name to **$name**');
       case 'type':
         allChanges.add('Set type to **${() {
           String createdType = '';
@@ -32,10 +35,45 @@ Future<(User, String, List<String>)> getCreateChannelLogEntryInfo(AuditLogEntry 
               createdType = 'Text Channel';
             case 2:
               createdType = 'Voice Channel';
-            default:
+            case 4:
               createdType = 'Category';
+            case 5:
+              createdType = 
+
+    //               ChannelType.guildAnnouncement => 'announcement',
+    // ChannelType.announcementThread => 'announcement Thread',
+    // ChannelType.publicThread => 'public thread',
+    // ChannelType.privateThread => 'private thread',
+    // ChannelType.guildStageVoice => 'stage channel',
+    // ChannelType.guildDirectory => 'directory',
+    // ChannelType.guildForum => 'forum channel',
+    // ChannelType.guildMedia => 'media channel',
+
+  //               guildAnnouncement._(5),
+
+  // /// A [Thread] in an announcement channel.
+  // announcementThread._(10),
+
+  // /// A public thread.
+  // publicThread._(11),
+
+  // /// A private thread.
+  // privateThread._(12),
+
+  // /// A stage channel in a [Guild].
+  // guildStageVoice._(13),
+
+  // /// A [Guild] directory.
+  // guildDirectory._(14),
+
+  // /// A forum channel in a [Guild].
+  // guildForum._(15),
+
+  // /// A media channel in a [Guild].
+  // guildMedia._(16);
+            
           }
-          channelCreated = createdType.toLowerCase();
+          channelType = createdType.toLowerCase();
           return createdType;
         }()}**');
       case 'bitrate':
@@ -43,19 +81,29 @@ Future<(User, String, List<String>)> getCreateChannelLogEntryInfo(AuditLogEntry 
       case 'user_limit':
         allChanges.add('Set user limit to **${auditLogChange.newValue}**');
       case 'rate_limit_per_user':
-        allChanges.add(
-        switch (auditLogChange.newValue) {
-            0 => '**Disabled** slowmode',
-            _=> 'Set slowmode to **${auditLogChange.newValue} seconds**'
-          }
-        );
+        allChanges.add(auditLogChange.newValue == 0 ? '**Disabled** slowmode' : 'Set slowmode to **${auditLogChange.newValue} seconds**');
     }
   }
-  return (user, '**created a** $channelType ${channelType == 'Text Channel' ? '#' : ''}$channelCreated' ,allChanges);
+  return (user, '**created a $channelType** $channelName' ,allChanges);
 }
 
 Future<(User, String, List<String>)> getUpdateChannelLogEntryInfo(AuditLogEntry log) async {
   final User user = await log.user!.get();
+  final GuildChannel? channel = await getChannel(log.targetId!);
+  final String channelType = switch(channel?.type) {
+    ChannelType.guildText => 'text channel',
+    ChannelType.guildVoice => 'voice channel',
+    ChannelType.guildCategory => 'category',
+    ChannelType.guildAnnouncement => 'announcement channel',
+    ChannelType.announcementThread => 'announcement Thread',
+    ChannelType.publicThread => 'public thread',
+    ChannelType.privateThread => 'private thread',
+    ChannelType.guildStageVoice => 'stage channel',
+    ChannelType.guildDirectory => 'directory',
+    ChannelType.guildForum => 'forum channel',
+    ChannelType.guildMedia => 'media channel',
+    _=> ''
+  };
   final List<String> allChanges = [];
   final List<AuditLogChange> changes = log.changes!;
   for (int i = 0; i < changes.length; i++) {
@@ -82,15 +130,10 @@ Future<(User, String, List<String>)> getUpdateChannelLogEntryInfo(AuditLogEntry 
        case 'bitrate':
         allChanges.add('Set bitrate to ${auditLogChange.newValue} kbps');
       case 'rate_limit_per_user':
-        allChanges.add(
-        switch (auditLogChange.newValue) {
-            0 => '**Disabled** slowmode',
-            _=> 'Set slowmode to **${auditLogChange.newValue} seconds**'
-          }
-        );
+        allChanges.add(auditLogChange.newValue == 0 ? '**Disabled** slowmode' : 'Set slowmode to **${auditLogChange.newValue} seconds**');
     }
   }
-  return (user, '**made changes to** a channel' , allChanges);
+  return (user, '**made changes to a $channelType** ${channel?.name ?? ''}' , allChanges);
 }
 
 Future<(User, String, List<String>)> getDeleteChannelLogEntryInfo(AuditLogEntry log) async  {

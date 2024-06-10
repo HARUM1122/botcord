@@ -1,3 +1,4 @@
-export 'info/channel_info.dart';
-export 'info/guild_info.dart';
-export 'info/invite_info.dart';
+export 'info/channel.dart';
+export 'info/guild.dart';
+export 'info/invite.dart';
+export 'info/channel_overrides.dart';

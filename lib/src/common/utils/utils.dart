@@ -109,6 +109,7 @@ Future<(Uint8List, String)?> pickImage() async {
 }
 
 String formatDateTime(DateTime dateTime) {
+  dateTime = dateTime.toLocal();
   final now = DateTime.now();
   final difference = now.difference(dateTime);
   final dayDifference = difference.inDays;

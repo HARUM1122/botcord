@@ -84,13 +84,34 @@
 // }
 
 
-enum RichestPeople {
-  elon._(40000000000000000),
-  billgates._(69);
-  final int worth;
-  const RichestPeople._(this.worth);
-}
+// enum RichestPeople {
+//   elon._(40000000000000000),
+//   billgates._(69);
+//   final int worth;
+//   const RichestPeople._(this.worth);
+// }
 
-void main() {
-  print(RichestPeople.elon.worth);
+// void main() {
+//   print(RichestPeople.elon.worth);
+// }
+
+import 'package:intl/intl.dart';
+
+
+String formatDateTime(DateTime dateTime) {
+  final now = DateTime.now();
+  final difference = now.difference(dateTime);
+  final dayDifference = difference.inDays;
+  final hourFormat = DateFormat('h:mm a');
+
+  if (dayDifference == 0) {
+    return 'Today at ${hourFormat.format(dateTime)}';
+  } else if (dayDifference == 1) {
+    return 'Yesterday at ${hourFormat.format(dateTime)}';
+  } else if (dayDifference < 7) {
+    final weekdayFormat = DateFormat('EEEE');
+    return 'Last ${weekdayFormat.format(dateTime)} at ${hourFormat.format(dateTime)}';
+  } else {
+    return DateFormat('M/d/yyyy').format(dateTime);
+  }
 }

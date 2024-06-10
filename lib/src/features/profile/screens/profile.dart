@@ -8,9 +8,9 @@ import 'package:page_animation_transition/animations/bottom_to_top_transition.da
 
 import '../screens/screens.dart';
 
-import '../components/online_status.dart';
+import '../components/online_status_sheet.dart';
 import '../components/edit_option_button.dart';
-import '../controller/profile_controller.dart';
+import '../controller/profile.dart';
 
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/globals.dart';

@@ -1,3 +1,5 @@
+import 'package:nyxx/nyxx.dart';
+
 const List<(String, int)> generalPerms = [
   ('Administrator', 8),
   ('View Audit Log', 128),

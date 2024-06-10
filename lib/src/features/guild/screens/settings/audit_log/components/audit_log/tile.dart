@@ -112,7 +112,6 @@ class _AuditLogTileState extends ConsumerState<AuditLogTile> {
                       ),
                       radius: 30, 
                       backgroundColor: Colors.transparent,
-                      padding: const EdgeInsets.all(2),
                     );
                   }(),
                   const SizedBox(width: 10),
@@ -168,7 +167,7 @@ class _AuditLogTileState extends ConsumerState<AuditLogTile> {
                       Padding(
                         padding: const EdgeInsets.all(2),
                         child: MarkdownBody(
-                          data: '`${i < 10 ? '0$i' : i} -` ${allChanges[i - 1]}',
+                          data: '`${i < 10 ? '0$i' : i} –` ${allChanges[i - 1]}',
                           styleSheet: MarkdownStyleSheet(
                             p: TextStyle(
                               color: _color1.withOpacity(0.8),
@@ -177,6 +176,11 @@ class _AuditLogTileState extends ConsumerState<AuditLogTile> {
                             strong: TextStyle(
                               color: _color1,
                               fontSize: 14,
+                            ),
+                            listBullet: TextStyle(
+                              color: _color1.withOpacity(0.8),
+                              fontSize: 14,
+                              fontFamily: 'GGSansSemibold'
                             ),
                             code: TextStyle(
                               color: _getColor(widget.auditLogInfo.$3),
@@ -196,3 +200,4 @@ class _AuditLogTileState extends ConsumerState<AuditLogTile> {
     );
   }
 }
+

@@ -56,7 +56,7 @@ class LinkOptionsSheet extends ConsumerWidget {
           ),
         ),
       ),
-      const SizedBox(height: 30),
+      const SizedBox(height: 20),
       DecoratedBox(
         decoration: BoxDecoration(
           color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),

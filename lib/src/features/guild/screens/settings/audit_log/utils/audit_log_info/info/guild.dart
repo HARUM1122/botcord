@@ -25,6 +25,7 @@ Future<(User, String, List<String>)> getUpdateGuildSettingsLogEntryInfo(AuditLog
       case 'name':
         allChanges.add('Changed guild name to **${auditLogChange.newValue}**');
     }
+    // TODO THERE ARE SOME MORE CASES TO CHECK
   }
   return (user, '**made changes to** server settings', allChanges);
 }

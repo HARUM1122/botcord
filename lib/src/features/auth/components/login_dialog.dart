@@ -18,7 +18,7 @@ import '../../../common/components/avatar.dart';
 
 
 import '../../../features/auth/controller/auth_controller.dart';
-import '../../../features/profile/controller/profile_controller.dart';
+import '../../profile/controller/profile.dart';
 
 
 class LoginDialog extends ConsumerStatefulWidget {

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
-import '../controller/profile_controller.dart';
+import '../controller/profile.dart';
 
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/extensions.dart';
@@ -46,7 +46,7 @@ class OnlineStatusSheet extends ConsumerWidget {
           ),
         ),
       ),
-      const SizedBox(height: 10),
+      const SizedBox(height: 20),
       Text(
         "Online Status",
         style: TextStyle(
@@ -70,11 +70,9 @@ class OnlineStatusSheet extends ConsumerWidget {
               status: 'online',
               title: 'Online',
               selected: botActivity['current-online-status'] == 'online',
-              theme: theme,
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(16)
               ),
-              controller: profileController,
             ),
             Divider(
               color: color1,
@@ -86,9 +84,7 @@ class OnlineStatusSheet extends ConsumerWidget {
               status: 'idle',
               title: 'Idle',
               selected: botActivity['current-online-status'] == 'idle',
-              theme: theme,
               borderRadius: BorderRadius.zero,
-              controller: profileController,
             ),
             Divider(
               color: color1,
@@ -100,9 +96,7 @@ class OnlineStatusSheet extends ConsumerWidget {
               status: 'dnd',
               title: 'Do Not Disturb',
               selected: botActivity['current-online-status'] == 'dnd',
-              theme: theme,
               borderRadius: BorderRadius.zero,
-              controller: profileController,
             ),
             Divider(
               color: color1,
@@ -114,11 +108,9 @@ class OnlineStatusSheet extends ConsumerWidget {
               status: 'invisible',
               title: 'Invisible',
               selected: botActivity['current-online-status'] == 'invisible',
-              theme: theme,
               borderRadius: const BorderRadius.vertical(
                 bottom: Radius.circular(16)
               ),
-              controller: profileController,
             )
           ],
         )
@@ -133,30 +125,28 @@ class OnlineStatusSheet extends ConsumerWidget {
   }
 }
 
-class OnlineStatusRB extends StatelessWidget {
+class OnlineStatusRB extends ConsumerWidget {
   final String status;
   final String title;
   final BorderRadius borderRadius;
   final bool selected;
-  final String theme;
-  final ProfileController controller;
   const OnlineStatusRB({
     required this.status,
     required this.title,
     required this.borderRadius,
     required this.selected,
-    required this.theme,
-    required this.controller,
     super.key
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ProfileController profileController = ref.read(profileControllerProvider);
+    final String theme =  ref.read(themeController);
     return CustomButton(
       height: 60,
       onPressed: () {
-        controller.botActivity['current-online-status'] = status;
-        controller.updatePresence(save: true);
+        profileController.botActivity['current-online-status'] = status;
+        profileController.updatePresence(save: true);
         Navigator.pop(context);
       },
       backgroundColor: Colors.transparent,

@@ -10,7 +10,7 @@ import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/components/custom_button.dart';
 
-import 'package:discord/src/features/profile/controller/profile_controller.dart';
+import 'package:discord/src/features/profile/controller/profile.dart';
 
 class EditActivityScreen extends ConsumerStatefulWidget {
   const EditActivityScreen({super.key});
