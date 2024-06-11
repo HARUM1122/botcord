@@ -2,7 +2,7 @@ import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:nyxx/nyxx.dart';
 
-Future<(User, String, List<String>)> getCreateInviteLogEntryInfo(AuditLogEntry log) async {
+Future<(User, String, List<String>)> getCreateInviteLogEntryInfo(AuditLogEntry log, Guild? guild) async {
   final User user = await log.user!.get();
   final List<String> allChanges = [];
   final List<AuditLogChange> changes = log.changes!;
@@ -27,7 +27,7 @@ Future<(User, String, List<String>)> getCreateInviteLogEntryInfo(AuditLogEntry l
   return (user, '**created an invite**', allChanges);
 }
 
-Future<(User, String, List<String>)> getDeleteInviteLogEntryInfo(AuditLogEntry log) async {
+Future<(User, String, List<String>)> getDeleteInviteLogEntryInfo(AuditLogEntry log, Guild? guild) async {
   final User user = await log.user!.get();
   return (user, '**deleted an invite** ${log.changes![0].oldValue}', List.generate(0, (index) => ''));
 }

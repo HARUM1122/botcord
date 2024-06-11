@@ -124,11 +124,12 @@ class _AuditLogTileState extends ConsumerState<AuditLogTile> {
                           styleSheet: MarkdownStyleSheet(
                             p: TextStyle(
                               color: _color2,
-                              fontSize: 16
+                              fontSize: 16,
                             ),
                             strong: TextStyle(
                               color: _color1,
                               fontSize: 16,
+                              fontWeight: FontWeight.normal
                             )
                           ),
                         ),
@@ -172,10 +173,6 @@ class _AuditLogTileState extends ConsumerState<AuditLogTile> {
                             p: TextStyle(
                               color: _color1.withOpacity(0.8),
                               fontSize: 14
-                            ),
-                            strong: TextStyle(
-                              color: _color1,
-                              fontSize: 14,
                             ),
                             listBullet: TextStyle(
                               color: _color1.withOpacity(0.8),

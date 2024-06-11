@@ -117,3 +117,11 @@ Future<GuildChannel?> getChannel(Snowflake id) async {
     return null;
   }
 }
+
+Future<User?> getUser(Snowflake id) async {
+  try {
+    return await client!.users.fetch(id);
+  } catch (e) {
+    return null;
+  }
+}

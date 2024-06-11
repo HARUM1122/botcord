@@ -1,7 +1,5 @@
-import 'package:discord/src/features/guild/screens/settings/audit_log/utils/audit_log_info/info/channel_overrides.dart';
-import 'package:discord/src/features/guild/screens/settings/audit_log/utils/audit_log_info/info/invite.dart';
-import 'package:flutter/material.dart';
 
+import 'package:discord/src/features/guild/screens/settings/audit_log/utils/audit_log_info/info/member.dart';
 import 'package:nyxx/nyxx.dart';
 
 import 'audit_log_info/audit_log_info.dart';
@@ -62,30 +60,30 @@ import 'audit_log_info/audit_log_info.dart';
 
 // The element type '(String, String, AuditLogEvent, Future<(User, String, List<String>)> Function(AuditLogEntry))' can't be assigned to the map value type '(String, String, AuditLogEvent, Future<(User, String, List<String>)>)
 
-const Map<int, (String, String, AuditLogEvent?, Future<(User, String, List<String>)> Function(AuditLogEntry)?)> actions = {
+const Map<int, (String, String, AuditLogEvent?, Future<(User, String, List<String>)> Function(AuditLogEntry, Guild?)?)> actions = {
   0 : ('All Actions', 'ALL', null, null),
   1 : ('Update Server', 'UPDATE', AuditLogEvent.guildUpdate, getUpdateGuildSettingsLogEntryInfo),
   10 : ('Create Channel', 'ADD', AuditLogEvent.channelCreate, getCreateChannelLogEntryInfo),
   11 : ('Update Channel', 'UPDATE', AuditLogEvent.channelUpdate, getUpdateChannelLogEntryInfo),
   12 : ('Delete Channel', 'REMOVE', AuditLogEvent.channelDelete, getDeleteChannelLogEntryInfo),
   13 : ('Create Channel Permissions', 'ADD', AuditLogEvent.channelOverwriteCreate, getCreatedChannelOverridesLogEntryInfo),
-  // 14 : ('Update Channel Permissions', 'UPDATE', AuditLogEvent.channelOverwriteUpdate),
-  // 15 : ('Delete Channel Permissions', 'REMOVE', AuditLogEvent.channelOverwriteDelete),
-  // 20 : ('Kick Member', 'REMOVE', AuditLogEvent.memberKick),
-  // 21 : ('Prune Members', 'REMOVE', AuditLogEvent.memberPrune),
-  // 22 : ('Ban Member', 'REMOVE', AuditLogEvent.memberBanAdd),
-  // 23 : ('Unban Member', 'ADD', AuditLogEvent.memberBanRemove),
-  // 24 : ('Update Member', 'UPDATE', AuditLogEvent.memberUpdate),
-  // 25 : ('Update Member Roles', 'UPDATE', AuditLogEvent.memberRoleUpdate),
+  14 : ('Update Channel Permissions', 'UPDATE', AuditLogEvent.channelOverwriteUpdate, getUpdatedChannelOverridesLogEntryInfo),
+  // // 15 : ('Delete Channel Permissions', 'REMOVE', AuditLogEvent.channelOverwriteDelete),
+  20 : ('Kick Member', 'REMOVE', AuditLogEvent.memberKick, getMemberKickedLogEntryInfo),
+  21 : ('Prune Members', 'REMOVE', AuditLogEvent.memberPrune, getMemberPrunedLogEntryInfo),
+  22 : ('Ban Member', 'REMOVE', AuditLogEvent.memberBanAdd, getMemberBannedLogEntryInfo),
+  23 : ('Unban Member', 'ADD', AuditLogEvent.memberBanRemove, getMemberUnbannedLogEntryInfo),
+  24 : ('Update Member', 'UPDATE', AuditLogEvent.memberUpdate, getMemberUpdatedLogEntryInfo),
+  25 : ('Update Member Roles', 'UPDATE', AuditLogEvent.memberRoleUpdate, getMemberRolesUpdateLogEntryInfo),
   // 26 : ('Move Member', 'UPDATE', AuditLogEvent.memberMove),
   // 27 : ('Disconnect Member', 'REMOVE', AuditLogEvent.memberDisconnect),
   // 28 : ('Add Bot', 'ADD', AuditLogEvent.botAdd),
   // 30 : ('Create Role', 'ADD', AuditLogEvent.roleCreate),
   // 31 : ('Update Role', 'UPDATE', AuditLogEvent.roleUpdate),
   // 32 : ('Delete Role', 'REMOVE', AuditLogEvent.roleDelete),
-  40 : ('Create Invite', 'ADD', AuditLogEvent.inviteCreate, getCreateInviteLogEntryInfo),
-  // 41 : ('Update Invite', 'UPDATE', AuditLogEvent.inviteUpdate),
-  42 : ('Delete Invite', 'REMOVE', AuditLogEvent.inviteDelete, getDeleteInviteLogEntryInfo),
+  // 40 : ('Create Invite', 'ADD', AuditLogEvent.inviteCreate, getCreateInviteLogEntryInfo),
+  // // 41 : ('Update Invite', 'UPDATE', AuditLogEvent.inviteUpdate),
+  // 42 : ('Delete Invite', 'REMOVE', AuditLogEvent.inviteDelete, getDeleteInviteLogEntryInfo),
   // 50 : ('Create Webhook', 'ADD', AuditLogEvent.webhookCreate),
   // 51 : ('Update Webhook', 'UPDATE', AuditLogEvent.webhookUpdate),
   // 52 : ('Delete Webhook', 'REMOVE', AuditLogEvent.webhookDelete),

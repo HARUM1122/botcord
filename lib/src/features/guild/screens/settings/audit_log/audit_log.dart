@@ -38,7 +38,7 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
     for (final nyxx.AuditLogEntry auditLogEntry in auditLogEntries) {
       if (actions.containsKey(auditLogEntry.actionType.value)) {
         final action = actions[auditLogEntry.actionType.value]!;
-        final (nyxx.User, String, List<String>) info = await action.$4!(auditLogEntry);
+        final (nyxx.User, String, List<String>) info = await action.$4!(auditLogEntry, widget.guild);
         logs.add((info.$1, info.$2, action.$2, auditLogEntry.id, info.$3));
       }
     }
@@ -107,21 +107,27 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
             GestureDetector(
               onTap: () async {
                   List<nyxx.AuditLogEntry> entries = await widget.guild!.auditLogs.list();
-                  print(client!.channels.get(entries[1].targetId!));
-                  print(entries[1].options?.roleName);
-                  for (nyxx.AuditLogChange change in entries[1].changes!) {
-                    print(change.key);
-                    // if (change.key == 'allow') {
-                    //   print("ALLOWED");
-                    //   print(getAllPermissions(nyxx.Permissions(int.parse(change.newValue))));
-                    // } 
-                    // if (change.key == 'deny') {
-                    //   print("DENIED");
-                    //   print(getAllPermissions(nyxx.Permissions(int.parse(change.newValue))));
-                    // }
-                    // if (change.key == 'id') {
-                    //   print(widget.guild!.roles.get(nyxx.Snowflake(int.parse(change.newValue))));
-                    // }
+                  print(entries[1].options?.membersRemoved);
+                  print(entries[1].options?.deleteMemberDays);
+                  print(entries[0].actionType.name);
+                    // print(entries[0].options?.channelId);
+                    // print(entries[0].options?.applicationId);;
+                    for (nyxx.AuditLogChange change in entries[3].changes ?? []) {
+                      print("${change.key} : ${change.newValue}");
+                      print("${change.key} : ${change.oldValue}");
+                  
+                  
+                  //   // if (change.key == 'allow') {
+                  //   //   print("ALLOWED");
+                  //   //   print(getAllPermissions(nyxx.Permissions(int.parse(change.newValue))));
+                  //   // } 
+                  //   // if (change.key == 'deny') {
+                  //   //   print("DENIED");
+                  //   //   print(getAllPermissions(nyxx.Permissions(int.parse(change.newValue))));
+                  //   // }
+                  //   // if (change.key == 'id') {
+                  //   //   print(widget.guild!.roles.get(nyxx.Snowflake(int.parse(change.newValue))));
+                  //   // }
                   }
                   // for (nyxx.Flag<nyxx.Permissions> permission in nyxx.Permissions(275146377232)) {
                   //    switch (permission) {

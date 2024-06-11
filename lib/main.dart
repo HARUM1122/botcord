@@ -26,7 +26,8 @@ void main() async {
       {
         'theme': 'dark',
         'is-landed': false,
-        'trusted-domains': []
+        'trusted-domains': [],
+        'selected-guild-id' : ''
       }
     ));
     await prefs.setString('bot-data', jsonEncode(

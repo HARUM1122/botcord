@@ -10,7 +10,7 @@ class OnlineStatus extends StatelessWidget {
       width: radius,
       height: radius,
       decoration: const BoxDecoration(
-        color: Color(0xFF26A558),
+        color: const Color(0xFF26A558),
         shape: BoxShape.circle
       ),
     );

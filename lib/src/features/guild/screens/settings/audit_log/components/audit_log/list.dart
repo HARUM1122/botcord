@@ -14,11 +14,17 @@ class AuditLogList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.builder(
-        itemCount: auditLogInfoList.length,
-        itemBuilder: (context, index) => AuditLogTile(
-          auditLogInfo: auditLogInfoList[index],
-        )
+      child: NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (notification) {
+          notification.disallowIndicator();
+          return true;
+        },
+        child: ListView.builder(
+          itemCount: auditLogInfoList.length,
+          itemBuilder: (context, index) => AuditLogTile(
+            auditLogInfo: auditLogInfoList[index],
+          )
+        ),
       ),
     );
   }

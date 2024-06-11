@@ -31,14 +31,14 @@ class ProfileScreen extends ConsumerWidget {
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D));
     final Color color3 = appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419));
-    final Color color4 = appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419));
-    final Color color5 = appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000));
+    // final Color color4 = appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419));
+    final Color color4 = appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000));
 
     final Map<String, dynamic> botActivity = controller.botActivity;
     final String seconds = controller.currentSeconds.toString().formatSeconds();
     
     return Material(
-      color: color5,
+      color: color4,
       child: NotificationListener<OverscrollIndicatorNotification>(
         onNotification: (notification) {
           notification.disallowIndicator();
@@ -252,7 +252,7 @@ class ProfileScreen extends ConsumerWidget {
                   radius: 90, 
                   image: avatar?.$1 ?? (user?.avatar.url.toString() ?? ''),
                   padding: const EdgeInsets.all(6),
-                  backgroundColor: color5,
+                  backgroundColor: color4,
                   child: Align(
                     alignment: Alignment.bottomRight,
                     child: Container(

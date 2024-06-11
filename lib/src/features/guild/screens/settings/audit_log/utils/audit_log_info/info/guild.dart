@@ -1,6 +1,8 @@
+import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:nyxx/nyxx.dart';
 
-Future<(User, String, List<String>)> getUpdateGuildSettingsLogEntryInfo(AuditLogEntry log) async {
+
+Future<(User, String, List<String>)> getUpdateGuildSettingsLogEntryInfo(AuditLogEntry log, Guild? guild) async {
   final User user = await log.user!.get();
   final List<String> allChanges = [];
   final List<AuditLogChange> changes = log.changes!;
@@ -13,19 +15,26 @@ Future<(User, String, List<String>)> getUpdateGuildSettingsLogEntryInfo(AuditLog
       case 'premium_progress_bar_enabled':
         allChanges.add('Turned **${auditLogChange.newValue ? 'on' : 'off'}** Boost progress bar');
       case 'afk_channel_id':
-        allChanges.add('Set AFK channel ID to **${auditLogChange.newValue}**');
+        allChanges.add('Set AFK channel to **${(await getChannel(Snowflake.parse(auditLogChange.newValue)))?.name ?? auditLogChange.newValue}**');
       case 'afk_timeout':
         allChanges.add('Set AFK timeout to **${auditLogChange.newValue ~/ 60} minutes**');
       case 'default_message_notifications':
         allChanges.add('Set default message notifications to **${auditLogChange.newValue == 1 ? 'All Messages' : 'Only Mentions'}**');
       case 'system_channel_id':
-        allChanges.add('Set system channel ID to **${auditLogChange.newValue}**');
+        allChanges.add('Set system channel to **${(await getChannel(Snowflake.parse(auditLogChange.newValue)))?.name ?? auditLogChange.newValue}**');
       case 'system_channel_flags':
         allChanges.add('Set system channel flags to **${auditLogChange.newValue}**');
+      case 'widget_enabled':
+        allChanges.add('**${auditLogChange.newValue ? 'Enabled' : 'Disabled'}** the widget');
+      case 'widget_channel_id ':
+        allChanges.add('Set the widget channel to ${auditLogChange.newValue}');
       case 'name':
-        allChanges.add('Changed guild name to **${auditLogChange.newValue}**');
+        allChanges.add('Changed server name to **${auditLogChange.newValue}**');
+      case 'verification_level':
+        allChanges.add('Set the server verification level to  **${const ['None', 'Low', 'Medium', 'High', 'Highest'][auditLogChange.newValue]}**');
+      case 'explicit_content_filter':
+      allChanges.add('Set the explicit content filter to  ${const ['**none**', 'scan messages from **members without a role**', 'scan messages from **all members**'][auditLogChange.newValue]}');
     }
-    // TODO THERE ARE SOME MORE CASES TO CHECK
   }
-  return (user, '**made changes to** server settings', allChanges);
+  return (user, '**made changes** to the server', allChanges);
 }

@@ -5,7 +5,7 @@ import 'idle.dart';
 import 'dnd.dart';
 import 'invisible.dart';
 
-Widget getOnlineStatus(String status,double radius) {
+Widget getOnlineStatus(String status, double radius) {
   switch(status) {
     case 'online':
       return OnlineStatus(radius: radius);
