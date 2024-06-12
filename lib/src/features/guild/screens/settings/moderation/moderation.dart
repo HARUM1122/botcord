@@ -44,7 +44,7 @@ class _OverViewPageState extends ConsumerState<ModerationScreen> {
           explicitContentFilterLevel: _explicitContentFilterLevel
         )
       );
-    } catch (e) {
+    } catch (_) {
       if (!mounted) return;
       showSnackBar(
         context: context, 

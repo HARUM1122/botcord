@@ -88,7 +88,7 @@ class MenuScreen extends ConsumerWidget {
                             controller: controller
                           )
                         );
-                      } catch (e) {
+                      } catch (_) {
                         showSnackBar(
                           theme: theme,
                           context: context, 

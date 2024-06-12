@@ -102,7 +102,7 @@ class _OverViewPageState extends ConsumerState<OverViewScreen> {
           defaultMessageNotificationLevel: _messageNotificationLevel
         )
       );
-    } catch (e) {
+    } catch (_) {
       if (!mounted) return;
       showSnackBar(
         context: context, 

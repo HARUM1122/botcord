@@ -68,4 +68,9 @@
 //   int k2 = 7;
 //   print(solution.findKthSmallest(coins2, k2)); // Output: 12
 // }
+// class A {}
 
+// void main() {
+//   const a = [#a, #b];
+//   const b = #hello;
+// }

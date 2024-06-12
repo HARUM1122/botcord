@@ -14,10 +14,12 @@ class GuildChannelsController extends ChangeNotifier {
   
   StreamSubscription<ChannelCreateEvent>? channelCreateEvent;
   StreamSubscription<ChannelUpdateEvent>? channelUpdateEvent;
+  StreamSubscription<ChannelDeleteEvent>? channelDeleteEvent;
 
   Future<void> _listenChannelEvents(Guild guild) async {
     await channelCreateEvent?.cancel();
     await channelUpdateEvent?.cancel();
+    await channelDeleteEvent?.cancel();
 
     channelCreateEvent = client?.onChannelCreate.listen((event) async {
       if (event.channel is GuildChannel && (event.channel as GuildChannel).guildId == guild.id) {
@@ -32,7 +34,7 @@ class GuildChannelsController extends ChangeNotifier {
         notifyListeners();
       }
     });
-    client?.onChannelDelete.listen((event) {
+    channelDeleteEvent = client?.onChannelDelete.listen((event) {
       if (event.channel is GuildChannel && (event.channel as GuildChannel).guildId == guild.id) {
         channels.remove(event.channel);
         notifyListeners();

@@ -59,7 +59,7 @@ class AuthController extends ChangeNotifier {
       botData['current-bot'] = {};
       await prefs.setString('bot-data', jsonEncode(botData));
       ref.read(guildsControllerProvider).clearCache();
-    } catch (e) {
+    } catch (_) {
       // 
     }
     if (context == null || !context.mounted ) return;

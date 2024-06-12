@@ -98,7 +98,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
           theme: _theme
         );
       }
-    } catch (e) {
+    } catch (_) {
       if (mounted) {
         showSnackBar(
           context: context,

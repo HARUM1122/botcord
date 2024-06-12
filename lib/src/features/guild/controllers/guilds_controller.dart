@@ -19,11 +19,22 @@ class GuildsController extends ChangeNotifier {
 
   List<Guild> guildsCache = [];
   Guild? currentGuild;
+
+  Future<void> selectGuild(Guild guild, {bool refresh = true}) async {
+    if (guild.id == currentGuild?.id) return;
+    currentGuild = guild;
+    await channelsControllerProvider.fetchAllChannels(guild);
+    if (refresh) notifyListeners();
+  }
+
+
   
   void listenGuildEvents() {
     client?.onGuildCreate.listen((event) async {
       Guild guild = event is GuildCreateEvent ? event.guild : await event.guild.get();
-      currentGuild ??= guild;
+      if (currentGuild == null) {
+        await selectGuild(guild, refresh: false);
+      }
       if (!guildsCache.contains(guild)) {
         guildsCache.add(guild);
         guildsCache = sortGuilds(guildsCache);
@@ -52,15 +63,18 @@ class GuildsController extends ChangeNotifier {
     });
   }
 
-
-  Future<void> selectGuild(Guild guild) async {
-    if (guild.id == currentGuild?.id) return;
-    currentGuild = guild;
-    await channelsControllerProvider.fetchAllChannels(guild);
-    notifyListeners();
-  }
-
   void clearCache() {
     guildsCache.clear();
   }
 }
+
+
+
+/// class GuildCache {
+///   List<Guild> guildCache = []
+///   add
+///   get
+///   remove
+///   update
+///   sort
+/// }
