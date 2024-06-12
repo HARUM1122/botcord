@@ -1,1 +1,1 @@
-export 'invite_bot.dart';
+export 'add_guild/invite_bot.dart';

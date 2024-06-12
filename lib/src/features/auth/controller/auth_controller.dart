@@ -13,13 +13,10 @@ import '../utils/constants.dart';
 import '../../../common/utils/globals.dart';
 import '../../../common/utils/constants.dart';
 
-import '../../../features/guild/controllers/guilds_controller.dart';
 
-final authControllerProvider = ChangeNotifierProvider<AuthController>((ref) => AuthController(ref: ref));
+final authControllerProvider = ChangeNotifierProvider<AuthController>((ref) => AuthController());
 
 class AuthController extends ChangeNotifier {
-  final ChangeNotifierProviderRef<AuthController> ref;
-  AuthController({required this.ref});
 
   Map<String, dynamic> bots = {};
 
@@ -58,7 +55,6 @@ class AuthController extends ChangeNotifier {
       };
       botData['current-bot'] = {};
       await prefs.setString('bot-data', jsonEncode(botData));
-      ref.read(guildsControllerProvider).clearCache();
     } catch (_) {
       // 
     }

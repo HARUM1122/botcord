@@ -7,14 +7,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
-import '../utils/constants.dart';
+import '../../utils/constants.dart';
 
-import '../../../common/utils/utils.dart';
-import '../../../common/utils/globals.dart';
-import '../../../common/utils/extensions.dart';
-import '../../../common/utils/asset_constants.dart';
-import '../../../common/components/custom_button.dart';
-import '../../../common/components/checkbox_indicator.dart';
+import '../../../../common/utils/utils.dart';
+import '../../../../common/utils/globals.dart';
+import '../../../../common/utils/extensions.dart';
+import '../../../../common/utils/asset_constants.dart';
+import '../../../../common/components/custom_button.dart';
+import '../../../../common/components/checkbox_indicator.dart';
 
 class InviteBotScreen extends ConsumerStatefulWidget {
   const InviteBotScreen({super.key});

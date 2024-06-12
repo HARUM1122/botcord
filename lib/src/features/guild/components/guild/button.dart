@@ -11,7 +11,7 @@ import '../../controllers/guilds_controller.dart';
 import '../../../../common/utils/utils.dart';
 
 class GuildButton extends ConsumerWidget {
-  final Guild guild;
+  final UserGuild guild;
   final bool selected;
   const GuildButton({required this.guild, required this.selected, super.key});
 

@@ -27,7 +27,8 @@ void main() async {
         'theme': 'dark',
         'is-landed': false,
         'trusted-domains': [],
-        'selected-guild-id' : ''
+        'selected-guild-id' : '0',
+        'selected-channel-id': '0'
       }
     ));
     await prefs.setString('bot-data', jsonEncode(

@@ -44,7 +44,8 @@ class _LoginDialogState extends ConsumerState<LoginDialog> {
         await _authController.login(widget.bot);
         _profileController.botActivity = jsonDecode(prefs.getString('bot-data')!)['activity'];
         _profileController.updatePresence(save: false, datetime: DateTime.now());
-        ref.read(guildsControllerProvider).listenGuildEvents();
+        
+        ref.read(guildsControllerProvider).init();
         if (mounted) {
           Navigator.pop(context);
           Navigator.pop(context);

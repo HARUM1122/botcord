@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:discord/src/features/guild/controllers/channels_controller.dart';
 import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -17,24 +19,65 @@ class GuildsController extends ChangeNotifier {
     required this.channelsControllerProvider
   });
 
-  List<Guild> guildsCache = [];
-  Guild? currentGuild;
+  bool loading = true;
+  bool errorOccurred = false;
 
-  Future<void> selectGuild(Guild guild, {bool refresh = true}) async {
+  Guild? currentGuild;
+  List<UserGuild> guildsCache = [];
+  
+  Future<void> selectGuild(UserGuild guild, {bool refresh = true}) async {
     if (guild.id == currentGuild?.id) return;
-    currentGuild = guild;
-    await channelsControllerProvider.fetchAllChannels(guild);
+    currentGuild = await guild.get();
+    await channelsControllerProvider.fetchAllChannels(currentGuild!);
+    final Map<String, dynamic> appData = jsonDecode(prefs.getString('app-data')!);
+    appData['selected-guild-id'] = currentGuild?.id.toString() ?? '0';
+    await prefs.setString('app-data', jsonEncode(appData));
     if (refresh) notifyListeners();
   }
 
+  // Future<void> createGuild(GuildBuilder guildBuilder) async {
+  //   try {
 
-  
+  //   }
+  //   selectGuild();
+  // }
+
+  Future<void> fetchMoreServers(Snowflake? after) async {
+
+  }
+
+  Future<void> init() async {
+    loading = true;
+    errorOccurred = false;
+    guildsCache.clear();
+    notifyListeners();
+    try {
+      guildsCache = List.of(await client?.listGuilds() ?? []);
+      guildsCache = sortGuilds(guildsCache);
+      final Map<String, dynamic> appData = jsonDecode(prefs.getString('app-data')!);
+      Snowflake selectedGuildId = Snowflake.parse(appData['selected-guild-id']);
+
+      if (guildsCache.isNotEmpty) {
+        if (currentGuild == null) {
+          selectGuild(guildsCache.firstWhere(
+              (userGuild) => userGuild.id == selectedGuildId,
+              orElse: () => guildsCache.first
+            ),
+            refresh: false
+          );
+        }
+      }
+      listenGuildEvents();
+    } catch (_) {
+      errorOccurred = true;
+    }
+    loading = false;
+    notifyListeners();
+  }
+
   void listenGuildEvents() {
     client?.onGuildCreate.listen((event) async {
       Guild guild = event is GuildCreateEvent ? event.guild : await event.guild.get();
-      if (currentGuild == null) {
-        await selectGuild(guild, refresh: false);
-      }
       if (!guildsCache.contains(guild)) {
         guildsCache.add(guild);
         guildsCache = sortGuilds(guildsCache);
@@ -52,29 +95,18 @@ class GuildsController extends ChangeNotifier {
         }
       }
     });
-    client?.onGuildDelete.listen((event) {
+    client?.onGuildDelete.listen((event) async {
       guildsCache.removeWhere((guild) => guild.id == event.guild.id);
       if (currentGuild?.id == event.guild.id) {
-        currentGuild = guildsCache.isNotEmpty ? guildsCache.first : null;
+        if (guildsCache.isNotEmpty) {
+          selectGuild(guildsCache.first);
+        } else {
+          currentGuild = null;
+        }
         Navigator.pushReplacementNamed(globalNavigatorKey.currentContext!, '/home-route');
       }
       guildsCache = sortGuilds(guildsCache);
       notifyListeners();
     });
   }
-
-  void clearCache() {
-    guildsCache.clear();
-  }
 }
-
-
-
-/// class GuildCache {
-///   List<Guild> guildCache = []
-///   add
-///   get
-///   remove
-///   update
-///   sort
-/// }

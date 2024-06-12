@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/utils/extensions.dart';
@@ -13,7 +13,7 @@ import '../../components/badges/badges.dart';
 import '../../components/bottom_sheet/guild_options/guild_options.dart';
 
 class MenuScreen extends ConsumerWidget {
-  final List<Guild> guilds;
+  final List<UserGuild> guilds;
   final Guild currentGuild;
   const MenuScreen({required this.guilds, required this.currentGuild, super.key});
 

@@ -30,8 +30,8 @@ class GuildSettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeController);
-    final GuildsController controller = ref.watch(guildsControllerProvider);
-    final Guild? guild = controller.currentGuild;
+    final GuildsController guildsController = ref.watch(guildsControllerProvider);
+    final Guild? guild = guildsController.currentGuild;
 
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
@@ -218,6 +218,8 @@ class GuildSettingsPage extends ConsumerWidget {
                               title: 'Audit Log',
                               assetIcon: AssetIcon.document,
                               onPressed: () async {
+                                print(Snowflake.parse('0') == Snowflake(0));
+                                // guildsController.fetchAllGuilds();
                                 // List<AuditLogEntry> entries = await guild!.auditLogs.list();
                                 // AuditLogEntry entry = entries[0];
                                 // print(entry.actionType.name);
@@ -225,12 +227,12 @@ class GuildSettingsPage extends ConsumerWidget {
                                 //   print(change.key);
                                 //   print(change.oldValue);
                                 // }
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AuditLogPage(guild: guild)
-                                  )
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => AuditLogPage(guild: guild)
+                                //   )
+                                // );
 
                                 // MaterialPageRoute(
                                 //     builder: (context) => AuditLogPage(guild: guild)

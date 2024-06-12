@@ -99,9 +99,60 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
 
   @override
   Widget build(BuildContext context) {
-    final GuildsController controller = ref.watch(guildsControllerProvider);
-
-    if (controller.guildsCache.isEmpty) {
+    final GuildsController guildsController = ref.watch(guildsControllerProvider);
+    if (guildsController.loading) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Color(0XFF536CF8),
+        )
+      );
+    }
+    else if (guildsController.errorOccurred) {
+      return Container(
+        color: appTheme<Color>(_theme, light: const Color(0XFFECEEF0), dark: const Color(0XFF141318), midnight: const Color(0xFF000000)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: Text(
+                "An Unexpected error occurred",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D)),
+                  fontSize: 16,
+                  fontFamily: 'GGSansSemibold'
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+            CustomButton(
+              width: 200,
+              height: 45,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(45 * 0.5)
+              ),
+              backgroundColor: const Color(0XFF536CF8),
+              onPressedColor: const Color(0XFF4658CA),
+              applyClickAnimation: true,
+              animationUpperBound: 0.04,
+              child: const Center(
+                child: Text(
+                  'RETRY',
+                  style: TextStyle(
+                    color: Color(0xFFFFFFFF),
+                    fontFamily: 'GGSansSemibold'
+                  ),
+                ),
+              ),
+              onPressed: () => guildsController.init()
+            ),
+          ],
+        )
+      );
+    }
+    else if (guildsController.guildsCache.isEmpty) {
       return Container(
         color: appTheme<Color>(_theme, light: const Color(0XFFECEEF0), dark: const Color(0XFF141318), midnight: const Color(0xFF000000)),
         child: Column(
@@ -109,7 +160,7 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "NO SERVERS",
+              'NO SERVERS',
               style: TextStyle(
                 color: appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
                 fontSize: 20,
@@ -142,7 +193,7 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
               animationUpperBound: 0.04,
               child: const Center(
                 child: Text(
-                  "Invite Bot",
+                  'INVITE BOT',
                   style: TextStyle(
                     color: Color(0xFFFFFFFF),
                     fontFamily: 'GGSansSemibold'
@@ -163,9 +214,9 @@ class GuildsScreenState extends ConsumerState<GuildsScreen> with TickerProviderS
     return Stack(children: [
       Offstage(
         offstage: translate < 0,
-        child: controller.currentGuild != null ? MenuScreen(
-          guilds: controller.guildsCache,
-          currentGuild: controller.currentGuild!,
+        child: guildsController.currentGuild != null ?  MenuScreen(
+          guilds: guildsController.guildsCache,
+          currentGuild: guildsController.currentGuild!,
         ) : null
       ),
       Transform.translate(

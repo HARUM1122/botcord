@@ -26,6 +26,7 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   late final AuthController _authController = ref.read(authControllerProvider);
   late final ProfileController _profileController = ref.read(profileControllerProvider);
+  late final GuildsController _guildsController = ref.read(guildsControllerProvider);
   late final String _theme = ref.read(themeController);
 
   late final Map<String, dynamic> _botData = jsonDecode(prefs.getString('bot-data')!);
@@ -46,7 +47,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           _profileController.botActivity = _botData['activity'];
           _profileController.updatePresence(save: false, datetime: DateTime.now());
 
-          ref.read(guildsControllerProvider).listenGuildEvents();
+          _guildsController.init();
           if (mounted) {
             Navigator.pushReplacementNamed(context, '/home-route');
           }

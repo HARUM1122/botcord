@@ -1,3 +1,4 @@
+import 'package:discord/src/features/guild/components/server_add_options_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -11,7 +12,7 @@ import '../../../../common/utils/utils.dart';
 import '../../../../common/utils/extensions.dart';
 
 class GuildsList extends ConsumerWidget {
-  final List<Guild> guilds;
+  final List<UserGuild> guilds;
   final Guild currentGuild;
   const GuildsList({
     required this.guilds,
@@ -34,11 +35,9 @@ class GuildsList extends ConsumerWidget {
           selected: guilds[index].id == currentGuild.id,
         )
         : GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const InviteBotScreen(),
-            )
+          onTap: () => showDialogBox(
+            context: context,
+            child: const ServerAddOptionsDialog()
           ),
           child: Container(
               margin: EdgeInsets.only(bottom: 70 + context.padding.bottom,),
