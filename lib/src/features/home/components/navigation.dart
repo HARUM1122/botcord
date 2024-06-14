@@ -63,6 +63,30 @@ class BottomNavigator extends ConsumerWidget {
               }
             ),
             NavigationButton(
+              widget: SvgPicture.asset(
+                AssetIcon.bell,
+                colorFilter: ColorFilter.mode(
+                  navProvider.currentPageIndex == 0 
+                  ? color1
+                  : color2, 
+                  BlendMode.srcIn
+                )
+              ),
+              title: Text(
+                'Notifications',
+                style: TextStyle(
+                  color: navProvider.currentPageIndex == 0 
+                  ? color1
+                : color2,
+                  fontSize: 12
+                )
+              ),
+              onPressed: () {
+                controller.jumpToPage(0);
+                navProvider.changeCurrentPage(0);
+              }
+            ),
+            NavigationButton(
               widget: AvatarWidget(
                 image: avatar?.$1 ?? (user?.avatar.url.toString() ?? ''),
                 radius: 24,

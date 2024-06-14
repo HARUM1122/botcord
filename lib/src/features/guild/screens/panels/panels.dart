@@ -1,2 +1,2 @@
-export 'chat.dart';
-export 'menu.dart';
+export 'chat/chat.dart';
+export 'menu/menu.dart';

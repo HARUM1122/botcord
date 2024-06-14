@@ -139,7 +139,7 @@ class _AddBotsScreenState extends ConsumerState<AddBotsScreen> {
       backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0XFF1A1D24), midnight: const Color(0XFF000000)),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
+          padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
           child: Column(
               children: [
                 SizedBox(

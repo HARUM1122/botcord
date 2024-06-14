@@ -106,15 +106,15 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
           children: [
             GestureDetector(
               onTap: () async {
-                  List<nyxx.AuditLogEntry> entries = await widget.guild!.auditLogs.list();
-                  print(entries[1].options?.membersRemoved);
-                  print(entries[1].options?.deleteMemberDays);
-                  print(entries[0].actionType.name);
-                    // print(entries[0].options?.channelId);
-                    // print(entries[0].options?.applicationId);;
-                    for (nyxx.AuditLogChange change in entries[3].changes ?? []) {
-                      print("${change.key} : ${change.newValue}");
-                      print("${change.key} : ${change.oldValue}");
+                  // List<nyxx.AuditLogEntry> entries = await widget.guild!.auditLogs.list();
+                  // print(entries[1].options?.membersRemoved);
+                  // print(entries[1].options?.deleteMemberDays);
+                  // print(entries[0].actionType.name);
+                  //   // print(entries[0].options?.channelId);
+                  //   // print(entries[0].options?.applicationId);;
+                  //   for (nyxx.AuditLogChange change in entries[3].changes ?? []) {
+                  //     print("${change.key} : ${change.newValue}");
+                  //     print("${change.key} : ${change.oldValue}");
                   
                   
                   //   // if (change.key == 'allow') {
@@ -128,7 +128,7 @@ class _AuditLogPageState extends ConsumerState<AuditLogPage> {
                   //   // if (change.key == 'id') {
                   //   //   print(widget.guild!.roles.get(nyxx.Snowflake(int.parse(change.newValue))));
                   //   // }
-                  }
+                  // }
                   // for (nyxx.Flag<nyxx.Permissions> permission in nyxx.Permissions(275146377232)) {
                   //    switch (permission) {
                   //         case nyxx.Permissions.administrator:

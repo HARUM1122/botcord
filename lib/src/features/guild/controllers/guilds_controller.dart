@@ -35,13 +35,6 @@ class GuildsController extends ChangeNotifier {
     if (refresh) notifyListeners();
   }
 
-  // Future<void> createGuild(GuildBuilder guildBuilder) async {
-  //   try {
-
-  //   }
-  //   selectGuild();
-  // }
-
   Future<void> fetchMoreServers(Snowflake? after) async {
 
   }
@@ -77,10 +70,11 @@ class GuildsController extends ChangeNotifier {
 
   void listenGuildEvents() {
     client?.onGuildCreate.listen((event) async {
-      Guild guild = event is GuildCreateEvent ? event.guild : await event.guild.get();
+      Guild guild = await event.guild.get();
       if (!guildsCache.contains(guild)) {
         guildsCache.add(guild);
         guildsCache = sortGuilds(guildsCache);
+        await selectGuild(guild, refresh: false);
         notifyListeners();
       }
     });
@@ -99,11 +93,13 @@ class GuildsController extends ChangeNotifier {
       guildsCache.removeWhere((guild) => guild.id == event.guild.id);
       if (currentGuild?.id == event.guild.id) {
         if (guildsCache.isNotEmpty) {
-          selectGuild(guildsCache.first);
+          await selectGuild(guildsCache.first, refresh: false);
         } else {
+          await channelsControllerProvider.stopListeningEvents();
           currentGuild = null;
         }
-        Navigator.pushReplacementNamed(globalNavigatorKey.currentContext!, '/home-route');
+        await Future.delayed(const Duration(milliseconds: 200));
+        await Navigator.pushReplacementNamed(globalNavigatorKey.currentContext!, '/home-route');
       }
       guildsCache = sortGuilds(guildsCache);
       notifyListeners();

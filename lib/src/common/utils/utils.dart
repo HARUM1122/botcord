@@ -6,8 +6,8 @@ import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 
-void showDialogBox({required BuildContext context, required Widget child}) {
-  showDialog(
+ Future<T?> showDialogBox<T>({required BuildContext context, required Widget child}) {
+  return showDialog<T>(
     context: context,
     builder: (BuildContext context) {
       return Dialog(
@@ -26,7 +26,7 @@ Future<T?> showSheet<T>({
   BorderRadius? borderRadius,
   Color? color,
 }) {
-  return showFlexibleBottomSheet(
+  return showFlexibleBottomSheet<T?>(
     context: context,
     minHeight: 0,
     initHeight: height,

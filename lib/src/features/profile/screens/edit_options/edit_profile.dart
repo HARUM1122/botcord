@@ -49,7 +49,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   late final Color _color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
   late final Color _color2 = appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFB1B1BB));
   late final Color _color3 = appTheme<Color>(_theme, light: const Color(0XFF565960), dark: const Color(0XFF878A93), midnight: const Color(0XFF838594));
-  late final Color _color4 =  appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0XFF141318));
+  late final Color _color4 = appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0XFF141318));
+  late final Color _color5 = appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0XFF141318));
 
   bool _saving = false;
 
@@ -140,7 +141,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       _prevBanner ?? (Uint8List(0), '')
     );
     return Scaffold(
-      backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0XFF141318)),
+      backgroundColor: _color5,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
@@ -342,16 +343,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           ),
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0XFF141318)),
-                          shape: BoxShape.circle,
-                        ),
-                        child: getOnlineStatus(
-                          _profileController.botActivity['current-online-status'], 
-                          16
-                        ),
+                      getOnlineStatus(
+                        _profileController.botActivity['current-online-status'], 
+                        16,
+                        borderColor: _color5
                       )
                     ],
                   ),

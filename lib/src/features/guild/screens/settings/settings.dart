@@ -81,7 +81,7 @@ class GuildSettingsPage extends ConsumerWidget {
                   return true;
                 },
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.only(left: 12, right: 12, bottom: context.padding.bottom + 10),
+                  padding: EdgeInsets.only(left: 12, right: 12, bottom: context.padding.bottom + 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

@@ -1,3 +1,4 @@
+import 'package:discord/src/features/guild/controllers/channels_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -8,9 +9,9 @@ import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/utils/extensions.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
-import '../../components/guild/list.dart';
-import '../../components/badges/badges.dart';
-import '../../components/bottom_sheet/guild_options/guild_options.dart';
+import '../../../components/guild/list.dart';
+import '../../../components/badges/badges.dart';
+import '../../../components/bottom_sheet/guild_options/guild_options.dart';
 
 class MenuScreen extends ConsumerWidget {
   final List<UserGuild> guilds;
@@ -20,7 +21,13 @@ class MenuScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeController);
+
+    final GuildChannelsController channelsController = ref.watch(guildChannelsControllerProvider);
+
+    final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
+
     bool running = false;
+
     return Material(
       color: appTheme<Color>(
         theme, light: const Color(0XFFECEEF0),
@@ -111,12 +118,7 @@ class MenuScreen extends ConsumerWidget {
                             currentGuild.name,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              color: appTheme<Color>(
-                                theme, 
-                                light: const Color(0xFF000000),
-                                dark: const Color(0xFFFFFFFF),
-                                midnight: const Color(0xFFFFFFFF)
-                              ),
+                              color: color1,
                               fontSize: 20,
                               fontFamily: 'GGSansBold'
                             ),
@@ -124,13 +126,26 @@ class MenuScreen extends ConsumerWidget {
                         ),
                         Icon(
                           Icons.keyboard_arrow_right,
-                          color: appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D)),
+                          color: color1.withOpacity(0.5),
                         ),
                         const SizedBox(width: 30)
                       ],
                     ),
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: () async {
+                      for (GuildChannel channel in channelsController.channels) {
+                        print("${channel.name} ${channel.position}");
+                        // if (channel is TextChannel) {
+                        //   TextChannel textChannel = channel as TextChannel;
+                        //   print()
+                        // }
+                      }
+                    },
+                    child: Text('PRESS'),
                   )
-                ],
+                ]
               ),
             ),
           )

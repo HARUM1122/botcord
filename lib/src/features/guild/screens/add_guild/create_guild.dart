@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:discord/src/common/components/avatar.dart';
 import 'package:discord/src/common/utils/globals.dart';
+import 'package:discord/src/features/auth/controller/auth_controller.dart';
+import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -29,12 +31,10 @@ class CreateGuildScreen extends ConsumerStatefulWidget {
 
 class _EditActivityScreenState extends ConsumerState<CreateGuildScreen> {
   late final String _theme = ref.read(themeController);
+  late final GuildsController _guildsController = ref.read(guildsControllerProvider);
 
   late final Color _color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
   late final Color _color2 = appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000));
-
-  late final Color _color3 = appTheme<Color>(_theme, light: const Color(0XFFDFE1E3), dark: const Color(0XFF0F1316), midnight: const Color(0XFF0F1014));
-  late final Color _color4 = appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
 
   String _serverName = '';
   (Uint8List, String)? _serverIcon;
@@ -48,19 +48,35 @@ class _EditActivityScreenState extends ConsumerState<CreateGuildScreen> {
   }
 
   void _createServer() async {
+    if (_running) return;
     setState(() => _running = true);
-    await client?.guilds.create(
-      GuildBuilder(
-        name: _serverName,
-        icon: _serverIcon != null
-        ? ImageBuilder(
-          data: _serverIcon!.$1,
-          format: _serverIcon!.$2
+    try {
+      await client?.guilds.create(
+        GuildBuilder(
+          name: _serverName,
+          icon: _serverIcon != null
+          ? ImageBuilder(
+            data: _serverIcon!.$1,
+            format: _serverIcon!.$2
+          )
+          : null,
         )
-        : null,
-      )
-    );
-    setState(() => _running = false);
+      );
+      if (!mounted) return;
+      Navigator.pop(context);
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _running = false);
+      showSnackBar(
+        context: context,
+        leading: Icon(
+          Icons.error_outline,
+          color: Colors.red[800],
+        ), 
+        msg: 'Unexpected error. Please retry',
+        theme: _theme
+      );
+    }
   }
 
   @override
@@ -256,56 +272,3 @@ class _EditActivityScreenState extends ConsumerState<CreateGuildScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-// AvatarWidget(
-//                 onPressed: () async {
-//                   (Uint8List, String)? selectedAvatar = await pickImage();
-//                   if (selectedAvatar == null) return;
-//                   setState(() => _avatar = selectedAvatar);
-//                 },
-//                 radius: 90, 
-//                 image: _avatar.$1,
-//                 padding: const EdgeInsets.all(6),
-//                 backgroundColor: _color4,
-//                 child: Align(
-//                   alignment: Alignment.bottomRight,
-//                   child: Column(
-//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                     crossAxisAlignment: CrossAxisAlignment.end,
-//                     children: [
-//                       Container(
-//                         padding: const EdgeInsets.all(2),
-//                         decoration: BoxDecoration(
-//                           color: _color4,
-//                           shape: BoxShape.circle,
-//                         ),
-//                         child: SvgPicture.asset(
-//                           height: 18,
-//                           AssetIcon.editPencil,
-//                           colorFilter: ColorFilter.mode(
-//                             _color3,
-//                             BlendMode.srcIn
-//                           ),
-//                         ),
-//                       ),
-//                       Container(
-//                         padding: const EdgeInsets.all(2),
-//                         decoration: BoxDecoration(
-//                           color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0XFF141318)),
-//                           shape: BoxShape.circle,
-//                         ),
-//                         child: getOnlineStatus(
-//                           _profileController.botActivity['current-online-status'], 
-//                           16
-//                         ),
-//                       )
-//                     ],
-//                   ),
-//                 ),
-//               ),

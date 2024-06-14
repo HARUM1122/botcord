@@ -124,7 +124,7 @@ class _OverViewPageState extends ConsumerState<ModerationScreen> {
             return true;
           },
           child: SingleChildScrollView(
-            padding: EdgeInsets.only(top: 10, left: 12, right: 12, bottom: context.padding.bottom + 10),
+            padding: EdgeInsets.only(top: 10, left: 12, right: 12, bottom: context.padding.bottom + 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

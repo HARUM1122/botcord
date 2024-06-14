@@ -125,7 +125,7 @@ class GuildOptionsSheet extends ConsumerWidget {
             ),
             const SizedBox(width: 16)
           ],
-          const OnlineStatus(radius: 8),
+          const OnlineStatus(radius: 8, borderColor: null),
           const SizedBox(width: 6),
           () {
             int length = guild.approximatePresenceCount!;
@@ -138,7 +138,7 @@ class GuildOptionsSheet extends ConsumerWidget {
             );
           }(),
           const SizedBox(width: 16),
-          const InvisibleStatus(radius: 8),
+          const InvisibleStatus(radius: 8, borderColor: null,),
           const SizedBox(width: 6),
           () {
             int length = guild.approximateMemberCount!;

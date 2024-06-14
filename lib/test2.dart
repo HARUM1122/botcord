@@ -74,3 +74,81 @@
 //   const a = [#a, #b];
 //   const b = #hello;
 // }
+
+void main() {
+  int a = 12;
+  switch (a) {
+    case 12 || 45 || 23:
+      print('helllo world');
+    default:
+      print('aslfd');
+  }
+}
+
+// import 'dart:math';
+
+// class GuildChannel {
+//   String name;
+//   String type; // 'text', 'voice', 'category'
+//   int position;
+
+//   GuildChannel(this.name, this.type, this.position);
+
+//   @override
+//   String toString() => 'GuildChannel(name: $name, type: $type, position: $position)';
+// }
+
+// List<GuildChannel> sortChannels(List<GuildChannel> channels) {
+//   channels.sort((a, b) {
+//     // First, compare by type priority
+//     int typeComparison = getTypePriority(a.type).compareTo(getTypePriority(b.type));
+//     if (typeComparison != 0) {
+//       return typeComparison;
+//     }
+
+//     // If types are the same, compare by position
+//     return a.position.compareTo(b.position);
+//   });
+//   return channels;
+// }
+
+// int getTypePriority(String type) {
+//   switch (type) {
+//     case 'text':
+//       return 0;
+//     case 'voice':
+//       return 1;
+//     case 'category':
+//       return 2;
+//     default:
+//       return 3; 
+//   }
+// }
+
+// void main() {
+//   List<GuildChannel> channels = List.generate(500, (int index) {
+//     final Random r = Random();
+//     List<String> types = ['text', 'voice', 'category'];
+//     int randomPostion = r.nextInt(120) + 1;
+//     String randomType = types[r.nextInt(types.length)];
+//     return GuildChannel('channel', randomType, randomPostion);
+//   });
+//   print("BEFORE");
+//   print(channels);
+
+  
+//   // List<GuildChannel> channels = [
+//   //   GuildChannel('category-2', 'category', 1),
+//   //   GuildChannel('voice-channel-2', 'voice', 1),
+//   //   GuildChannel('voice-channel-1', 'voice', 0),
+//   //   GuildChannel('text-channel-2', 'text', 1),
+//   //   GuildChannel('category-1', 'category', 0),
+//   //   GuildChannel('text-channel-1', 'text', 0),
+//   // ];
+
+//   List<GuildChannel> sortedChannels = sortChannels(channels);
+//   print("AFTER");
+//   for (var channel in sortedChannels) {
+//     print(channel);
+//   }
+// }

@@ -16,10 +16,15 @@ class GuildChannelsController extends ChangeNotifier {
   StreamSubscription<ChannelUpdateEvent>? channelUpdateEvent;
   StreamSubscription<ChannelDeleteEvent>? channelDeleteEvent;
 
-  Future<void> _listenChannelEvents(Guild guild) async {
+  Future<void> stopListeningEvents() async {
     await channelCreateEvent?.cancel();
     await channelUpdateEvent?.cancel();
     await channelDeleteEvent?.cancel();
+  }
+
+  Future<void> listenChannelEvents(Guild guild) async {
+    print("LISTENING CHANNEL EVENTS");
+    stopListeningEvents();
 
     channelCreateEvent = client?.onChannelCreate.listen((event) async {
       if (event.channel is GuildChannel && (event.channel as GuildChannel).guildId == guild.id) {
@@ -44,7 +49,7 @@ class GuildChannelsController extends ChangeNotifier {
    Future<void> fetchAllChannels(Guild guild) async {
     channels.clear();
     channels.addAll(await guild.fetchChannels());
-    // TODO make a function named select channels and in that select channels function, fetch the messages
-    await _listenChannelEvents(guild);
+    // TODO make a function named select channels and in that `select channel function`, fetch the messages
+    await listenChannelEvents(guild);
   }
 }

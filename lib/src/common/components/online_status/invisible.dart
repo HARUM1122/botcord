@@ -9,7 +9,8 @@ import '../../utils/utils.dart';
 
 class InvisibleStatus extends ConsumerWidget {
   final double radius;
-  const InvisibleStatus({required this.radius, super.key});
+  final Color? borderColor;
+  const InvisibleStatus({required this.radius, required this.borderColor, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,9 +18,16 @@ class InvisibleStatus extends ConsumerWidget {
       width: radius,
       height: radius,
       padding: EdgeInsets.all(radius * 0.25),
-      decoration: const BoxDecoration(
-        color: Color(0xFF9597A4),
+      decoration: BoxDecoration(
+        color: const Color(0xFF9597A4),
         shape: BoxShape.circle,
+        border: borderColor != null
+        ? Border.all(
+          width: 4,
+          color: borderColor!,
+          strokeAlign: BorderSide.strokeAlignOutside
+        )
+        : null
       ),
       child: CircleAvatar(
         backgroundColor: appTheme<Color>(ref.read(themeController), light: const Color(0xFFFFFFFF), dark: const Color(0xFF000000), midnight: const Color(0xFF000000)),

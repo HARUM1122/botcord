@@ -109,11 +109,37 @@ List<String> getAllPermissions(Permissions permissions) {
   return perms;
 }
 
+
+
 Future<GuildChannel?> getChannel(Snowflake id) async {
   try {
     final GuildChannel channel = await client!.channels.get(id) as GuildChannel;
     return channel;
   } catch (_) {
     return null;
+  }
+}
+
+List<GuildChannel> sortChannels(List<GuildChannel> channels) {
+  channels.sort((a, b) {
+    int typeComparison = getTypePriority(a.type).compareTo(getTypePriority(b.type));
+    if (typeComparison != 0) {
+      return typeComparison;
+    }
+    return a.position.compareTo(b.position);
+  });
+  return channels;
+}
+
+int getTypePriority(ChannelType type) {
+  switch (type) {
+    case ChannelType.guildText || ChannelType.guildAnnouncement || ChannelType.guildForum :
+      return 0;
+    case ChannelType.guildVoice || ChannelType.guildStageVoice:
+      return 1;
+    case ChannelType.guildCategory:
+      return 2;
+    default:
+      return 3;
   }
 }

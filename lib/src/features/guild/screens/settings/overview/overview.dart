@@ -1,3 +1,4 @@
+import 'package:discord/src/features/guild/screens/settings/overview/components/server_delete_confirmation_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart' as nyxx;
@@ -119,6 +120,23 @@ class _OverViewPageState extends ConsumerState<OverViewScreen> {
     Navigator.pop(context);
   }
 
+  // Future<void> _deleteServer() async {
+  //   try {
+  //     await widget.guild.delete();
+  //   } catch (_) {
+  //     if (!mounted) return;
+  //     showSnackBar(
+  //       context: context, 
+  //       theme: _theme,
+  //       leading: Icon(
+  //         Icons.error_outline,
+  //         color: Colors.red[800],
+  //       ),
+  //       msg: 'Unexpected Error, Please try again.'
+  //     );
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     bool hasMadeChanges = _guildName != widget.guild.name 
@@ -191,7 +209,7 @@ class _OverViewPageState extends ConsumerState<OverViewScreen> {
             return true;
           },
           child: SingleChildScrollView(
-            padding: EdgeInsets.only(top: 10, left: 12, right: 12, bottom: context.padding.bottom + 10),
+            padding: EdgeInsets.only(top: 10, left: 12, right: 12, bottom: context.padding.bottom + 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -688,7 +706,24 @@ class _OverViewPageState extends ConsumerState<OverViewScreen> {
                     backgroundColor: _color4,
                     onPressedColor: _color5,
                     borderRadius: BorderRadius.circular(16),
-                    onPressed: () => setState(() => _messageNotificationLevel = nyxx.MessageNotificationLevel.onlyMentions),
+                    onPressed: () async {
+                      bool? result = await showDialogBox<bool>(
+                        context: context,
+                        child: ServerDeleteConfirmationDialog(guild: widget.guild)
+                      );
+                      if (result == null) return;
+                      if (!result && context.mounted) {
+                        showSnackBar(
+                          context: context, 
+                          theme: _theme,
+                          leading: Icon(
+                            Icons.error_outline,
+                            color: Colors.red[800],
+                          ),
+                          msg: 'Unexpected Error, Please try again.'
+                        );
+                      }
+                    },
                     child: const Row(
                       children: [
                         SizedBox(width: 14),

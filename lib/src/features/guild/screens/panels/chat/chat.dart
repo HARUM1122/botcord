@@ -5,14 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/utils/utils.dart';
 
-import '../guild.dart';
+import '../../guild.dart';
 
 class ChatScreen extends ConsumerWidget {
   const ChatScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print("HELLO WORLD");
     final String theme = ref.read(themeController);
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     return Scaffold(

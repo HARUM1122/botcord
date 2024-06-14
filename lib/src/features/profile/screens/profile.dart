@@ -255,16 +255,10 @@ class ProfileScreen extends ConsumerWidget {
                   backgroundColor: color4,
                   child: Align(
                     alignment: Alignment.bottomRight,
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        color: color4,
-                        shape: BoxShape.circle
-                      ),
-                      child: getOnlineStatus(
-                        controller.botActivity['current-online-status'], 
-                        16
-                      ),
+                    child: getOnlineStatus(
+                      controller.botActivity['current-online-status'], 
+                      16,
+                      borderColor: color4
                     ),
                   ),
                 )
