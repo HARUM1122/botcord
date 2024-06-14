@@ -13,7 +13,7 @@ import '../../../common/components/custom_button.dart';
 import '../../../common/controllers/bottom_nav_controller.dart';
 import '../../../features/guild/controllers/guilds_controller.dart';
 
-double translate = 0;
+double translate = 1;
 
 class GuildsScreen extends ConsumerStatefulWidget {
   const GuildsScreen({super.key});

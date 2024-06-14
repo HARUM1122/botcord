@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:discord/src/common/utils/globals.dart';
+import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/foundation.dart';  
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +10,7 @@ import 'package:nyxx/nyxx.dart';
 final guildChannelsControllerProvider = ChangeNotifierProvider<GuildChannelsController>((ref) => GuildChannelsController());
 
 class GuildChannelsController extends ChangeNotifier {
-  final List<GuildChannel> channels = [];
+  List<GuildChannel> channels = [];
   GuildChannel? currentChannel;
   
   StreamSubscription<ChannelCreateEvent>? channelCreateEvent;
@@ -23,25 +24,28 @@ class GuildChannelsController extends ChangeNotifier {
   }
 
   Future<void> listenChannelEvents(Guild guild) async {
-    print("LISTENING CHANNEL EVENTS");
-    stopListeningEvents();
+    await stopListeningEvents();
 
     channelCreateEvent = client?.onChannelCreate.listen((event) async {
       if (event.channel is GuildChannel && (event.channel as GuildChannel).guildId == guild.id) {
         channels.add(event.channel as GuildChannel);
+        channels = sortChannels(channels);
         notifyListeners();
       } 
     });
     channelUpdateEvent = client?.onChannelUpdate.listen((event) {
       if (event.channel is GuildChannel && (event.channel as GuildChannel).guildId == guild.id) {
         final GuildChannel channel = event.channel as GuildChannel;
+        print(channels.indexOf(channel));
         channels[channels.indexOf(channel)] = channel;
+        channels = sortChannels(channels);
         notifyListeners();
       }
     });
     channelDeleteEvent = client?.onChannelDelete.listen((event) {
       if (event.channel is GuildChannel && (event.channel as GuildChannel).guildId == guild.id) {
         channels.remove(event.channel);
+        channels = sortChannels(channels);
         notifyListeners();
       }
     });

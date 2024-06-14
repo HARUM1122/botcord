@@ -1,4 +1,5 @@
 import 'package:discord/src/features/guild/controllers/channels_controller.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/category.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -132,19 +133,20 @@ class MenuScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: () async {
-                      for (GuildChannel channel in channelsController.channels) {
-                        print("${channel.name} ${channel.position}");
-                        // if (channel is TextChannel) {
-                        //   TextChannel textChannel = channel as TextChannel;
-                        //   print()
-                        // }
-                      }
-                    },
-                    child: Text('PRESS'),
-                  )
+                  const SizedBox(height: 10),
+                  () {
+                    List<GuildCategory> categories = channelsController.channels.whereType<GuildCategory>().toList();
+                    print(categories);
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: categories.length,
+                        itemBuilder: (context, index) => CategoryButton(
+                          category: categories[index],
+                          channels: const []
+                        )
+                      ),
+                    );
+                  }()
                 ]
               ),
             ),
