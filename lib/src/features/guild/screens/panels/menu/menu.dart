@@ -1,5 +1,8 @@
 import 'package:discord/src/features/guild/controllers/channels_controller.dart';
 import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/category.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/text/announcement_channel.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/text/text_channel.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/voice/voice_channel.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -135,15 +138,39 @@ class MenuScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 10),
                   () {
-                    List<GuildCategory> categories = channelsController.channels.whereType<GuildCategory>().toList();
-                    print(categories);
+                    List<GuildChannel> channels = channelsController.channels;
                     return Expanded(
                       child: ListView.builder(
-                        itemCount: categories.length,
-                        itemBuilder: (context, index) => CategoryButton(
-                          category: categories[index],
-                          channels: const []
-                        )
+                        itemCount: channels.length,
+                        itemBuilder: (context, index) {
+                          GuildChannel channel = channels[index];
+                          bool selected = channelsController.currentChannel?.id == channel.id;
+                          if (channel.type == ChannelType.guildText) {
+                            return TextChannelButton(
+                              textChannel: channel as GuildTextChannel,
+                              selected: selected,
+                              onPressed: () {},
+                            );
+                          } else if (channel.type == ChannelType.guildCategory) {
+                            return CategoryButton(
+                              category: channel as GuildCategory,
+                              channels: channels
+                            );
+                          } else if (channel.type == ChannelType.guildAnnouncement) {
+                            return AnnouncementChannelButton(
+                              announcementChannel: channel as GuildAnnouncementChannel,
+                              selected: selected,
+                              onPressed: () {}
+                            );
+                          } else if (channel.type == ChannelType.guildVoice) {
+                            return VoiceChannelButton(
+                              voiceChannel: channel as GuildVoiceChannel,
+                              onPressed: () {}
+                            );
+                          } else {
+                            return const SizedBox();
+                          }
+                        }
                       ),
                     );
                   }()

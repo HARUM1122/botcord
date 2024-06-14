@@ -1,5 +1,9 @@
 import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/src/features/guild/controllers/channels_controller.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/text/announcement_channel.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/text/text_channel.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/voice/voice_channel.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -33,30 +37,69 @@ class _CategoryWidgetState extends ConsumerState<CategoryButton> {
 
   @override
   Widget build(BuildContext context) {
+    final GuildChannelsController channelsController = ref.watch(guildChannelsControllerProvider);
     return GestureDetector(
       onTap: () => setState(() => _opened = !_opened),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [ 
-          Row(
-            children: [
-              Icon(
-                _opened ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right,
-                color: _color1,
-                size: 12.8,
-              ),
-              Text(
-                widget.category.name,
-                style: TextStyle(
-                  fontSize: 12.8,
-                  fontFamily: 'GGSansBold',
-                  color: _color1
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              children: [
+                Icon(
+                  _opened ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right,
+                  color: _color1,
+                  size: 12.8,
                 ),
-              )
-            ],
+                const SizedBox(width: 4),
+                Text(
+                  widget.category.name,
+                  style: TextStyle(
+                    fontSize: 12.8,
+                    fontFamily: 'GGSansBold',
+                    color: _color1
+                  ),
+                )
+              ],
+            ),
           ),
-          const SizedBox(height: 10),
-          
+          if (_opened)
+            Column(
+              children: () {
+                List<Widget> allChannels = [];
+                for (GuildChannel channel in channelsController.channels) {
+                  if (channel.parentId != widget.category.id) continue;
+                  bool selected = channelsController.currentChannel?.id == channel.id;
+                  if (channel.type == ChannelType.guildText) {
+                    allChannels.add(
+                      TextChannelButton(
+                        textChannel: channel as GuildTextChannel,
+                        selected: selected,
+                        onPressed: () {},
+                      )
+                    );
+                  } else if (channel.type == ChannelType.guildAnnouncement) {
+                    allChannels.add(
+                      AnnouncementChannelButton(
+                        announcementChannel: channel as GuildAnnouncementChannel,
+                        selected: selected,
+                        onPressed: () {}
+                      )
+                    );
+                  } else if (channel.type == ChannelType.guildVoice) {
+                    allChannels.add( 
+                      VoiceChannelButton(
+                        voiceChannel: channel as GuildVoiceChannel,
+                        onPressed: () {}
+                      )
+                    );
+                  } else {
+                  }
+                }
+                return allChannels;
+            }()
+          )
         ],
       ),
     );

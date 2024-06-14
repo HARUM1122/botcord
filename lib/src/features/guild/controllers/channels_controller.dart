@@ -53,7 +53,10 @@ class GuildChannelsController extends ChangeNotifier {
    Future<void> fetchAllChannels(Guild guild) async {
     channels.clear();
     channels.addAll(await guild.fetchChannels());
+    channels = sortChannels(channels);
+    currentChannel = channels.isEmpty ? null : channels.first;
     // TODO make a function named select channels and in that `select channel function`, fetch the messages
     await listenChannelEvents(guild);
+    notifyListeners();
   }
 }

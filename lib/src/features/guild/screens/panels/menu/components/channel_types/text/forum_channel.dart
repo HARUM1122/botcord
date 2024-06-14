@@ -7,21 +7,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TextChannelButton extends ConsumerStatefulWidget {
-  final GuildTextChannel textChannel;
+class ForumChannnelButton extends ConsumerStatefulWidget {
+  final ForumChannel forumChannel;
   final bool selected;
   final Function() onPressed;
-  const TextChannelButton({required this.textChannel,
+  const ForumChannnelButton({required this.forumChannel,
     required this.selected,
     required this.onPressed,
     super.key
   });
 
   @override
-  ConsumerState<TextChannelButton> createState() => _TextChannelButtonState();
+  ConsumerState<ForumChannnelButton> createState() => _ForumChannelButtonState();
 }
 
-class _TextChannelButtonState extends ConsumerState<TextChannelButton> {
+class _ForumChannelButtonState extends ConsumerState<ForumChannnelButton> {
   late final String _theme = ref.read(themeController);
   
   late final Color _color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
@@ -42,7 +42,7 @@ class _TextChannelButtonState extends ConsumerState<TextChannelButton> {
       child: Row(
         children: [
           SvgPicture.asset(
-            AssetIcon.hash,
+            AssetIcon.forum,
             height: 16,
             colorFilter: ColorFilter.mode(
               widget.selected ? _color1 : _color1.withOpacity(0.5),
@@ -51,7 +51,7 @@ class _TextChannelButtonState extends ConsumerState<TextChannelButton> {
           ),
           const SizedBox(width: 5),
           Text(
-            widget.textChannel.name,
+            widget.forumChannel.name,
             style: TextStyle(
               color: widget.selected ? _color1 : _color1.withOpacity(0.5),
               fontSize: 16,
