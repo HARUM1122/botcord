@@ -43,8 +43,8 @@ class _AnnouncementChannelButtonState extends ConsumerState<AnnouncementChannelB
       child: Row(
         children: [
           SvgPicture.asset(
-            AssetIcon.forum,
-            height: 16,
+            AssetIcon.amplifier,
+            height: 18,
             colorFilter: ColorFilter.mode(
               widget.selected ? _color1 : _color1.withOpacity(0.5),
               BlendMode.srcIn

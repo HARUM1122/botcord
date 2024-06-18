@@ -120,23 +120,6 @@ class _OverViewPageState extends ConsumerState<OverViewScreen> {
     Navigator.pop(context);
   }
 
-  // Future<void> _deleteServer() async {
-  //   try {
-  //     await widget.guild.delete();
-  //   } catch (_) {
-  //     if (!mounted) return;
-  //     showSnackBar(
-  //       context: context, 
-  //       theme: _theme,
-  //       leading: Icon(
-  //         Icons.error_outline,
-  //         color: Colors.red[800],
-  //       ),
-  //       msg: 'Unexpected Error, Please try again.'
-  //     );
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     bool hasMadeChanges = _guildName != widget.guild.name 

@@ -1,6 +1,3 @@
-import 'package:discord/src/common/utils/globals.dart';
-import 'package:discord/src/features/guild/components/bottom_sheet/guild_options/components/options_button.dart';
-import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -11,9 +8,9 @@ import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/utils/extensions.dart';
 import 'package:discord/src/common/components/drag_handle.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
+import 'package:discord/src/common/components/settings_icon_button.dart';
 import 'package:discord/src/common/components/online_status/online.dart';
 import 'package:discord/src/common/components/online_status/invisible.dart';
-
 import '../../badges/badges.dart';
 
 class GuildOptionsSheet extends ConsumerWidget {
@@ -41,42 +38,53 @@ class GuildOptionsSheet extends ConsumerWidget {
         )
       ),
       const SizedBox(height: 10),
-      Align(
-        alignment: Alignment.centerLeft,
-        child: Container(
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-            color: guildIcon == null 
-            ? const Color(0XFF536CF8)
-            : Colors.transparent,
-            image: guildIcon != null 
-            ? DecorationImage(
-              image: CachedNetworkImageProvider(
-                guildIcon,
-                errorListener: (error) {},
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: guildIcon == null 
+                ? const Color(0XFF536CF8)
+                : Colors.transparent,
+                image: guildIcon != null 
+                ? DecorationImage(
+                  image: CachedNetworkImageProvider(
+                    guildIcon,
+                    errorListener: (error) {},
+                  ),
+                )
+                : null,
+                borderRadius: BorderRadius.circular(15)
               ),
-            )
-            : null,
-            borderRadius: BorderRadius.circular(15)
-          ),
-          child: guildIcon == null 
-          ? Center(
-            child: Text(
-              guild.name[0],
-              style: TextStyle(
-                color: appTheme<Color>(
-                  theme, 
-                  light: const Color(0xFF000000),
-                  dark: const Color(0xFFFFFFFF), 
-                  midnight: const Color(0xFFFFFFFF)
+              child: guildIcon == null 
+              ? Center(
+                child: Text(
+                  guild.name[0],
+                  style: TextStyle(
+                    color: appTheme<Color>(
+                      theme, 
+                      light: const Color(0xFF000000),
+                      dark: const Color(0xFFFFFFFF), 
+                      midnight: const Color(0xFFFFFFFF)
+                    ),
+                    fontSize: 16,
+                  ),
                 ),
-                fontSize: 16,
-              ),
+              )
+              : null
             ),
+          ),
+          SettingsIconButton(
+            onPressed: () => Navigator.popAndPushNamed(context, '/guild-settings-route'),
+            size: 25,
+            backgroundColor: appTheme<Color>(theme, light: const Color(0XFFDFE1E3), dark: const Color(0XFF373A42), midnight: const Color(0XFF2C2D36)),
+            iconColor: color1
           )
-          : null
-        ),
+        ],
       ),
       const SizedBox(height: 20),
       Row(
@@ -153,20 +161,6 @@ class GuildOptionsSheet extends ConsumerWidget {
         ],
       ),
       const SizedBox(height: 20),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          OptionButton(
-            title: 'Notifications',
-            onPressed: () {
-            }
-          ),
-          OptionButton(
-            title: 'Settings',
-            onPressed: () => Navigator.popAndPushNamed(context, '/guild-settings-route')
-          )
-        ],
-      )
     ];
     return ListView.builder(
       controller: controller,
@@ -176,155 +170,3 @@ class GuildOptionsSheet extends ConsumerWidget {
     );
   }
 }
-
-
-
-// class LinkOptionsSheet extends ConsumerWidget {
-//   final String link;
-//   final ScrollController controller;
-//   const LinkOptionsSheet({required this.link, required this.controller, super.key});
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final String theme = ref.read(themeProvider);
-//     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-//     final Color color2 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
-//     List<Widget> children = [
-//       Align(
-//         alignment: Alignment.topCenter,
-//         child: DragHandle(
-//           color: appTheme<Color>(theme, light: const Color(0XFFD8DADD), dark: const Color(0XFF2F3039), midnight: const Color(0XFF151518))
-//         )
-//       ),
-//       const SizedBox(height: 8),
-//       Align(
-//         alignment: Alignment.topCenter,
-//         child: Text(
-//           "Link Options",
-//           style: TextStyle(
-//             color: color1,
-//             fontFamily: 'GGSansBold',
-//             fontSize: 18
-//           ),
-//         ),
-//       ),
-//       Align(
-//         alignment: Alignment.topCenter,
-//         child: Text(
-//           link,
-//           style: TextStyle(
-//             color: appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFF81818D)),
-//             fontSize: 14,
-//             fontFamily: 'GGSansSemibold'
-//           ),
-//         ),
-//       ),
-//       const SizedBox(height: 30),
-//       DecoratedBox(
-//         decoration: BoxDecoration(
-//           color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
-//           borderRadius: BorderRadius.circular(16)
-//         ),
-//         child: Column(
-//           children: [
-//             LinkOption(
-//               title: 'Open Link',
-//               onPressed: () async {
-//                 Navigator.pop(context);
-//                 Uri uri = Uri.parse(link);
-//                 await launchUrl(uri);
-//               },
-//               borderRadius: const BorderRadius.vertical(
-//                 top: Radius.circular(16)
-//               ),
-//               theme: theme,
-//             ),
-//             Divider(
-//               thickness: 1,
-//               height: 0,
-//               indent: 50,
-//               color: color2,
-//             ),
-//             LinkOption(
-//               title: 'Copy Link',
-//               onPressed: () async {
-//                 await Clipboard.setData(ClipboardData(text: link));
-//                 if (!context.mounted) return;
-//                 showSnackBar(
-//                   context: context, 
-//                   theme: theme,
-//                   leading: SvgPicture.asset(
-//                     AssetIcon.link,
-//                     colorFilter: ColorFilter.mode(color1, BlendMode.srcIn)
-//                   ),
-//                   msg: "Link copied"
-//                 );
-//               },
-//               borderRadius: BorderRadius.zero,
-//               theme: theme,
-//             ),
-//             Divider(
-//               thickness: 1,
-//               height: 0,
-//               indent: 50,
-//               color: color2,
-//             ),
-//             LinkOption(
-//               title: 'Share Link',
-//               onPressed: () => Share.share(link),
-//               borderRadius: const BorderRadius.vertical(
-//                 bottom: Radius.circular(16)
-//               ),
-//               theme: theme,
-//             ),
-//           ]
-//         )
-//       )
-//     ];
-//     return ListView.builder(
-//       padding: EdgeInsets.only(top: 8, left: 12, right: 12, bottom: context.padding.bottom + 12),
-//       controller: controller,
-//       itemCount: children.length,
-//       itemBuilder: (context, idx) => children[idx]
-//     );
-//   }
-// }
-
-
-// class LinkOption extends StatelessWidget {
-//   final String title;
-//   final Function() onPressed;
-//   final BorderRadius borderRadius;
-//   final String theme;
-//   const LinkOption({
-//     required this.title,
-//     required this.onPressed,
-//     required this.borderRadius,
-//     required this.theme,
-//     super.key
-//   });
-//   @override
-//   Widget build(BuildContext context) {
-//     return CustomButton(
-//       backgroundColor: Colors.transparent,
-//       onPressedColor: appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226)),
-//       shape: RoundedRectangleBorder(
-//         borderRadius: borderRadius
-//       ),
-//       onPressed: onPressed,
-//       applyClickAnimation: false, 
-//       child: Container(
-//         margin: const EdgeInsets.all(20),
-//         alignment: Alignment.centerLeft,
-//         child: Text(
-//           title,
-//           style: TextStyle(
-//             color: appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF)),
-//             fontSize: 16,
-//             fontFamily: 'GGSansSemibold'
-//           ),
-//         ),
-//       )
-//     );
-//   }
-// }

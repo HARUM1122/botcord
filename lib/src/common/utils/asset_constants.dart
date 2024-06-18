@@ -24,4 +24,6 @@ class AssetIcon {
   static const String hash = '$_svgPath/hash.svg';
   static const String bell = '$_svgPath/bell.svg';
   static const String forum = '$_svgPath/forum.svg';
+  static const String signal = '$_svgPath/signal.svg';
+  static const String amplifier = '$_svgPath/amplifier.svg';
 }

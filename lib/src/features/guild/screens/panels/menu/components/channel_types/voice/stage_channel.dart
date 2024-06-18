@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/utils/asset_constants.dart';
 import 'package:discord/src/common/utils/utils.dart';
@@ -7,19 +9,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class VoiceChannelButton extends ConsumerStatefulWidget {
-  final GuildVoiceChannel voiceChannel;
+class StageChannelButton extends ConsumerStatefulWidget {
+  final GuildStageChannel stageChannel;
   final Function() onPressed;
-  const VoiceChannelButton({required this.voiceChannel,
+  const StageChannelButton({required this.stageChannel,
     required this.onPressed,
     super.key
   });
 
   @override
-  ConsumerState<VoiceChannelButton> createState() => _VoiceChannelButtonState();
+  ConsumerState<StageChannelButton> createState() => _StageChannelButtonState();
 }
 
-class _VoiceChannelButtonState extends ConsumerState<VoiceChannelButton> {
+class _StageChannelButtonState extends ConsumerState<StageChannelButton> {
   late final String _theme = ref.read(themeController);
   
   late final Color _color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
@@ -37,7 +39,7 @@ class _VoiceChannelButtonState extends ConsumerState<VoiceChannelButton> {
       child: Row(
         children: [
           SvgPicture.asset(
-            AssetIcon.speakerWave,
+            AssetIcon.signal,
             height: 18,
             colorFilter: ColorFilter.mode(
               _color1.withOpacity(0.5),
@@ -46,7 +48,7 @@ class _VoiceChannelButtonState extends ConsumerState<VoiceChannelButton> {
           ),
           const SizedBox(width: 5),
           Text(
-            widget.voiceChannel.name,
+            widget.stageChannel.name,
             style: TextStyle(
               color: _color1.withOpacity(0.5),
               fontSize: 16,

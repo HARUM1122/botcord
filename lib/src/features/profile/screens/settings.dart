@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../features/profile/components/logout_dialog.dart';
+
 import '../../../common/utils/utils.dart';
 import '../../../common/components/custom_button.dart';
 import '../../../common/controllers/theme_controller.dart';
 import '../../../common/components/radio_button_indicator/radio_button_indicator.dart';
-
-import '../../../features/profile/components/logout_dialog.dart';
 
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -25,10 +25,9 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
 
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0XFF4C4F57), dark: const Color(0XFFC8C9D1), midnight: const Color(0xFFFFFFFF));
-    final Color color3 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
-    final Color color4 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
-    final Color color5 = appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318));
-    final Color color6 = appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226));
+    final Color color3 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
+    final Color color4 = appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318));
+    final Color color5 = appTheme<Color>(theme, light: const Color(0XFFE1E1E1), dark: const Color(0XFF2F323A), midnight: const Color(0XFF202226));
 
     return Scaffold(
       backgroundColor: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
@@ -68,7 +67,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
             Text(
               "App Theme",
               style: TextStyle(
-                color: color3,
+                color: appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0)),
                 fontSize: 14,
                 fontFamily: 'GGSansSemibold'
               ),
@@ -78,7 +77,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
               width: double.infinity,
               margin: const EdgeInsets.symmetric(horizontal: 2),
               decoration: BoxDecoration(
-                color: color5,
+                color: color4,
                 borderRadius: BorderRadius.circular(16)
               ),
               child: Column(
@@ -97,7 +96,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                         const SizedBox(width: 14),
                         Icon(
                           Icons.light_mode,
-                          color: color2,
+                          color: color1.withOpacity(0.8),
                           size: 18,
                         ),
                         const SizedBox(width: 18),
@@ -119,15 +118,14 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                     )
                   ),
                   Divider(
-                    color: color4,
-                    thickness: 1,
+                    color: color3,
                     height: 0,
                     indent: 50,
                   ),
                   SettingsButton(
                     borderRadius: BorderRadius.zero,
                     backgroundColor: Colors.transparent,
-                    onPressedColor: color6,
+                    onPressedColor: color5,
                     onPressed: () => ref.read(
                       themeController.notifier
                     ).setTheme('dark', true, false),
@@ -136,7 +134,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                         const SizedBox(width: 14),
                         Icon(
                           Icons.light_mode,
-                          color: color2,
+                          color: color1.withOpacity(0.8),
                           size: 18,
                         ),
                         const SizedBox(width: 18),
@@ -158,8 +156,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                     )
                   ),
                   Divider(
-                    color: color4,
-                    thickness: 1,
+                    color: color3,
                     height: 0,
                     indent: 50,
                   ),
@@ -168,7 +165,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                       bottom: Radius.circular(16)
                     ),
                     backgroundColor: Colors.transparent,
-                    onPressedColor: color6,
+                    onPressedColor: color5,
                     onPressed: () => ref.read(
                       themeController.notifier
                     ).setTheme('midnight', true, false),
@@ -177,7 +174,7 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
                         const SizedBox(width: 14),
                         Icon(
                           Icons.light_mode,
-                          color: color2,
+                          color: color1.withOpacity(0.8),
                           size: 18,
                         ),
                         const SizedBox(width: 18),
@@ -204,8 +201,8 @@ class _EditProfileScreenState extends ConsumerState<SettingsScreen> {
             const SizedBox(height: 30),
             SettingsButton(
               borderRadius: BorderRadius.circular(16),
-              backgroundColor: color5,
-              onPressedColor: color6,
+              backgroundColor: color4,
+              onPressedColor: color5,
               onPressed: () => showDialogBox(
                 context: context, 
                 child: const LogoutDialog()

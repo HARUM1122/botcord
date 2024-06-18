@@ -25,23 +25,24 @@ class GuildChannelsController extends ChangeNotifier {
 
   Future<void> listenChannelEvents(Guild guild) async {
     await stopListeningEvents();
-
+    
     channelCreateEvent = client?.onChannelCreate.listen((event) async {
       if (event.channel is GuildChannel && (event.channel as GuildChannel).guildId == guild.id) {
         channels.add(event.channel as GuildChannel);
         channels = sortChannels(channels);
         notifyListeners();
-      } 
+      }
     });
+
     channelUpdateEvent = client?.onChannelUpdate.listen((event) {
       if (event.channel is GuildChannel && (event.channel as GuildChannel).guildId == guild.id) {
         final GuildChannel channel = event.channel as GuildChannel;
-        print(channels.indexOf(channel));
         channels[channels.indexOf(channel)] = channel;
         channels = sortChannels(channels);
         notifyListeners();
       }
     });
+
     channelDeleteEvent = client?.onChannelDelete.listen((event) {
       if (event.channel is GuildChannel && (event.channel as GuildChannel).guildId == guild.id) {
         channels.remove(event.channel);
@@ -50,12 +51,12 @@ class GuildChannelsController extends ChangeNotifier {
       }
     });
   }
-   Future<void> fetchAllChannels(Guild guild) async {
+
+  Future<void> fetchAllChannels(Guild guild) async {
     channels.clear();
     channels.addAll(await guild.fetchChannels());
     channels = sortChannels(channels);
     currentChannel = channels.isEmpty ? null : channels.first;
-    // TODO make a function named select channels and in that `select channel function`, fetch the messages
     await listenChannelEvents(guild);
     notifyListeners();
   }

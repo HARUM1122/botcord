@@ -43,7 +43,7 @@ class _ForumChannelButtonState extends ConsumerState<ForumChannnelButton> {
         children: [
           SvgPicture.asset(
             AssetIcon.forum,
-            height: 16,
+            height: 18,
             colorFilter: ColorFilter.mode(
               widget.selected ? _color1 : _color1.withOpacity(0.5),
               BlendMode.srcIn

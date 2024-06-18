@@ -1,7 +1,9 @@
 import 'package:discord/src/features/guild/controllers/channels_controller.dart';
 import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/category.dart';
 import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/text/announcement_channel.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/text/forum_channel.dart';
 import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/text/text_channel.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/voice/stage_channel.dart';
 import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/voice/voice_channel.dart';
 import 'package:flutter/material.dart';
 
@@ -138,36 +140,52 @@ class MenuScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 10),
                   () {
-                    List<GuildChannel> channels = channelsController.channels;
+                    final List<GuildChannel> channels = channelsController.channels;
                     return Expanded(
                       child: ListView.builder(
+                        padding: EdgeInsets.only(bottom: context.padding.bottom + 65),
                         itemCount: channels.length,
                         itemBuilder: (context, index) {
-                          GuildChannel channel = channels[index];
+                          final GuildChannel channel = channels[index];
+                          print(channel.name);
+                          final bool hasParent = channel.parentId != null;
+                          print(channel.type.name);
                           bool selected = channelsController.currentChannel?.id == channel.id;
-                          if (channel.type == ChannelType.guildText) {
+                          if (channel.type == ChannelType.guildText && !hasParent) {
                             return TextChannelButton(
                               textChannel: channel as GuildTextChannel,
                               selected: selected,
                               onPressed: () {},
+                            );
+                          } else if (channel.type == ChannelType.guildVoice && !hasParent) {
+                            return VoiceChannelButton(
+                              voiceChannel: channel as GuildVoiceChannel,
+                              onPressed: () {}
                             );
                           } else if (channel.type == ChannelType.guildCategory) {
                             return CategoryButton(
                               category: channel as GuildCategory,
                               channels: channels
                             );
-                          } else if (channel.type == ChannelType.guildAnnouncement) {
+                          } else if (channel.type == ChannelType.guildForum && !hasParent) {
+                            return ForumChannnelButton(
+                              forumChannel: channel as ForumChannel,
+                              selected: selected, 
+                              onPressed: () {}
+                            );
+                          } else if (channel.type == ChannelType.guildAnnouncement && !hasParent) {
                             return AnnouncementChannelButton(
                               announcementChannel: channel as GuildAnnouncementChannel,
                               selected: selected,
                               onPressed: () {}
                             );
-                          } else if (channel.type == ChannelType.guildVoice) {
-                            return VoiceChannelButton(
-                              voiceChannel: channel as GuildVoiceChannel,
+                          } else if (channel.type == ChannelType.guildStageVoice && !hasParent) {
+                            return StageChannelButton(
+                              stageChannel: channel as GuildStageChannel,
                               onPressed: () {}
                             );
-                          } else {
+                          } 
+                          else {
                             return const SizedBox();
                           }
                         }

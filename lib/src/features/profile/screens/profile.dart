@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:page_animation_transition/animations/right_to_left_transition.dart';
 import 'package:page_animation_transition/page_animation_transition.dart';
+import 'package:page_animation_transition/animations/right_to_left_transition.dart';
 import 'package:page_animation_transition/animations/bottom_to_top_transition.dart';
 
 import '../screens/screens.dart';
 
+import '../controller/profile.dart';
+
 import '../components/online_status_sheet.dart';
 import '../components/edit_option_button.dart';
-import '../controller/profile.dart';
 
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/globals.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/components/avatar.dart';
 import '../../../common/controllers/theme_controller.dart';
+import '../../../common/components/settings_icon_button.dart';
 import '../../../common/components/online_status/status.dart';
 
 
@@ -61,29 +63,17 @@ class ProfileScreen extends ConsumerWidget {
                       ) : null,
                       color: banner == null ? Colors.purple : null
                     ),
-                    child: GestureDetector(
-                      onTap: () => Navigator.push(
+                    child: SettingsIconButton(
+                      onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const SettingsScreen(),
                         )
                       ),
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.5),
-                          shape: BoxShape.circle
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.settings,
-                            color: Color(0xFFFFFFFF),
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    )
+                      size: 30,
+                      backgroundColor: Colors.black.withOpacity(0.5),
+                      iconColor: const Color(0xFFFFFFFF),
+                    ),
                   ),
                   const SizedBox(height: 50),
                   Column(

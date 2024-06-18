@@ -24,7 +24,7 @@ class BotOptionsSheet extends ConsumerWidget {
     final String theme = ref.read(themeController);
 
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-    final Color color2 = appTheme<Color>(theme, light: const Color(0xFFC5C8CF), dark: const Color(0xFF4C4F58), midnight: const Color(0xFF4C4F58));
+    final Color color2 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
     final Color color3 = appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0XFF25282F), midnight: const Color(0XFF151419));
     
     List<Widget> children = [
@@ -101,7 +101,6 @@ class BotOptionsSheet extends ConsumerWidget {
               theme: theme
             ),
             Divider(
-              thickness: 0.2,
               height: 0,
               indent: 50,
               color:  color2,
@@ -126,7 +125,6 @@ class BotOptionsSheet extends ConsumerWidget {
               theme: theme
             ),
             Divider(
-              thickness: 0.2,
               height: 0,
               indent: 50,
               color:  color2,
@@ -151,7 +149,6 @@ class BotOptionsSheet extends ConsumerWidget {
               theme: theme
             ),
             Divider(
-              thickness: 0.2,
               height: 0,
               indent: 50,
               color:  color2,
@@ -176,7 +173,6 @@ class BotOptionsSheet extends ConsumerWidget {
               theme: theme
             ),
             Divider(
-              thickness: 0.2,
               height: 0,
               indent: 50,
               color:  color2,

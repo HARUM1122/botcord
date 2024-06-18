@@ -27,7 +27,6 @@ class InactiveChannelsSheet extends ConsumerWidget {
     final GuildChannelsController channelsController = ref.watch(guildChannelsControllerProvider);
 
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-    final Color color2 = appTheme<Color>(theme, light: const Color(0XFF4C4F57), dark: const Color(0XFFC8C9D1), midnight: const Color(0xFFFFFFFF));
 
     List<Widget> children = [
       Align(
@@ -75,7 +74,7 @@ class InactiveChannelsSheet extends ConsumerWidget {
                       title: 'No Inactive Channel',
                       leading: Icon(
                         Icons.cancel,
-                        color: color2,
+                        color: color1.withOpacity(0.8),
                         size: 22,
                       ),
                       borderRadius: voiceChannels.isEmpty 
@@ -106,7 +105,7 @@ class InactiveChannelsSheet extends ConsumerWidget {
                         leading: SvgPicture.asset(
                           AssetIcon.speakerWave,
                           height: 22,
-                          colorFilter: ColorFilter.mode(color2, BlendMode.srcIn),
+                          colorFilter: ColorFilter.mode(color1.withOpacity(0.8), BlendMode.srcIn),
                         ),
                         borderRadius: i == length - 1 
                         ?  const BorderRadius.vertical(

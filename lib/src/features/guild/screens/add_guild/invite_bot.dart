@@ -37,9 +37,8 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
     final String theme = ref.watch(themeController);
 
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-    final Color color2 = appTheme<Color>(theme, light: const Color(0XFF4C4F57), dark: const Color(0XFFC8C9D1), midnight: const Color(0xFFFFFFFF));
-    final Color color3 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
-    final Color color4 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
+    final Color color2 = appTheme<Color>(theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
+    final Color color3 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
 
     return Scaffold(
       backgroundColor: appTheme<Color>(theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
@@ -77,7 +76,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                 Text(
                   'General Permissions',
                   style: TextStyle(
-                    color: color3,
+                    color: color2,
                     fontSize: 14,
                     fontFamily: 'GGSansSemibold'
                   ),
@@ -138,7 +137,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                         if (i < generalPerms.length - 1) {
                           general.add(
                             Divider(
-                              color: color4,
+                              color: color3,
                               thickness: 1,
                               height: 0,
                               indent: 15,
@@ -154,7 +153,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                 Text(
                   'Text Permissions',
                   style: TextStyle(
-                    color: color3,
+                    color: color2,
                     fontSize: 14,
                     fontFamily: 'GGSansSemibold'
                   ),
@@ -215,7 +214,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                         if (i < generalPerms.length - 1) {
                           text.add(
                             Divider(
-                              color: color4,
+                              color: color3,
                               thickness: 1,
                               height: 0,
                               indent: 15,
@@ -231,7 +230,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                 Text(
                   'Voice Permissions',
                   style: TextStyle(
-                    color: color3,
+                    color: color2,
                     fontSize: 14,
                     fontFamily: 'GGSansSemibold'
                   ),
@@ -292,7 +291,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                         if (i < generalPerms.length - 1) {
                           voice.add(
                             Divider(
-                              color: color4,
+                              color: color3,
                               thickness: 1,
                               height: 0,
                               indent: 15,
@@ -331,7 +330,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                       const SizedBox(width: 14),
                       SvgPicture.asset(
                         AssetIcon.link,
-                        colorFilter: ColorFilter.mode(color2, BlendMode.srcIn)
+                        colorFilter: ColorFilter.mode(color1.withOpacity(0.8), BlendMode.srcIn)
                       ),
                       const SizedBox(width: 14),
                       Text(
@@ -361,7 +360,7 @@ class _InviteBotScreenState extends ConsumerState<InviteBotScreen> {
                       const SizedBox(width: 14),
                       Icon(
                         Icons.mail,
-                        color: color2,
+                        color: color1.withOpacity(0.8),
                       ),
                       const SizedBox(width: 14),
                       Text(
