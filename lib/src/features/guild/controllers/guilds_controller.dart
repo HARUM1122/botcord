@@ -25,12 +25,15 @@ class GuildsController extends ChangeNotifier {
   Guild? currentGuild;
   List<UserGuild> guildsCache = [];
   
-  Future<void> selectGuild(UserGuild guild, {bool refresh = true}) async {
+  Future<void> selectGuild(UserGuild guild, {bool refresh = true, bool selectChannelFromDb = false}) async {
     if (guild.id == currentGuild?.id) return;
     currentGuild = await guild.get();
-    await channelsControllerProvider.fetchAllChannels(currentGuild!);
     final Map<String, dynamic> appData = jsonDecode(prefs.getString('app-data')!);
-    appData['selected-guild-id'] = currentGuild?.id.toString() ?? '0';
+    appData['selected-guild-id'] = guild.id.toString();
+    await channelsControllerProvider.fetchAllChannels(
+      currentGuild!, 
+      channel: selectChannelFromDb ? await getChannel(Snowflake.parse(appData['selected-channel-id']), guild: currentGuild) : null
+    );
     await prefs.setString('app-data', jsonEncode(appData));
     if (refresh) notifyListeners();
   }
@@ -51,14 +54,13 @@ class GuildsController extends ChangeNotifier {
       Snowflake selectedGuildId = Snowflake.parse(appData['selected-guild-id']);
 
       if (guildsCache.isNotEmpty) {
-        if (currentGuild == null) {
-          selectGuild(guildsCache.firstWhere(
-              (userGuild) => userGuild.id == selectedGuildId,
-              orElse: () => guildsCache.first
-            ),
-            refresh: false
-          );
-        }
+        selectGuild(guildsCache.firstWhere(
+            (userGuild) => userGuild.id == selectedGuildId,
+            orElse: () => guildsCache.first
+          ),
+          refresh: false,
+          selectChannelFromDb: true
+        );
       }
       listenGuildEvents();
     } catch (_) {

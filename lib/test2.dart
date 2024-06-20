@@ -76,13 +76,8 @@
 // }
 
 void main() {
-  int a = 12;
-  switch (a) {
-    case 12 || 45 || 23:
-      print('helllo world');
-    default:
-      print('aslfd');
-  }
+  List<int> messages = [];
+  messages.first;
 }
 
 // import 'dart:math';

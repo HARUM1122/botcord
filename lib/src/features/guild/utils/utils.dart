@@ -25,18 +25,7 @@ List<UserGuild> sortGuilds(List<UserGuild> guilds) {
   });
 }
 
-Future<Permissions> computePermissions(Guild guild, Member member) async {
-  if (guild.ownerId == member.id) {
-    return Permissions.allPermissions;
-  }
-  Flags<Permissions> permissions = (await guild.roles[guild.id].get()).permissions;
-  for (final PartialRole role in member.roles) {
-    permissions |= (await role.get()).permissions;
-  }
-  permissions = Permissions(permissions.value);
-  permissions as Permissions;
-  return permissions.isAdministrator ? Permissions.allPermissions : permissions;
-}
+
 
 String getDuration(Duration duration) => switch(duration.inSeconds) {
     60 => '1 minute',
@@ -111,10 +100,19 @@ List<String> getAllPermissions(Permissions permissions) {
 
 
 
-Future<GuildChannel?> getChannel(Snowflake id) async {
+Future<GuildChannel?> getChannel(Snowflake id, {Guild? guild}) async {
   try {
-    final GuildChannel channel = await client!.channels.get(id) as GuildChannel;
+    GuildChannel channel = await client!.channels.get(id) as GuildChannel;
+    if (guild != null && channel.guild.id != guild.id) return null;
     return channel;
+  } catch (_) {
+    return null;
+  }
+}
+
+Future<Member?> getMember(Guild guild, Snowflake id) async {
+  try {
+    return await guild.members.get(id);
   } catch (_) {
     return null;
   }
@@ -142,4 +140,51 @@ int getTypePriority(ChannelType type) {
     default:
       return 3;
   }
+}
+
+
+Future<Permissions> computeBasePermissions(Guild guild, Member member) async {
+  if (guild.ownerId == member.id) {
+    return Permissions.allPermissions;
+  }
+  Flags<Permissions> permissions = (await guild.roles[guild.id].get()).permissions;
+  for (final PartialRole role in member.roles) {
+    permissions |= (await role.get()).permissions;
+  }
+  permissions = Permissions(permissions.value);
+  permissions as Permissions;
+  return permissions.isAdministrator ? Permissions.allPermissions : permissions;
+}
+
+Future<Permissions> computeOverwrites(Member member, GuildChannel channel) async {
+  final Guild guild = await channel.guild.get();
+  final Permissions basePermissions = await computeBasePermissions(guild, member);
+  if (basePermissions.isAdministrator) {
+    return Permissions.allPermissions;
+  }
+  Flags<Permissions> permissions = basePermissions;
+  final PermissionOverwrite? everyoneOverwrite = channel.permissionOverwrites.where((overwrite) => overwrite.id == guild.id).singleOrNull;
+
+  if (everyoneOverwrite != null) {
+    permissions &= ~everyoneOverwrite.deny;
+    permissions |= everyoneOverwrite.allow;
+  }
+
+  Flags<Permissions> allow = const Permissions(0);
+  Flags<Permissions> deny = const Permissions(0);
+  for (final Snowflake roleId in member.roleIds) {
+    final PermissionOverwrite? roleOverwrite = channel.permissionOverwrites.where((overwrite) => overwrite.id == roleId).singleOrNull;
+    if (roleOverwrite != null) {
+      allow |= roleOverwrite.allow;
+      deny |= roleOverwrite.deny;
+    }
+  }
+  permissions &= ~deny;
+  permissions |= allow;
+  final PermissionOverwrite? memberOverwrite = channel.permissionOverwrites.where((overwrite) => overwrite.id == member.id).singleOrNull;
+  if (memberOverwrite != null) {
+    permissions &= ~memberOverwrite.deny;
+    permissions |= memberOverwrite.allow;
+  }
+  return Permissions(permissions.value);
 }

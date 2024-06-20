@@ -12,7 +12,7 @@ import '../../../common/utils/utils.dart';
 import '../../../common/utils/globals.dart';
 
 import '../../../features/auth/controller/auth_controller.dart';
-import '../../../features/guild/controllers/guilds_controller.dart';
+import '../../guild/controllers/guilds_controller.dart';
 import '../../profile/controller/profile.dart';
 
 

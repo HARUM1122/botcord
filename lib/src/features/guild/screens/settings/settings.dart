@@ -24,7 +24,7 @@ class GuildSettingsPage extends ConsumerWidget {
   Future<Permissions?> computePerms(Guild? guild, User user) async {
     if (guild == null) return null;
     final Member member = await guild.members[user.id].get();
-    return computePermissions(guild, member);
+    return computeBasePermissions(guild, member);
   }
 
   @override
@@ -218,7 +218,8 @@ class GuildSettingsPage extends ConsumerWidget {
                               title: 'Audit Log',
                               assetIcon: AssetIcon.document,
                               onPressed: () async {
-                                print(Snowflake.parse('0') == Snowflake(0));
+                                // print(Snowflake.parse('0') == Snowflake(0));
+                                
                                 // guildsController.fetchAllGuilds();
                                 // List<AuditLogEntry> entries = await guild!.auditLogs.list();
                                 // AuditLogEntry entry = entries[0];

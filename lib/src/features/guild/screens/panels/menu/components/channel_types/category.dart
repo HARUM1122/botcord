@@ -1,20 +1,24 @@
-import 'package:discord/src/common/controllers/theme_controller.dart';
-import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/features/guild/controllers/channels_controller.dart';
-import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/text/announcement_channel.dart';
-import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/text/text_channel.dart';
-import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/voice/stage_channel.dart';
-import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/voice/voice_channel.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
+
+import 'package:discord/src/features/guild/controllers/channels_controller.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/text/text_channel.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/voice/stage_channel.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/voice/voice_channel.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/text/announcement_channel.dart';
+
 class CategoryButton extends ConsumerStatefulWidget {
   final GuildCategory category;
+  final Permissions permissions;
   final List<GuildChannel> channels;
   const CategoryButton({
     required this.category,
+    required this.permissions,
     required this.channels,
     super.key
   });
@@ -81,7 +85,10 @@ class _CategoryWidgetState extends ConsumerState<CategoryButton> {
                     TextChannelButton(
                       textChannel: channel as GuildTextChannel,
                       selected: selected,
-                      onPressed: () {},
+                      onPressed: () {
+                        print("HELLO");
+                      },
+                      onLongPress: () {},
                     )
                   );
                 } else if (channel.type == ChannelType.guildAnnouncement) {
