@@ -1,4 +1,5 @@
-import 'package:discord/src/features/guild/utils/utils.dart';
+import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
+import 'package:discord/src/features/guild/controllers/members_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -6,9 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/extensions.dart';
-import 'package:discord/src/common/components/custom_button.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import 'package:discord/src/features/guild/controllers/channels_controller.dart';
@@ -36,15 +35,6 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
   late final Color _color2 = appTheme<Color>(_theme, light: const Color(0XFF595A63), dark: const Color(0XFF81818D), midnight: const Color(0XFFA8AAB0));
 
   bool _running = false;
-  Member? _member;
-  Guild? _prevGuild;
-
-  Future<Member?> _getMember(Guild guild) async {
-    if (_member != null) return _member;
-    _member =  await getMember(guild, user!.id);
-    return _member;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -156,6 +146,8 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                     builder: (_, setState) => Consumer(
                       builder: (_, ref, __) {
                         final GuildChannelsController channelsController = ref.watch(guildChannelsControllerProvider);
+                        ref.watch(membersControllerProvider);
+                        print("HELLO IM REBUILDING");
                         final List<GuildChannel> channels = channelsController.channels;
                         if (channels.isEmpty) {
                           return Expanded(
@@ -188,85 +180,94 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                               )
                             ),
                           );
-                        } else if (_member != null && _prevGuild?.id == widget.currentGuild.id) {
-                          return Expanded(
-                            child: ChannelsList(
-                              channels: channels,
-                              currentChannelId: channelsController.currentChannel?.id,
-                              member: _member!
-                            ),
-                          );
-                        }
-                        _member = null;
-                        _prevGuild = widget.currentGuild;
-                        return FutureBuilder(
-                          future: _getMember(widget.currentGuild),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return const Expanded(
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: Color(0XFF536CF8),
-                                  ),
-                                ),
-                              );
-                            }
-                            else if (snapshot.hasError) {
-                              return Expanded(
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 10, right: 10),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Unexpected error, Please retry',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: _color1,
-                                            fontSize: 16,
-                                            fontFamily: 'GGSansSemibold'
-                                          ),
-                                        ),
-                                        const SizedBox(height: 20),
-                                        CustomButton(
-                                          width: 160,
-                                          height: 40,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(45 * 0.5)
-                                          ),
-                                          backgroundColor: const Color(0XFF536CF8),
-                                          onPressedColor: const Color(0XFF4658CA),
-                                          applyClickAnimation: true,
-                                          animationUpperBound: 0.04,
-                                          child: const Center(
-                                            child: Text(
-                                              'Retry',
-                                              style: TextStyle(
-                                                color: Color(0xFFFFFFFF),
-                                                fontFamily: 'GGSansSemibold'
-                                              ),
-                                            ),
-                                          ),
-                                          onPressed: () => setState(() {})
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            } else if (snapshot.data != null) {
-                              return Expanded(
-                                child: ChannelsList(
-                                  channels: channels,
-                                  currentChannelId: channelsController.currentChannel?.id,
-                                  member: snapshot.data as Member,
-                                ),
-                              );
-                            }
-                            return const SizedBox();
-                          }
+                          
+                        } 
+                        return Expanded(
+                          child: ChannelsList(
+                            channels: channels,
+                            currentChannelId: channelsController.currentChannel?.id,
+                          ),
                         );
+                        // else if (_member != null && _prevGuild?.id == widget.currentGuild.id) {
+                        //   return Expanded(
+                        //     child: ChannelsList(
+                        //       channels: channels,
+                        //       currentChannelId: channelsController.currentChannel?.id,
+                        //       // member: _member!
+                        //     ),
+                        //   );
+                        // }
+                        
+                        // _member = null;
+                        // _prevGuild = widget.currentGuild;
+                        // return FutureBuilder(
+                        //   future: _getMember(widget.currentGuild),
+                        //   builder: (context, snapshot) {
+                        //     if (snapshot.connectionState == ConnectionState.waiting) {
+                        //       return const Expanded(
+                        //         child: Center(
+                        //           child: CircularProgressIndicator(
+                        //             color: Color(0XFF536CF8),
+                        //           ),
+                        //         ),
+                        //       );
+                        //     }
+                        //     else if (snapshot.hasError) {
+                        //       return Expanded(
+                        //         child: Center(
+                        //           child: Padding(
+                        //             padding: const EdgeInsets.only(left: 10, right: 10),
+                        //             child: Column(
+                        //               mainAxisAlignment: MainAxisAlignment.center,
+                        //               children: [
+                        //                 Text(
+                        //                   'Unexpected error, Please retry',
+                        //                   textAlign: TextAlign.center,
+                        //                   style: TextStyle(
+                        //                     color: _color1,
+                        //                     fontSize: 16,
+                        //                     fontFamily: 'GGSansSemibold'
+                        //                   ),
+                        //                 ),
+                        //                 const SizedBox(height: 20),
+                        //                 CustomButton(
+                        //                   width: 160,
+                        //                   height: 40,
+                        //                   shape: RoundedRectangleBorder(
+                        //                     borderRadius: BorderRadius.circular(45 * 0.5)
+                        //                   ),
+                        //                   backgroundColor: const Color(0XFF536CF8),
+                        //                   onPressedColor: const Color(0XFF4658CA),
+                        //                   applyClickAnimation: true,
+                        //                   animationUpperBound: 0.04,
+                        //                   child: const Center(
+                        //                     child: Text(
+                        //                       'Retry',
+                        //                       style: TextStyle(
+                        //                         color: Color(0xFFFFFFFF),
+                        //                         fontFamily: 'GGSansSemibold'
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                   onPressed: () => setState(() {})
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       );
+                        //     } else if (snapshot.data != null) {
+                        //       return Expanded(
+                        //         child: ChannelsList(
+                        //           channels: channels,
+                        //           currentChannelId: channelsController.currentChannel?.id,
+                        //           // member: snapshot.data as Member,
+                        //         ),
+                        //       );
+                        //     }
+                        //     return const SizedBox();
+                        //   }
+                        // );
                       }
                     ),
                   )
@@ -279,3 +280,8 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     );
   }
 }
+
+
+
+// INSIDE ROLES, UPDATE THE CHANNELS,
+// UPDATE THE CHANNEL PERMISSIONS WHEN MEMBER UPDATES

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:discord/src/features/guild/controllers/channels_controller.dart';
+import 'package:discord/src/features/guild/controllers/members_controller.dart';
 import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -10,13 +11,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../common/utils/globals.dart';
 
 final guildsControllerProvider = ChangeNotifierProvider<GuildsController>((ref) => GuildsController(
-  channelsControllerProvider: ref.read(guildChannelsControllerProvider)
+  channelsControllerProvider: ref.read(guildChannelsControllerProvider),
+  membersController: ref.read(membersControllerProvider)
 ));
 
 class GuildsController extends ChangeNotifier {
   final GuildChannelsController channelsControllerProvider;
+  final MembersController membersController;
   GuildsController({
-    required this.channelsControllerProvider
+    required this.channelsControllerProvider,
+    required this.membersController
   });
 
   bool loading = true;
@@ -28,12 +32,14 @@ class GuildsController extends ChangeNotifier {
   Future<void> selectGuild(UserGuild guild, {bool refresh = true, bool selectChannelFromDb = false}) async {
     if (guild.id == currentGuild?.id) return;
     currentGuild = await guild.get();
+    currentMember = await guild.members[user!.id].get();
     final Map<String, dynamic> appData = jsonDecode(prefs.getString('app-data')!);
     appData['selected-guild-id'] = guild.id.toString();
     await channelsControllerProvider.fetchAllChannels(
-      currentGuild!, 
+      currentGuild!,
       channel: selectChannelFromDb ? await getChannel(Snowflake.parse(appData['selected-channel-id']), guild: currentGuild) : null
     );
+    await membersController.listenEvents();
     await prefs.setString('app-data', jsonEncode(appData));
     if (refresh) notifyListeners();
   }
@@ -62,7 +68,7 @@ class GuildsController extends ChangeNotifier {
           selectChannelFromDb: true
         );
       }
-      listenGuildEvents();
+      listenEvents();
     } catch (_) {
       errorOccurred = true;
     }
@@ -70,7 +76,7 @@ class GuildsController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void listenGuildEvents() {
+  void listenEvents() {
     client?.onGuildCreate.listen((event) async {
       Guild guild = await event.guild.get();
       if (!guildsCache.contains(guild)) {

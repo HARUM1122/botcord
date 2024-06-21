@@ -1,3 +1,4 @@
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/channel_types.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -42,7 +43,7 @@ class _CategoryWidgetState extends ConsumerState<CategoryButton> {
 
   @override
   Widget build(BuildContext context) {
-    final GuildChannelsController channelsController = ref.watch(guildChannelsControllerProvider);
+    final GuildChannelsController channelsController = ref.read(guildChannelsControllerProvider);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [ 
@@ -85,9 +86,7 @@ class _CategoryWidgetState extends ConsumerState<CategoryButton> {
                     TextChannelButton(
                       textChannel: channel as GuildTextChannel,
                       selected: selected,
-                      onPressed: () {
-                        print("HELLO");
-                      },
+                      onPressed: () async => await channelsController.selectChannel(channel),
                       onLongPress: () {},
                     )
                   );
@@ -96,7 +95,15 @@ class _CategoryWidgetState extends ConsumerState<CategoryButton> {
                     AnnouncementChannelButton(
                       announcementChannel: channel as GuildAnnouncementChannel,
                       selected: selected,
-                      onPressed: () {}
+                      onPressed: () async => await channelsController.selectChannel(channel)
+                    )
+                  );
+                } else if (channel.type == ChannelType.guildForum) {
+                  allChannels.add(
+                    ForumChannnelButton(
+                      forumChannel: channel as ForumChannel,
+                      selected: selected, 
+                      onPressed: () async => await channelsController.selectChannel(channel)
                     )
                   );
                 } else if (channel.type == ChannelType.guildVoice) {

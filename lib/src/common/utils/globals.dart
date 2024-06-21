@@ -9,6 +9,7 @@ NyxxGateway? client;
 Application? application;
 (Uint8List, String)? avatar;
 (Uint8List, String)? banner;
+Member? currentMember;
 
 final globalNavigatorKey = GlobalKey<NavigatorState>();
 final List<dynamic> trustedDomains = [];

@@ -10,6 +10,7 @@ class CustomButton extends StatefulWidget {
   final bool applyClickAnimation;
   final double? animationUpperBound;
   final Function() onPressed;
+  final Function()? onLongPress;
   final Widget child;
 
   const CustomButton({
@@ -22,6 +23,7 @@ class CustomButton extends StatefulWidget {
     required this.applyClickAnimation,
     this.animationUpperBound,
     required this.onPressed,
+    this.onLongPress,
     required this.child,
     super.key
   });
@@ -71,6 +73,7 @@ class CustomButtonState extends State<CustomButton> with TickerProviderStateMixi
             } : null,
             onTapDown: (widget.enabled ?? true) ? (_) =>  _controller?.forward() :  null,
             onTapCancel: (widget.enabled ?? true) ? _controller?.reverse : null,
+            onLongPress: widget.onLongPress,
             child: widget.child,
           ),
         ),
