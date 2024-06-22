@@ -143,6 +143,8 @@ int getTypePriority(ChannelType type) {
   }
 }
 
+bool isTextChannel(GuildChannel channel) => const [ChannelType.guildAnnouncement, ChannelType.guildForum, ChannelType.guildText].contains(channel.type);
+
 
 Future<Permissions> computeBasePermissions(Guild guild, Member member) async {
   if (guild.ownerId == member.id) {

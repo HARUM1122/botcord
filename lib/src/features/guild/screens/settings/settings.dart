@@ -6,6 +6,8 @@ import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/features/guild/components/settings_button.dart';
 import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
+import 'package:discord/src/features/guild/controllers/members_controller.dart';
+import 'package:discord/src/features/guild/controllers/roles_controller.dart';
 import 'package:discord/src/features/guild/screens/settings/audit_log/audit_log.dart';
 import 'package:discord/src/features/guild/screens/settings/audit_log/filter_pages/actions.dart';
 import 'package:discord/src/features/guild/screens/settings/audit_log/utils/audit_log_info/info/channel.dart';
@@ -31,6 +33,10 @@ class GuildSettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeController);
     final GuildsController guildsController = ref.watch(guildsControllerProvider);
+
+    ref.watch(membersControllerProvider);
+    ref.watch(rolesControllerProvider);
+    
     final Guild? guild = guildsController.currentGuild;
 
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));

@@ -26,15 +26,16 @@ class GuildChannelsController extends ChangeNotifier {
 
   Future<void> listenEvents(Guild guild) async {
     await stopListeningEvents();
+
     channelCreateEvent = client?.onChannelCreate.listen((event) async {
       if (event.channel is GuildChannel && (event.channel as GuildChannel).guildId == guild.id) {
         final GuildChannel channel = event.channel as GuildChannel;
-        if (const [ChannelType.guildAnnouncement, ChannelType.guildForum, ChannelType.guildText].contains(channel.type) && currentChannel == null && (await computeOverwrites(currentMember!, channel)).canViewChannel) {
-          await selectChannel(channel, refresh: false);
+        if (isTextChannel(channel) && currentChannel == null && (await computeOverwrites(currentMember!, channel)).canViewChannel) {
+          await selectChannel(channel, shouldRefresh: false);
         }
         channels.add(channel);
         channels = sortChannels(channels);
-        notifyListeners();
+        refresh();
       }
     });
 
@@ -42,21 +43,14 @@ class GuildChannelsController extends ChangeNotifier {
       if (event.channel is GuildChannel && (event.channel as GuildChannel).guildId == guild.id) {
         final GuildChannel channel = event.channel as GuildChannel;
         final bool canViewChannel = (await computeOverwrites(currentMember!, channel)).canViewChannel;
-        if (const [ChannelType.guildAnnouncement, ChannelType.guildForum, ChannelType.guildText].contains(channel.type) && currentChannel == null && canViewChannel) {
-          await selectChannel(channel, refresh: false);
+        if (isTextChannel(channel) && currentChannel == null && canViewChannel) {
+          await selectChannel(channel, shouldRefresh: false);
         } else if (currentChannel?.id == channel.id && !canViewChannel) {
-          currentChannel = null;
-           // TODO STOP LISTENING MESSAGE EVENTS
-          for (GuildChannel channel in channels) {
-            if (const [ChannelType.guildAnnouncement, ChannelType.guildForum, ChannelType.guildText].contains(channel.type) && currentChannel == null && (await computeOverwrites(currentMember!, channel)).canViewChannel) {
-              await selectChannel(channel, refresh: false);
-              break;
-            }
-          }
+          await selectIfCanView(shouldRefresh: false);
         } 
         channels[channels.indexOf(channel)] = channel;
         channels = sortChannels(channels);
-        notifyListeners();
+        refresh();
       }
     });
 
@@ -64,35 +58,40 @@ class GuildChannelsController extends ChangeNotifier {
       if (event.channel is GuildChannel && (event.channel as GuildChannel).guildId == guild.id) {
         channels.remove(event.channel);
         if (currentChannel?.id == event.channel.id) {
-          currentChannel = null;
-           // TODO STOP LISTENING MESSAGE EVENTS
-          for (GuildChannel channel in channels) {
-            if (const [ChannelType.guildAnnouncement, ChannelType.guildForum, ChannelType.guildText].contains(channel.type) && currentChannel == null && (await computeOverwrites(currentMember!, channel)).canViewChannel) {
-              await selectChannel(channel, refresh: false);
-              break;
-            }
-          }
+          await selectIfCanView(shouldRefresh: false);
         }
         channels = sortChannels(channels);
-        notifyListeners();
+        refresh();
       }
     });
   }
 
-  Future<void> selectChannel(GuildChannel channel, {bool refresh = true}) async {
-    print(channel.name);
+  Future<void> selectIfCanView({bool shouldRefresh = true}) async {
+    currentChannel = null;
+     // TODO STOP LISTENING MESSAGE EVENTS
+    for (GuildChannel channel in channels) {
+      if (isTextChannel(channel) && currentChannel == null && (await computeOverwrites(currentMember!, channel)).canViewChannel) {
+        await selectChannel(channel, shouldRefresh: false);
+        break;
+      }
+    }
+    if (shouldRefresh) refresh();
+  }
+
+  Future<void> selectChannel(GuildChannel channel, {bool shouldRefresh = true}) async {
     if (channel.id == currentChannel?.id) return;
     currentChannel = channel;
     final Map<String, dynamic> appData = jsonDecode(prefs.getString('app-data')!);
     appData['selected-channel-id'] = channel.id.toString();
     await prefs.setString('app-data', jsonEncode(appData));
     // TODO LISTEN MESSAGE EVENTS
-    if (refresh) notifyListeners();
+    if (shouldRefresh) refresh();
   }
 
   Future<void> fetchAllChannels(Guild guild, {GuildChannel? channel}) async {
-    channels.clear();
-    channels.addAll(await guild.fetchChannels());
+    channels
+    ..clear()
+    ..addAll(await guild.fetchChannels());
     channels = sortChannels(channels);
     currentChannel = null;
     if (channel != null && (await computeOverwrites(currentMember!, channel)).canViewChannel) {
@@ -100,7 +99,7 @@ class GuildChannelsController extends ChangeNotifier {
     } else {
       for (final GuildChannel guildChannel in channels) {
         if (
-          !const [ChannelType.guildAnnouncement, ChannelType.guildForum, ChannelType.guildText].contains(guildChannel.type) ||
+          !isTextChannel(guildChannel)||
           !(await computeOverwrites(currentMember!, guildChannel)).canViewChannel
         ) continue;
         await selectChannel(guildChannel);
@@ -108,6 +107,8 @@ class GuildChannelsController extends ChangeNotifier {
       }
     }
     await listenEvents(guild);
-    notifyListeners();
+    refresh();
   }
+
+  void refresh() => notifyListeners();
 }

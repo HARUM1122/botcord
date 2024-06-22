@@ -146,8 +146,6 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                     builder: (_, setState) => Consumer(
                       builder: (_, ref, __) {
                         final GuildChannelsController channelsController = ref.watch(guildChannelsControllerProvider);
-                        ref.watch(membersControllerProvider);
-                        print("HELLO IM REBUILDING");
                         final List<GuildChannel> channels = channelsController.channels;
                         if (channels.isEmpty) {
                           return Expanded(

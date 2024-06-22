@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:discord/src/features/guild/controllers/channels_controller.dart';
 import 'package:discord/src/features/guild/controllers/members_controller.dart';
+import 'package:discord/src/features/guild/controllers/roles_controller.dart';
 import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -12,15 +13,19 @@ import '../../../common/utils/globals.dart';
 
 final guildsControllerProvider = ChangeNotifierProvider<GuildsController>((ref) => GuildsController(
   channelsControllerProvider: ref.read(guildChannelsControllerProvider),
-  membersController: ref.read(membersControllerProvider)
+  membersController: ref.read(membersControllerProvider),
+  rolesController: ref.read(rolesControllerProvider)
 ));
 
 class GuildsController extends ChangeNotifier {
   final GuildChannelsController channelsControllerProvider;
   final MembersController membersController;
+  final RolesController rolesController;
+
   GuildsController({
     required this.channelsControllerProvider,
-    required this.membersController
+    required this.membersController,
+    required this.rolesController
   });
 
   bool loading = true;
@@ -29,7 +34,7 @@ class GuildsController extends ChangeNotifier {
   Guild? currentGuild;
   List<UserGuild> guildsCache = [];
   
-  Future<void> selectGuild(UserGuild guild, {bool refresh = true, bool selectChannelFromDb = false}) async {
+  Future<void> selectGuild(UserGuild guild, {bool shouldRefresh = true, bool selectChannelFromDb = false}) async {
     if (guild.id == currentGuild?.id) return;
     currentGuild = await guild.get();
     currentMember = await guild.members[user!.id].get();
@@ -39,9 +44,10 @@ class GuildsController extends ChangeNotifier {
       currentGuild!,
       channel: selectChannelFromDb ? await getChannel(Snowflake.parse(appData['selected-channel-id']), guild: currentGuild) : null
     );
-    await membersController.listenEvents();
+    await membersController.listenEvents(currentGuild!);
+    await rolesController.listenEvents(currentGuild!);
     await prefs.setString('app-data', jsonEncode(appData));
-    if (refresh) notifyListeners();
+    if (shouldRefresh) notifyListeners();
   }
 
   Future<void> fetchMoreServers(Snowflake? after) async {
@@ -64,7 +70,7 @@ class GuildsController extends ChangeNotifier {
             (userGuild) => userGuild.id == selectedGuildId,
             orElse: () => guildsCache.first
           ),
-          refresh: false,
+          shouldRefresh: false,
           selectChannelFromDb: true
         );
       }
@@ -82,7 +88,7 @@ class GuildsController extends ChangeNotifier {
       if (!guildsCache.contains(guild)) {
         guildsCache.add(guild);
         guildsCache = sortGuilds(guildsCache);
-        await selectGuild(guild, refresh: false);
+        await selectGuild(guild, shouldRefresh: false);
         notifyListeners();
       }
     });
@@ -101,7 +107,7 @@ class GuildsController extends ChangeNotifier {
       guildsCache.removeWhere((guild) => guild.id == event.guild.id);
       if (currentGuild?.id == event.guild.id) {
         if (guildsCache.isNotEmpty) {
-          await selectGuild(guildsCache.first, refresh: false);
+          await selectGuild(guildsCache.first, shouldRefresh: false);
         } else {
           await channelsControllerProvider.stopListeningEvents();
           currentGuild = null;
