@@ -1,3 +1,6 @@
+import 'package:discord/src/common/utils/globals.dart';
+import 'package:discord/src/features/guild/screens/panels/menu/components/channel_types/channel_types.dart';
+import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -20,6 +23,19 @@ class InactiveChannelsSheet extends ConsumerWidget {
   final ScrollController controller;
   final Snowflake? selectedInactiveChannelId;
   const InactiveChannelsSheet({required this.controller, required this.selectedInactiveChannelId, super.key});
+
+  Future<List<GuildVoiceChannel>> filterChannels(List<GuildChannel> channels) async {
+    List<GuildVoiceChannel> voiceChannels = [];
+    if (currentMember == null) {
+      return voiceChannels;
+    }
+    for (final GuildChannel channel in channels) {
+      if (channel.type == ChannelType.guildVoice && (await computeOverwrites(currentMember!, channel)).canViewChannel) {
+        voiceChannels.add(channel as GuildVoiceChannel);
+      }
+    }
+    return voiceChannels;
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -61,14 +77,11 @@ class InactiveChannelsSheet extends ConsumerWidget {
               color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
               borderRadius: BorderRadius.circular(16)
             ),
-            child: Column(
-              children: [
-                ...() {
-                  final List<GuildVoiceChannel> voiceChannels = [
-                    for (GuildChannel channel in channelsController.channels) 
-                      if (channel.type == ChannelType.guildVoice) 
-                        channel as GuildVoiceChannel
-                  ];
+            child: FutureBuilder(
+              future: filterChannels(channelsController.channels),
+              builder: (context, snapshot) {
+                if (snapshot.data != null) {
+                  final List<GuildChannel> voiceChannels = snapshot.data!;
                   final List<Widget> voiceChannelWidgets = [
                     VoiceChannelRadioButton(
                       title: 'No Inactive Channel',
@@ -88,7 +101,7 @@ class InactiveChannelsSheet extends ConsumerWidget {
                   ];
                   int length = voiceChannels.length;
                   for (int i = 0; i < length; i++) {
-                    final GuildVoiceChannel voiceChannel = voiceChannels[i];
+                    final GuildChannel voiceChannel = voiceChannels[i];
                     if (i < length) {
                       voiceChannelWidgets.add(
                         Divider(
@@ -117,12 +130,15 @@ class InactiveChannelsSheet extends ConsumerWidget {
                       )
                     );
                   }
-                  return voiceChannelWidgets;
-                }(),
-              ],
-            ),
-          ),
-        ),
+                  return Column(
+                    children: voiceChannelWidgets
+                  );
+                }
+                return const SizedBox();
+              },
+            )
+          )
+        )
       )
     ];
     return ListView.builder(

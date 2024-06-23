@@ -4,8 +4,10 @@ import 'package:discord/src/common/components/radio_button_indicator/radio_butto
 import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/utils/asset_constants.dart';
 import 'package:discord/src/common/utils/extensions.dart';
+import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/features/guild/controllers/channels_controller.dart';
+import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,13 +20,25 @@ class SystemChannelsSheet extends ConsumerWidget {
   final Snowflake? selectedSystemChannelId;
   const SystemChannelsSheet({required this.controller, required this.selectedSystemChannelId, super.key});
 
+  Future<List<GuildTextChannel>> filterChannels(List<GuildChannel> channels) async {
+    List<GuildTextChannel> textChannels = [];
+    if (currentMember == null) {
+      return textChannels;
+    }
+    for (final GuildChannel channel in channels) {
+      if (channel.type == ChannelType.guildText && (await computeOverwrites(currentMember!, channel)).canViewChannel) {
+        textChannels.add(channel as GuildTextChannel);
+      }
+    }
+    return textChannels;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeController);
     final GuildChannelsController channelsController = ref.watch(guildChannelsControllerProvider);
 
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
-    final Color color2 = appTheme<Color>(theme, light: const Color(0XFF4C4F57), dark: const Color(0XFFC8C9D1), midnight: const Color(0xFFFFFFFF));
 
     List<Widget> children = [
       Align(
@@ -59,20 +73,17 @@ class SystemChannelsSheet extends ConsumerWidget {
               color: appTheme<Color>(theme, light: const Color(0xFFFFFFFF), dark: const Color(0xFF25282F), midnight: const Color(0XFF141318)),
               borderRadius: BorderRadius.circular(16)
             ),
-            child: Column(
-              children: [
-                ...() {
-                  final List<GuildTextChannel> textChannels = [
-                    for (GuildChannel channel in channelsController.channels) 
-                      if (channel.type == ChannelType.guildText) 
-                        channel as GuildTextChannel
-                  ];
+            child: FutureBuilder(
+              future: filterChannels(channelsController.channels),
+              builder: (context, snapshot) {
+                if (snapshot.data != null) {
+                  final List<GuildChannel> textChannels = snapshot.data!;
                   final List<Widget> textChannelWidgets = [
                     TextChannelRadioButton(
                       title: 'No System Messages',
                       leading: Icon(
                         Icons.cancel,
-                        color: color2,
+                        color: color1.withOpacity(0.8),
                         size: 22,
                       ),
                       borderRadius: textChannels.isEmpty 
@@ -86,7 +97,7 @@ class SystemChannelsSheet extends ConsumerWidget {
                   ];
                   int length = textChannels.length;
                   for (int i = 0; i < length; i++) {
-                    final GuildTextChannel textChannel = textChannels[i];
+                    final GuildChannel textChannel = textChannels[i];
                     if (i < length) {
                       textChannelWidgets.add(
                         Divider(
@@ -103,7 +114,7 @@ class SystemChannelsSheet extends ConsumerWidget {
                         leading: SvgPicture.asset(
                           AssetIcon.hash,
                           height: 22,
-                          colorFilter: ColorFilter.mode(color2, BlendMode.srcIn),
+                          colorFilter: ColorFilter.mode(color1.withOpacity(0.8), BlendMode.srcIn),
                         ),
                         borderRadius: i == length - 1 
                         ?  const BorderRadius.vertical(
@@ -115,12 +126,15 @@ class SystemChannelsSheet extends ConsumerWidget {
                       )
                     );
                   }
-                  return textChannelWidgets;
-                }(),
-              ],
-            ),
-          ),
-        ),
+                  return Column(
+                    children: textChannelWidgets
+                  );
+                }
+                return const SizedBox();
+              },
+            )
+          )
+        )
       )
     ];
     return ListView.builder(

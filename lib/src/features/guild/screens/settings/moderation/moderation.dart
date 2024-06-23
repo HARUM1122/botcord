@@ -44,7 +44,7 @@ class _OverViewPageState extends ConsumerState<ModerationScreen> {
           explicitContentFilterLevel: _explicitContentFilterLevel
         )
       );
-    } catch (_) {
+    } catch (e) {
       if (!mounted) return;
       showSnackBar(
         context: context, 
@@ -53,7 +53,13 @@ class _OverViewPageState extends ConsumerState<ModerationScreen> {
           Icons.error_outline,
           color: Colors.red[800],
         ),
-        msg: 'Unexpected Error, Please try again.'
+        msg: () {
+          if (e.toString().contains('Missing Permissions')) {
+            return "Error, Missing permissions";
+          }
+          // TODO HANDLE ERRORS PROPERLY HERE
+          return 'Unexpected error, Please retry';
+        }()
       );
     }
     setState(() => _saving = false);

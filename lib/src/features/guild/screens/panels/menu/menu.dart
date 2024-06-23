@@ -1,5 +1,3 @@
-import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
-import 'package:discord/src/features/guild/controllers/members_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -178,7 +176,6 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                               )
                             ),
                           );
-                          
                         } 
                         return Expanded(
                           child: ChannelsList(
@@ -186,86 +183,6 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                             currentChannelId: channelsController.currentChannel?.id,
                           ),
                         );
-                        // else if (_member != null && _prevGuild?.id == widget.currentGuild.id) {
-                        //   return Expanded(
-                        //     child: ChannelsList(
-                        //       channels: channels,
-                        //       currentChannelId: channelsController.currentChannel?.id,
-                        //       // member: _member!
-                        //     ),
-                        //   );
-                        // }
-                        
-                        // _member = null;
-                        // _prevGuild = widget.currentGuild;
-                        // return FutureBuilder(
-                        //   future: _getMember(widget.currentGuild),
-                        //   builder: (context, snapshot) {
-                        //     if (snapshot.connectionState == ConnectionState.waiting) {
-                        //       return const Expanded(
-                        //         child: Center(
-                        //           child: CircularProgressIndicator(
-                        //             color: Color(0XFF536CF8),
-                        //           ),
-                        //         ),
-                        //       );
-                        //     }
-                        //     else if (snapshot.hasError) {
-                        //       return Expanded(
-                        //         child: Center(
-                        //           child: Padding(
-                        //             padding: const EdgeInsets.only(left: 10, right: 10),
-                        //             child: Column(
-                        //               mainAxisAlignment: MainAxisAlignment.center,
-                        //               children: [
-                        //                 Text(
-                        //                   'Unexpected error, Please retry',
-                        //                   textAlign: TextAlign.center,
-                        //                   style: TextStyle(
-                        //                     color: _color1,
-                        //                     fontSize: 16,
-                        //                     fontFamily: 'GGSansSemibold'
-                        //                   ),
-                        //                 ),
-                        //                 const SizedBox(height: 20),
-                        //                 CustomButton(
-                        //                   width: 160,
-                        //                   height: 40,
-                        //                   shape: RoundedRectangleBorder(
-                        //                     borderRadius: BorderRadius.circular(45 * 0.5)
-                        //                   ),
-                        //                   backgroundColor: const Color(0XFF536CF8),
-                        //                   onPressedColor: const Color(0XFF4658CA),
-                        //                   applyClickAnimation: true,
-                        //                   animationUpperBound: 0.04,
-                        //                   child: const Center(
-                        //                     child: Text(
-                        //                       'Retry',
-                        //                       style: TextStyle(
-                        //                         color: Color(0xFFFFFFFF),
-                        //                         fontFamily: 'GGSansSemibold'
-                        //                       ),
-                        //                     ),
-                        //                   ),
-                        //                   onPressed: () => setState(() {})
-                        //                 ),
-                        //               ],
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       );
-                        //     } else if (snapshot.data != null) {
-                        //       return Expanded(
-                        //         child: ChannelsList(
-                        //           channels: channels,
-                        //           currentChannelId: channelsController.currentChannel?.id,
-                        //           // member: snapshot.data as Member,
-                        //         ),
-                        //       );
-                        //     }
-                        //     return const SizedBox();
-                        //   }
-                        // );
                       }
                     ),
                   )
@@ -278,8 +195,3 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     );
   }
 }
-
-
-
-// INSIDE ROLES, UPDATE THE CHANNELS,
-// UPDATE THE CHANNEL PERMISSIONS WHEN MEMBER UPDATES
