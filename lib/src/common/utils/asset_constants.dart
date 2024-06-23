@@ -26,4 +26,6 @@ class AssetIcon {
   static const String forum = '$_svgPath/forum.svg';
   static const String signal = '$_svgPath/signal.svg';
   static const String amplifier = '$_svgPath/amplifier.svg';
+  static const String addUser = '$_svgPath/user-add.svg';
+  static const String copy = '$_svgPath/copy.svg';
 }

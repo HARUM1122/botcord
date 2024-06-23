@@ -101,7 +101,6 @@ class GuildChannelsController extends ChangeNotifier {
       for (final GuildChannel guildChannel in channels) {
         if (
           !isTextChannel(guildChannel) ||
-          !(await computeOverwrites(currentMember!, (await guildChannel.parent!.get()) as GuildChannel)).canViewChannel ||
           !(await computeOverwrites(currentMember!, guildChannel)).canViewChannel
         ) continue;
         await selectChannel(guildChannel);

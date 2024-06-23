@@ -181,6 +181,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                           child: ChannelsList(
                             channels: channels,
                             currentChannelId: channelsController.currentChannel?.id,
+                            guild: widget.currentGuild,
                           ),
                         );
                       }

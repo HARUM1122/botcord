@@ -38,6 +38,7 @@ class _TextChannelButtonState extends ConsumerState<TextChannelButton> {
       child: CustomButton(
         width: double.infinity,
         onPressed: widget.onPressed,
+        onLongPress: widget.onLongPress,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
