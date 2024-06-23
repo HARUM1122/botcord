@@ -1,6 +1,8 @@
-import 'package:discord/src/common/components/custom_button.dart';
-import 'package:discord/src/common/utils/utils.dart';
 import 'package:flutter/material.dart';
+
+import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/src/common/components/custom_button.dart';
+
 
 class InviteLinkOption extends StatelessWidget {
   final String title;

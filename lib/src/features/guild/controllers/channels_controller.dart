@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:discord/src/common/utils/globals.dart';
-import 'package:discord/src/features/guild/utils/utils.dart';
-import 'package:flutter/foundation.dart';  
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nyxx/nyxx.dart';
+import 'package:flutter/foundation.dart';  
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../common/utils/globals.dart';
+import '../../../features/guild/utils/utils.dart';
 
 final guildChannelsControllerProvider = ChangeNotifierProvider<GuildChannelsController>((ref) => GuildChannelsController());
 

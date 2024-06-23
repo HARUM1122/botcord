@@ -11,6 +11,7 @@ import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/components/settings_icon_button.dart';
 import 'package:discord/src/common/components/online_status/online.dart';
 import 'package:discord/src/common/components/online_status/invisible.dart';
+
 import '../../badges/badges.dart';
 
 class GuildOptionsSheet extends ConsumerWidget {

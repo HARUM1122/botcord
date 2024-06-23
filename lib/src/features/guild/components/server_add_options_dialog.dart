@@ -1,15 +1,14 @@
-import 'package:discord/src/features/guild/screens/add_guild/create_guild.dart';
-import 'package:discord/src/features/guild/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/controllers/theme_controller.dart';
-
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/components/custom_button.dart';
+import '../../../common/controllers/theme_controller.dart';
 
+import '../../../features/guild/screens/screens.dart';
+import '../../../features/guild/screens/add_guild/create_guild.dart';
 
 class ServerAddOptionsDialog extends ConsumerWidget {
   const ServerAddOptionsDialog({super.key});

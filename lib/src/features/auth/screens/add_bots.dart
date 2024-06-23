@@ -1,17 +1,18 @@
-import 'package:discord/src/features/auth/screens/screens.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' show ClientException;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/controllers/theme_controller.dart';
-
 import '../controller/auth_controller.dart';
+
+import '../../../features/auth/screens/screens.dart';
 
 import '../../../common/utils/utils.dart';
 import '../../../common/utils/extensions.dart';
 import '../../../common/components/custom_button.dart';
+import '../../../common/controllers/theme_controller.dart';
+
 
 class AddBotsScreen extends ConsumerStatefulWidget {
   const AddBotsScreen({super.key});

@@ -1,20 +1,17 @@
-import 'package:discord/src/common/utils/extensions.dart';
-import 'package:discord/src/common/utils/globals.dart';
-import 'package:discord/src/features/guild/screens/settings/audit_log/components/audit_log/list.dart';
-import 'package:discord/src/features/guild/screens/settings/audit_log/utils/utils.dart';
-import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:nyxx/nyxx.dart' as nyxx;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/src/common/utils/extensions.dart';
 import 'package:discord/src/common/components/custom_button.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
+import 'package:discord/src/features/guild/screens/settings/audit_log/utils/utils.dart';
+import 'package:discord/src/features/guild/screens/settings/audit_log/components/audit_log/list.dart';
 import 'package:discord/src/features/guild/screens/settings/audit_log/components/filter_options_sheet.dart';
+
 class AuditLogPage extends ConsumerStatefulWidget {
   final nyxx.Guild? guild;
   const AuditLogPage({required this.guild, super.key});

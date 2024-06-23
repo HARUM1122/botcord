@@ -1,19 +1,19 @@
-import 'package:discord/src/common/components/custom_button.dart';
-import 'package:discord/src/common/utils/asset_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
 
 import 'package:nyxx/nyxx.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/utils/extensions.dart';
+import 'package:discord/src/common/utils/asset_constants.dart';
 import 'package:discord/src/common/components/drag_handle.dart';
+import 'package:discord/src/common/components/custom_button.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
-import 'package:discord/src/common/components/settings_icon_button.dart';
-import 'package:discord/src/common/components/online_status/online.dart';
-import 'package:discord/src/common/components/online_status/invisible.dart';
+
+import 'package:discord/src/features/guild/screens/panels/menu/edit_options/edit_text_channel.dart';
 
 class TextChannelOptionsSheet extends ConsumerWidget {
   final Guild guild;
@@ -48,8 +48,8 @@ class TextChannelOptionsSheet extends ConsumerWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Container(
-              width: 60,
-              height: 60,
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                 color: guildIcon == null 
                 ? const Color(0XFF536CF8)
@@ -88,7 +88,7 @@ class TextChannelOptionsSheet extends ConsumerWidget {
               '#${textChannel.name}',
               style: TextStyle(
                 color: color1,
-                fontSize: 20,
+                fontSize: 18,
                 fontFamily: 'GGSansSemibold'
               ),
             ),
@@ -138,7 +138,23 @@ class TextChannelOptionsSheet extends ConsumerWidget {
               borderRadius: const BorderRadius.vertical(
                 bottom: Radius.circular(16)
               ),
-              onPressed: () {}
+              onPressed: () async {
+                await Clipboard.setData(ClipboardData(text: 'https://discord.com/channels/${guild.id}/${textChannel.id}'));
+                if (!context.mounted) return;
+                showSnackBar(
+                  context: context,
+                  theme: theme,
+                  leading: SvgPicture.asset(
+                    AssetIcon.link,
+                    height: 22,
+                    colorFilter: ColorFilter.mode(
+                      color1,
+                      BlendMode.srcIn
+                    )
+                  ),
+                  msg: "Copied Link"
+                );
+              }
             ),
           ],
         ),
@@ -161,7 +177,20 @@ class TextChannelOptionsSheet extends ConsumerWidget {
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(16)
               ),
-              onPressed: () {}
+              onPressed: () async {
+                final Channel? parent = await textChannel.parent?.get(); 
+                if (!context.mounted) return;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditTextChannelScreen(
+                      textChannel: textChannel,
+                      parent: parent,
+                      guild: guild,
+                    ),
+                  )
+                );
+              }
             ),
             Divider(
               thickness: 1,
@@ -200,7 +229,23 @@ class TextChannelOptionsSheet extends ConsumerWidget {
         ),
         title: 'Copy Channel ID',
         borderRadius: BorderRadius.circular(16),
-        onPressed: () {}
+        onPressed: () async {
+          await Clipboard.setData(ClipboardData(text: textChannel.id.toString()));
+          if (!context.mounted) return;
+          showSnackBar(
+            context: context,
+            theme: theme,
+            leading: SvgPicture.asset(
+              AssetIcon.copy,
+              height: 22,
+              colorFilter: ColorFilter.mode(
+                color1,
+                BlendMode.srcIn
+              )
+            ),
+            msg: "Copied ID"
+          );
+        }
       ),
     ];
     return ListView.builder(

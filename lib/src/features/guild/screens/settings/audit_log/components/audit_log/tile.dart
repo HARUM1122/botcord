@@ -1,15 +1,13 @@
+import 'package:flutter/material.dart';
 
+import 'package:nyxx/nyxx.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/components/avatar.dart';
 import 'package:discord/src/common/components/custom_button.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
-import 'package:discord/src/common/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:nyxx/nyxx.dart';
 
 class AuditLogTile extends ConsumerStatefulWidget {
   final (User, String, String, Snowflake, List<String>) auditLogInfo;

@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:discord/src/common/utils/globals.dart';
+
+import '../utils/globals.dart';
 
 final themeController = StateNotifierProvider<ThemeController, String>((ref) => ThemeController());
 

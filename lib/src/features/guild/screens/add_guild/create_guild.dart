@@ -1,26 +1,19 @@
 import 'dart:typed_data';
 
-import 'package:discord/src/common/components/avatar.dart';
-import 'package:discord/src/common/utils/globals.dart';
-import 'package:discord/src/features/auth/controller/auth_controller.dart';
-import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
-
-import 'package:discord/src/common/utils/extensions.dart';
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../common/components/radio_button_indicator/radio_button_indicator2.dart';
+import '../../../../common/utils/utils.dart';
+import '../../../../common/utils/globals.dart';
+import '../../../../common/utils/extensions.dart';
+import '../../../../common/components/avatar.dart';
+import '../../../../common/components/custom_button.dart';
+import '../../../../common/controllers/theme_controller.dart';
 
-import 'package:discord/src/common/controllers/theme_controller.dart';
-
-import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/common/components/custom_button.dart';
-
-import 'package:discord/src/features/profile/controller/profile.dart';
+import '../../../../features/guild/controllers/guilds_controller.dart';
 
 class CreateGuildScreen extends ConsumerStatefulWidget {
   const CreateGuildScreen({super.key});

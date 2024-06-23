@@ -9,11 +9,11 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../checkbox_indicator.dart';
+import '../custom_button.dart';
+
 import '../../utils/globals.dart';
 import '../../utils/utils.dart';
 import '../../utils/extensions.dart';
-
-import '../custom_button.dart';
 
 class LinkTrustDialog extends ConsumerStatefulWidget {
   final String link;

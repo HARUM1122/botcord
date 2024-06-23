@@ -1,7 +1,10 @@
-import 'package:discord/src/common/controllers/theme_controller.dart';
-import 'package:discord/src/common/utils/utils.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../utils/utils.dart';
+import '../controllers/theme_controller.dart';
+
 
 class ToggleSwitchIndicator extends ConsumerWidget {
   final bool toggled;

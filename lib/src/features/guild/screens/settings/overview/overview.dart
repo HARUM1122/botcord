@@ -1,4 +1,3 @@
-import 'package:discord/src/features/guild/screens/settings/overview/components/server_delete_confirmation_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart' as nyxx;
@@ -15,6 +14,7 @@ import 'components/settings_button.dart';
 import 'components/bottom_sheet/system_channels.dart';
 import 'components/bottom_sheet/inactive_timeout.dart';
 import 'components/bottom_sheet/inactive_channels.dart';
+import 'components/server_delete_confirmation_dialog.dart';
 
 import '../../../utils/utils.dart';
 

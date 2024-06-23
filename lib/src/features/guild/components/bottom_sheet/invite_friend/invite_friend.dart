@@ -1,16 +1,17 @@
-import 'package:discord/src/common/components/drag_handle.dart';
-import 'package:discord/src/common/controllers/theme_controller.dart';
-import 'package:discord/src/common/utils/asset_constants.dart';
-import 'package:discord/src/common/utils/extensions.dart';
-import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/features/guild/components/bottom_sheet/invite_friend/component/invite_link_option.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/src/common/utils/extensions.dart';
+import 'package:discord/src/common/utils/asset_constants.dart';
+import 'package:discord/src/common/components/drag_handle.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
+
+import 'package:discord/src/features/guild/components/bottom_sheet/invite_friend/component/invite_link_option.dart';
 
 class LinkOptionsSheet extends ConsumerWidget {
   final String inviteLink;
@@ -20,6 +21,7 @@ class LinkOptionsSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String theme = ref.read(themeController);
+    
     final Color color1 = appTheme<Color>(theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
     final Color color2 = appTheme<Color>(theme, light: const Color(0XFFEBEBEB), dark: const Color(0XFF2C2D36), midnight: const Color(0XFF1C1B21));
 

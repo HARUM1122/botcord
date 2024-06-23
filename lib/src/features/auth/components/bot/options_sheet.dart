@@ -6,13 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import '../login_dialog.dart';
+import '../../controller/auth_controller.dart';
 import '../../../../common/utils/utils.dart';
 import '../../../../common/utils/extensions.dart';
 import '../../../../common/components/drag_handle.dart';
 import '../../../../common/components/custom_button.dart';
 import '../../../../common/components/avatar.dart';
 
-import '../../controller/auth_controller.dart';
+
 
 class BotOptionsSheet extends ConsumerWidget {
   final ScrollController controller;

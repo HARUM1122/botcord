@@ -1,14 +1,15 @@
-import 'package:discord/src/features/guild/components/server_add_options_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/controllers/theme_controller.dart';
-
 import 'button.dart';
+
 import '../../../../common/utils/utils.dart';
 import '../../../../common/utils/extensions.dart';
+import '../../../../common/controllers/theme_controller.dart';
+
+import '../../../../features/guild/components/server_add_options_dialog.dart';
 
 class GuildsList extends ConsumerWidget {
   final List<UserGuild> guilds;

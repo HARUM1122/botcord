@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:discord/src/common/utils/globals.dart';
-import 'package:discord/src/features/guild/controllers/channels_controller.dart';
-import 'package:discord/src/features/guild/controllers/guilds_controller.dart';
-import 'package:discord/src/features/guild/utils/utils.dart';
+import 'package:nyxx/nyxx.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart';
 
-import 'package:nyxx/nyxx.dart';
+import '../../../common/utils/globals.dart';
+import '../../../features/guild/utils/utils.dart';
+import '../../../features/guild/controllers/channels_controller.dart';
+
 
 final membersControllerProvider = ChangeNotifierProvider<MembersController>((ref) => MembersController(
   channelsController: ref.read(guildChannelsControllerProvider)

@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/controllers/theme_controller.dart';
-
-import '../../utils/constants.dart';
-
 import 'package:discord/src/common/utils/utils.dart';
 import 'package:discord/src/common/components/custom_button.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/components/bottom_sheet/link_options.dart';
+
+import '../../utils/constants.dart';
 
 class CreateBotAccountScreen extends ConsumerStatefulWidget {
   const CreateBotAccountScreen({super.key});

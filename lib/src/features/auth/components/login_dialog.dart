@@ -8,6 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:discord/src/common/controllers/theme_controller.dart';
 
+import '../../profile/controller/profile.dart';
+
 import '../../guild/controllers/guilds_controller.dart';
 
 import '../../../common/utils/utils.dart';
@@ -16,10 +18,7 @@ import '../../../common/utils/extensions.dart';
 import '../../../common/components/custom_button.dart';
 import '../../../common/components/avatar.dart';
 
-
 import '../../../features/auth/controller/auth_controller.dart';
-import '../../profile/controller/profile.dart';
-
 
 class LoginDialog extends ConsumerStatefulWidget {
   final Map<String, dynamic> bot;

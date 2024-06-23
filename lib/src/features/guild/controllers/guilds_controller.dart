@@ -1,15 +1,16 @@
 import 'dart:convert';
 
-import 'package:discord/src/features/guild/controllers/channels_controller.dart';
-import 'package:discord/src/features/guild/controllers/members_controller.dart';
-import 'package:discord/src/features/guild/controllers/roles_controller.dart';
-import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common/utils/globals.dart';
+
+import '../../../features/guild/utils/utils.dart';
+import '../../../features/guild/controllers/roles_controller.dart';
+import '../../../features/guild/controllers/members_controller.dart';
+import '../../../features/guild/controllers/channels_controller.dart';
 
 final guildsControllerProvider = ChangeNotifierProvider<GuildsController>((ref) => GuildsController(
   channelsControllerProvider: ref.read(guildChannelsControllerProvider),

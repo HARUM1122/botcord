@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:discord/src/common/controllers/theme_controller.dart';
+
 
 import '../controller/auth_controller.dart';
 
@@ -13,6 +13,7 @@ import '../utils/utils.dart';
 import '../components/bot/list.dart';
 
 import '../../../common/utils/utils.dart';
+import '../../../common/controllers/theme_controller.dart';
 
 import '../../../features/auth/screens/add_bots.dart';
 

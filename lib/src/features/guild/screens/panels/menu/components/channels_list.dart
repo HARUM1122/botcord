@@ -1,19 +1,19 @@
-import 'package:discord/src/common/controllers/theme_controller.dart';
-import 'package:discord/src/common/utils/globals.dart';
-import 'package:discord/src/common/utils/utils.dart';
-import 'package:discord/src/features/guild/controllers/channels_controller.dart';
-import 'package:discord/src/features/guild/screens/panels/menu/components/bottom_sheet/channel_options/text_channel/text_channels_options.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nyxx/nyxx.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:discord/src/common/utils/utils.dart';
+import 'package:discord/src/common/utils/globals.dart';
 import 'package:discord/src/common/utils/extensions.dart';
+import 'package:discord/src/common/controllers/theme_controller.dart';
 
 import 'package:discord/src/features/guild/utils/utils.dart';
+import 'package:discord/src/features/guild/controllers/channels_controller.dart';
 
 import 'channel_types/channel_types.dart';
+
+import 'bottom_sheet/channel_options/channels_options.dart';
 
 class ChannelsList extends ConsumerWidget {
   final List<GuildChannel> channels;
