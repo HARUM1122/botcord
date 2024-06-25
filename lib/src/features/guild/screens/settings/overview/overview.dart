@@ -85,7 +85,6 @@ class _OverViewPageState extends ConsumerState<OverViewScreen> {
   }
 
   void _updateSettings() async {
-    if (_saving) return;
     setState(() => _saving = true);
     try {
       await widget.guild.update(

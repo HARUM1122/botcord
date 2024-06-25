@@ -180,12 +180,13 @@ class TextChannelOptionsSheet extends ConsumerWidget {
               onPressed: () async {
                 final Channel? parent = await textChannel.parent?.get(); 
                 if (!context.mounted) return;
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => EditTextChannelScreen(
                       textChannel: textChannel,
-                      parent: parent,
+                      parent: parent != null ? parent as GuildCategory : null,
                       guild: guild,
                     ),
                   )

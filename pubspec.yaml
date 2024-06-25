@@ -58,6 +58,7 @@ dependencies:
   share_plus: ^7.2.2
   flutter_svg: ^2.0.10+1
   shared_preferences: ^2.2.3
+  flutter_xlider: ^3.5.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

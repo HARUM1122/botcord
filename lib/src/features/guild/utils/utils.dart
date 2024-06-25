@@ -29,11 +29,19 @@ List<UserGuild> sortGuilds(List<UserGuild> guilds) {
 
 
 String getDuration(Duration duration) => switch(duration.inSeconds) {
+    5 => '5 seconds',
+    10 => '10 seconds',
+    15 => '15 seconds',
+    30 => '30 seconds',
     60 => '1 minute',
+    120 => '2 minutes',
     300 => '5 minutes',
+    600 => '10 minutes',
     900 => '15 minutes',
     1800 => '30 minutes',
     3600 => '1 hour',
+    7200 => '2 hours',
+    21600 => '6 hours',
     _=> ''
   };
 

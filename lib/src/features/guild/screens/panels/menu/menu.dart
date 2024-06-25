@@ -103,6 +103,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                           )
                         );
                       } catch (_) {
+                        _running = false;
                         showSnackBar(
                           theme: _theme,
                           context: context, 
