@@ -9,25 +9,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:nyxx/nyxx.dart';
 
-class ServerDeleteConfirmationDialog extends ConsumerStatefulWidget {
-  final Guild guild;
-  const ServerDeleteConfirmationDialog({required this.guild, super.key});
+class ChannelDeleteConfirmationDialog extends ConsumerStatefulWidget {
+  final GuildChannel channel;
+  const ChannelDeleteConfirmationDialog({required this.channel, super.key});
 
   @override
-  ConsumerState<ServerDeleteConfirmationDialog> createState() => _ServerDeleteConfirmationDialogState();
+  ConsumerState<ChannelDeleteConfirmationDialog> createState() => _ChannelDeleteConfirmationDialogState();
 }
 
-class _ServerDeleteConfirmationDialogState extends ConsumerState<ServerDeleteConfirmationDialog> {
+class _ChannelDeleteConfirmationDialogState extends ConsumerState<ChannelDeleteConfirmationDialog> {
   late final String _theme = ref.read(themeController);
 
   late final Color color1 = appTheme<Color>(_theme, light: const Color(0xFF000000), dark: const Color(0xFFFFFFFF), midnight: const Color(0xFFFFFFFF));
 
   bool _running = false;
 
-  Future<bool> _deleteServer() async {
+  Future<bool> _deleteChannel() async {
     setState(() => _running = true);
     try {
-      await widget.guild.delete();
+      await widget.channel.delete();
       return true;
     } catch (_) {
       return false;
@@ -47,7 +47,7 @@ class _ServerDeleteConfirmationDialogState extends ConsumerState<ServerDeleteCon
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Delete Server',
+            'Delete Channel',
             style: TextStyle(
               color: color1,
               fontSize: 16,
@@ -56,7 +56,7 @@ class _ServerDeleteConfirmationDialogState extends ConsumerState<ServerDeleteCon
           ),
           const SizedBox(height: 20),
           Text(
-            'Are you sure you want to delete this server? This action cannot be undone.',
+            'Are you sure you want to delete this channel? This action cannot be undone.',
             style: TextStyle(
               color: color1,
               fontSize: 16
@@ -96,7 +96,7 @@ class _ServerDeleteConfirmationDialogState extends ConsumerState<ServerDeleteCon
               ),
               onPressed: () async {
                 if (_running) return;
-                bool result = await _deleteServer();
+                bool result = await _deleteChannel();
                 if (!context.mounted) return;
                 Navigator.pop(context, result);
               }

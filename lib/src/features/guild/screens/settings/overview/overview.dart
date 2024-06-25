@@ -335,7 +335,7 @@ class _OverViewPageState extends ConsumerState<OverViewScreen> {
                                 top: Radius.circular(16)
                               ),
                               color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
-                              builder:(context, controller, offset) => InactiveChannelsDurationSheet(
+                              builder: (context, controller, offset) => InactiveChannelsDurationSheet(
                                 controller: controller,
                                 durationInSeconds: _afkTimeout.inSeconds,
                               ), 

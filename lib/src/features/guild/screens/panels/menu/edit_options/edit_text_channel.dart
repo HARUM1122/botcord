@@ -1,6 +1,6 @@
-import 'package:discord/src/features/guild/utils/utils.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nyxx/nyxx.dart' hide ButtonStyle;
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +11,14 @@ import 'package:discord/src/common/utils/asset_constants.dart';
 import 'package:discord/src/common/components/custom_button.dart';
 import 'package:discord/src/common/controllers/theme_controller.dart';
 import 'package:discord/src/common/components/toggle_switch_indicator.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:discord/src/common/components/radio_button_indicator/radio_button_indicator.dart';
+
+import '../components/delete_confirmation_dialog.dart';
+import '../components/bottom_sheet/categories_sheet.dart';
+
+import '../../../../utils/utils.dart';
+
 
 class EditTextChannelScreen extends ConsumerStatefulWidget {
   final GuildTextChannel textChannel;
@@ -41,8 +48,8 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
 
   late bool _isAgeRestricted = widget.textChannel.isNsfw;
 
-  late Duration? _slowMode = widget.textChannel.rateLimitPerUser;
-  late Duration? _defaultAutoArchiveDuration = widget.textChannel.defaultAutoArchiveDuration;
+  late Duration? _rateLimitPerUser = widget.textChannel.rateLimitPerUser;
+  late Duration _defaultAutoArchiveDuration = widget.textChannel.defaultAutoArchiveDuration;
   
 
   late final TextEditingController _channelNameController = TextEditingController(text: _channelName);
@@ -68,6 +75,8 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
           name: _channelName,
           topic: _channelTopic,
           isNsfw: _isAgeRestricted,
+          rateLimitPerUser: _rateLimitPerUser,
+          parentId: _parent?.id,
           defaultAutoArchiveDuration: _defaultAutoArchiveDuration
       ));
     } catch (e) {
@@ -98,7 +107,7 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
     bool hasMadeChanges = _channelName != widget.textChannel.name ||
     _channelTopic != (widget.textChannel.topic ?? '') || 
     _parent != widget.parent || _isAgeRestricted != widget.textChannel.isNsfw ||
-    _slowMode?.inSeconds != widget.textChannel.rateLimitPerUser?.inSeconds;
+    _rateLimitPerUser?.inSeconds != widget.textChannel.rateLimitPerUser?.inSeconds;
 
     return Scaffold(
       backgroundColor: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
@@ -192,6 +201,8 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                         color: _color1,
                         fontSize: 14
                       ),
+                      maxLength: 100,
+                      buildCounter: (context, {required currentLength, required isFocused, required maxLength}) => null,
                       onChanged: (text) => setState(() => _channelName = text),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -264,7 +275,23 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                   ),
                 ),
                 EditOptionButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final dynamic result = await showSheet(
+                      context: context, 
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(16)
+                      ),
+                      color: appTheme<Color>(_theme, light: const Color(0XFFF0F4F7), dark: const Color(0xFF1A1D24), midnight: const Color(0xFF000000)),
+                      builder:(context, controller, offset) => CategoriesSheet(
+                        controller: controller,
+                        selectedCategoryId: _parent?.id,
+                      ), 
+                      height: 0.5, 
+                      maxHeight: 0.8
+                    );
+                    if (result == null) return;
+                    setState(() => _parent = result == 'Uncategorized' ? null : result);
+                  },
                   backgroundColor: _color4,
                   onPressedColor: _color5,
                   borderRadius: BorderRadius.circular(16),
@@ -275,9 +302,9 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                         Icon(
                           Icons.folder,
                           color: _color1.withOpacity(0.8),
-                          size: 24,
+                          size: 22,
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 14),
                         Text(
                           'Category',
                           style: TextStyle(
@@ -334,7 +361,7 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                                   BlendMode.srcIn
                                 )
                               ),
-                              const SizedBox(width: 10),
+                              const SizedBox(width: 14),
                               Text(
                                 'Pinned Messages',
                                 style: TextStyle(
@@ -377,7 +404,7 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                                   BlendMode.srcIn
                                 )
                               ),
-                              const SizedBox(width: 10),
+                              const SizedBox(width: 14),
                               Text(
                                 'Invites',
                                 style: TextStyle(
@@ -400,7 +427,7 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                 ),
                 const SizedBox(height: 20),
                 EditOptionButton(
-                  onPressed: () {},
+                  onPressed: () => setState(() => _isAgeRestricted = !_isAgeRestricted),
                   backgroundColor: _color4,
                   onPressedColor: _color5,
                   borderRadius: BorderRadius.circular(16),
@@ -418,7 +445,7 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                         ),
                         const Spacer(),
                         ToggleSwitchIndicator(
-                          toggled: false
+                          toggled: _isAgeRestricted
                         ),
                       ]
                     )
@@ -454,7 +481,7 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                             ),
                             const Spacer(),
                             Text(
-                              _slowMode != null ? getDuration(_slowMode!) : 'Slowmode is off.',
+                              _rateLimitPerUser != null ? getDuration(_rateLimitPerUser!) : 'Slowmode is off.',
                               textAlign: TextAlign.right,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -466,7 +493,7 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                         ),
                         const SizedBox(height: 6),
                         FlutterSlider(
-                          values: switch(_slowMode?.inSeconds ?? 1) {
+                          values: switch(_rateLimitPerUser?.inSeconds ?? 1) {
                             5 => [2.0],
                             10 => [3.0],
                             15 => [4.0],
@@ -486,7 +513,7 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                           tooltip: FlutterSliderTooltip(disabled: true),
                           min: 1,
                           max: 14,
-                          onDragging: (_, value,  __) => setState(() => _slowMode = switch(value) {
+                          onDragging: (_, value,  __) => setState(() => _rateLimitPerUser = switch(value) {
                             2.0 => const Duration(seconds: 5),
                             3.0 => const Duration(seconds: 10),
                             4.0 => const Duration(seconds: 15),
@@ -535,7 +562,7 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'Channel Name',
+                  'Hide After Inactivity',
                   style: TextStyle(
                     color: _color2,
                     fontSize: 14,
@@ -545,6 +572,7 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                 const SizedBox(height: 8),
                 Container(
                   width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
                   decoration: BoxDecoration(
                     color: _color4,
                     borderRadius: BorderRadius.circular(16)
@@ -557,22 +585,13 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(16)
                         ),
-                        onPressed: () {},
+                        onPressed: () => setState(() => _defaultAutoArchiveDuration = const Duration(hours: 1)),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
                           child: Row(
                             children: [
-                              SvgPicture.asset(
-                                AssetIcon.thumbPin,
-                                height: 22,
-                                colorFilter: ColorFilter.mode(
-                                  _color1.withOpacity(0.8),
-                                  BlendMode.srcIn
-                                )
-                              ),
-                              const SizedBox(width: 10),
                               Text(
-                                'Pinned Messages',
+                                '1 Hour',
                                 style: TextStyle(
                                   color: _color1,
                                   fontSize: 16,
@@ -580,10 +599,10 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                                 ),
                               ),
                               const Spacer(),
-                              Icon(
-                                Icons.keyboard_arrow_right,
-                                color: _color2,
-                              ),
+                              RadioButtonIndicator(
+                                radius: 24,
+                                selected: _defaultAutoArchiveDuration.inHours == 1
+                              )
                             ],
                           ),
                         )
@@ -591,7 +610,69 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                       Divider(
                         thickness: 1,
                         height: 0,
-                        indent: 50,
+                        indent: 15,
+                        color: _color6,
+                      ),
+                      EditOptionButton(
+                        backgroundColor: Colors.transparent,
+                        onPressedColor: _color5,
+                        onPressed: () => setState(() => _defaultAutoArchiveDuration = const Duration(days: 1)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                          child: Row(
+                            children: [
+                              Text(
+                                '24 Hours',
+                                style: TextStyle(
+                                  color: _color1,
+                                  fontSize: 16,
+                                  fontFamily: 'GGSansSemibold'
+                                ),
+                              ),
+                              const Spacer(),
+                              RadioButtonIndicator(
+                                radius: 24,
+                                selected: _defaultAutoArchiveDuration.inHours == 24
+                              )
+                            ],
+                          ),
+                        )
+                      ),
+                      Divider(
+                        thickness: 1,
+                        height: 0,
+                        indent: 15,
+                        color: _color6,
+                      ),
+                      EditOptionButton(
+                        backgroundColor: Colors.transparent,
+                        onPressedColor: _color5,
+                        onPressed: () => setState(() => _defaultAutoArchiveDuration = const Duration(days: 3)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                          child: Row(
+                            children: [
+                              Text(
+                                '3 Days',
+                                style: TextStyle(
+                                  color: _color1,
+                                  fontSize: 16,
+                                  fontFamily: 'GGSansSemibold'
+                                ),
+                              ),
+                              const Spacer(),
+                              RadioButtonIndicator(
+                                radius: 24,
+                                selected: _defaultAutoArchiveDuration.inHours == 72
+                              )
+                            ],
+                          ),
+                        )
+                      ),
+                      Divider(
+                        thickness: 1,
+                        height: 0,
+                        indent: 15,
                         color: _color6,
                       ),
                       EditOptionButton(
@@ -600,22 +681,13 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                         borderRadius: const BorderRadius.vertical(
                           bottom: Radius.circular(16)
                         ),
-                        onPressed: () {},
+                        onPressed: () => setState(() => _defaultAutoArchiveDuration = const Duration(days: 7)),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
                           child: Row(
                             children: [
-                              SvgPicture.asset(
-                                AssetIcon.link,
-                                height: 22,
-                                colorFilter: ColorFilter.mode(
-                                  _color1.withOpacity(0.8),
-                                  BlendMode.srcIn
-                                )
-                              ),
-                              const SizedBox(width: 10),
                               Text(
-                                'Invites',
+                                '1 Week',
                                 style: TextStyle(
                                   color: _color1,
                                   fontSize: 16,
@@ -623,15 +695,104 @@ class _EditTextChannelScreenState extends ConsumerState<EditTextChannelScreen> {
                                 ),
                               ),
                               const Spacer(),
-                              Icon(
-                                Icons.keyboard_arrow_right,
-                                color: _color2,
-                              ),
-                            ],
-                          ),
+                              RadioButtonIndicator(
+                                radius: 24,
+                                selected: _defaultAutoArchiveDuration.inHours == 168
+                              )
+                            ]
+                          )
                         )
-                      ),
-                    ],
+                      )
+                    ]
+                  )
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'New threads will not show in the channel list after being inactive for the specified duration.',
+                  style: TextStyle(
+                    color: _color2,
+                    fontSize: 14
+                  )
+                ),
+                const SizedBox(height: 20),
+                EditOptionButton(
+                  onPressed: () {
+                  },
+                  backgroundColor: _color4,
+                  onPressedColor: _color5,
+                  borderRadius: BorderRadius.circular(16),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          AssetIcon.webhook,
+                          height: 22,
+                          colorFilter: ColorFilter.mode(
+                            _color1.withOpacity(0.8),
+                            BlendMode.srcIn
+                          )
+                        ),
+                        const SizedBox(width: 14),
+                        Text(
+                          'Webhooks',
+                          style: TextStyle(
+                            color: _color1,
+                            fontSize: 16,
+                            fontFamily: 'GGSansSemibold'
+                          ),
+                        ),
+                        const Spacer(),
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          color: _color2,
+                        ),
+                      ],
+                    ),
+                  )
+                ),
+                const SizedBox(height: 20),
+                EditOptionButton(
+                  backgroundColor: _color4,
+                  onPressedColor: _color5,
+                  borderRadius: BorderRadius.circular(16),
+                  onPressed: () async {
+                    bool? result = await showDialogBox<bool>(
+                      context: context,
+                      child: ChannelDeleteConfirmationDialog(channel: widget.textChannel)
+                    );
+                    if (result == null) {
+                      return;
+                    }
+                    else if (result && context.mounted) {
+                      Navigator.pop(context);
+                    }
+                    else if (!result && context.mounted) {
+                      showSnackBar(
+                        context: context, 
+                        theme: _theme,
+                        leading: Icon(
+                          Icons.error_outline,
+                          color: Colors.red[800],
+                        ),
+                        msg: 'Unexpected Error, Please try again.'
+                      );
+                    }
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Delete Channel',
+                          style: TextStyle(
+                            color: Color(0XFFE8413A),
+                            fontSize: 16,
+                            fontFamily: 'GGSansSemibold'
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ]
