@@ -1,48 +1,48 @@
-text = """PART FOUR,
-Let's talk about October 7th,
+# text = """PART FOUR,
+# Let's talk about October 7th,
 
-Yes i do condemn Hamas for doing such thing because some innocent people who had nothing do to with this conflict died.
+# Yes i do condemn Hamas for doing such thing because some innocent people who had nothing do to with this conflict died.
 
-But the question is, when Israel k!lled thousands of innocent children, why you didn't condemn it?
+# But the question is, when Israel k!lled thousands of innocent children, why you didn't condemn it?
 
-You shared a post where some Palestinians were happy about October 7th, but why you forgot to mention those Israeli soldiers who feel happy when they k!ll innocent children? Do you want the concrete proof of it?
+# You shared a post where some Palestinians were happy about October 7th, but why you forgot to mention those Israeli soldiers who feel happy when they k!ll innocent children? Do you want the concrete proof of it?
 
-why you forgot to share the post of a father who was holding the dead body of his headless baby?
+# why you forgot to share the post of a father who was holding the dead body of his headless baby?
 
-Why you forgot to share the video of a mother who was holding the d!ead bodies of her two new born babies in her arms?
+# Why you forgot to share the video of a mother who was holding the d!ead bodies of her two new born babies in her arms?
 
-Why you forgot to mention the story of a Palestianian boy who wanted to become a professional foot ball player but he lost both of his legs because of your stupid diaper force who loves to target children?
+# Why you forgot to mention the story of a Palestianian boy who wanted to become a professional foot ball player but he lost both of his legs because of your stupid diaper force who loves to target children?
 
-Why you forgot to mention the story of a Palestianian father who had to a*mputate his child's arm without anesthesia but unfortunately his child d!ed due to the severe pain?
+# Why you forgot to mention the story of a Palestianian father who had to a*mputate his child's arm without anesthesia but unfortunately his child d!ed due to the severe pain?
 
-Why you didn't mention the fact that more than thousands of children have been k!lled by your stupid diaper force?
+# Why you didn't mention the fact that more than thousands of children have been k!lled by your stupid diaper force?
 
-Why you didn't mention the lies of that diaper force like 'h@mas be*headed 40 babies' ? Which was later proved to be false, why you didn't mention it?
+# Why you didn't mention the lies of that diaper force like 'h@mas be*headed 40 babies' ? Which was later proved to be false, why you didn't mention it?
 
-If you want more, i can give you hundereds of more if you want with concrete proofs. We have video proofs but you people always try to justify it by blaming everything on h@amas.
+# If you want more, i can give you hundereds of more if you want with concrete proofs. We have video proofs but you people always try to justify it by blaming everything on h@amas.
 
-you tell me, what those children have to do with the history of Israel and palestine? And the conflict?
+# you tell me, what those children have to do with the history of Israel and palestine? And the conflict?
 
-You made the post where you were talking about the history of Israel and palestine. You literally blamed Islam for this conflict without even knowing what Islam actually teaches us, but you never spoke for those innocent children who are being k!lled daily.
+# You made the post where you were talking about the history of Israel and palestine. You literally blamed Islam for this conflict without even knowing what Islam actually teaches us, but you never spoke for those innocent children who are being k!lled daily.
 
-Unlike you, i do condemn the k!lling of innocnet children, be it a palestianin children or an Israeli children. 
-"""
+# Unlike you, i do condemn the k!lling of innocnet children, be it a palestianin children or an Israeli children. 
+# """
 
-text = text.replace('kill', 'k*ill');
-text = text.replace('k!ll', 'k!*ll');
-text = text.replace('k!lled', 'k!*lled');
-text = text.replace('slaughter', 's*laughter');
-text = text.replace('strike', 's*trike');
-text = text.replace('killed', 'k*illed');
-text = text.replace('war', 'w*ar');
-text = text.replace('attack', 'a*ttack');
-text = text.replace('attacked', 'a*ttacked');
-text = text.replace('fighting', 'f*!ghting');
-text = text.replace('fight', 'f*!ght');
-text = text.replace('corpse', 'c*orpse');
-text = text.replace('died', 'd*ied');
-text = text.replace('killing', 'k!*lling');
-print(text)
+# text = text.replace('kill', 'k*ill');
+# text = text.replace('k!ll', 'k!*ll');
+# text = text.replace('k!lled', 'k!*lled');
+# text = text.replace('slaughter', 's*laughter');
+# text = text.replace('strike', 's*trike');
+# text = text.replace('killed', 'k*illed');
+# text = text.replace('war', 'w*ar');
+# text = text.replace('attack', 'a*ttack');
+# text = text.replace('attacked', 'a*ttacked');
+# text = text.replace('fighting', 'f*!ghting');
+# text = text.replace('fight', 'f*!ght');
+# text = text.replace('corpse', 'c*orpse');
+# text = text.replace('died', 'd*ied');
+# text = text.replace('killing', 'k!*lling');
+# print(text)
 
 # Let's understand the meaning of jihad first.
 # Jihad is an arabic word which means to struggle or strive.
@@ -170,3 +170,54 @@ print(text)
 # if i p*unch you, you have right to punch me back or even a bit more. And nobody will blame you for p*unching me because i started it first. But if you go and punch my every single friend, my family members, then definitely it would be considered wrong.
 
 # Now why i'm saying this? To help you understand that those innocent children who are being k!lled almost daily have nothing to do with this c*onflict and Israel should be condemed but you people will never condem Israel for such horrible acts.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import requests;
+
+session = requests.session()

@@ -94,10 +94,3 @@
 // void main() {
 //   print(RichestPeople.elon.worth);
 // }
-
-
-
-
-void main() {
-  print('ffffffffffffffffffffffffffffadsfasdfasdfadsfasdfasdfasdfasdfadsfasdfasfasdfdasfdasfadsfasdfasdfsadfa'.length);
-}

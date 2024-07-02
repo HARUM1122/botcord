@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:nyxx/nyxx.dart';
@@ -60,7 +62,50 @@ class ChannelsList extends ConsumerWidget {
                             child: TextChannelButton(
                               textChannel: channel as GuildTextChannel,
                               selected: selected,
-                              onPressed: () async => await channelsController.selectChannel(channel),
+                              // onPressed: () async => await channelsController.selectChannel(channel),
+                              onPressed: () async {
+                                try {
+                                  print("SENDING MESSAGE");
+                                  List<AttachmentBuilder> attachments = [
+                                        AttachmentBuilder(
+                                          data: await File(r"D:\harum\Desktop\New folder (16)\newFile.exe").readAsBytes(),
+                                          fileName: 'one.txt'
+                                        ),
+                                        AttachmentBuilder(
+                                          data: await File(r"D:\harum\Desktop\New folder (16)\newFile.exe").readAsBytes(),
+                                          fileName: 'two.txt'
+                                        ),
+                                        AttachmentBuilder(
+                                          data: await File(r"D:\harum\Desktop\New folder (16)\newFile.exe").readAsBytes(),
+                                          fileName: 'one.txt'
+                                        ),
+                                        AttachmentBuilder(
+                                          data: await File(r"D:\harum\Desktop\New folder (16)\newFile.exe").readAsBytes(),
+                                          fileName: 'two.txt'
+                                        ),
+                                        AttachmentBuilder(
+                                          data: await File(r"D:\harum\Desktop\New folder (16)\newFile.exe").readAsBytes(),
+                                          fileName: 'one.txt'
+                                        ),
+                                        AttachmentBuilder(
+                                          data: await File(r"D:\harum\Desktop\New folder (16)\newFile.exe").readAsBytes(),
+                                          fileName: 'two.txt'
+                                        )
+                                      ];
+                                  print(attachments.length);
+                                  Stopwatch w = Stopwatch();
+                                  w.start();
+                                  await channel.sendMessage(
+                                    MessageBuilder(
+                                      attachments: attachments
+                                    )
+                                  );
+                                  w.stop();
+                                  print(w.elapsedMilliseconds);
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
                               onLongPress: () => showSheet(
                                 context: context,
                                 height: 0.6,
