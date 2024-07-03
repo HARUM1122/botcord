@@ -1,16 +1,15 @@
-# discord
+# Botcord
 
-A new Flutter project.
+This application allows you to log into a Discord bot and interact with the Discord API, making it easy to manage and control your bot directly.
 
-## Getting Started
+Features:
 
-This project is a starting point for a Flutter application.
+- Login as a Discord bot.
+- Interact with Discord API.
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
+![](screenshots/bots.png) ![](screenshots/add-bots.png)
+![](screenshots/guilds.png) ![](screenshots/profile.png)
+![](screenshots/server-settings.png) ![](screenshots/overview-settings.png)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Note: This project is still under development and not currently open source. Development will continue soon, and the project will be made open source in the near future. Stay tuned for updates!

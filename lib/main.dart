@@ -22,14 +22,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   prefs = await SharedPreferences.getInstance();
   final String appData = prefs.getString('app-data') ?? '';
+  print(appData);
   if (appData.isEmpty) {
     await prefs.setString('app-data', jsonEncode(
       {
         'theme': 'dark',
         'is-landed': false,
         'trusted-domains': [],
-        'selected-guild-id' : '0',
-        'selected-channel-id': '0'
+        'selected-guild-id' : '100000',
+        'selected-channel-id': '100000'
       }
     ));
     await prefs.setString('bot-data', jsonEncode(
@@ -58,7 +59,7 @@ void main() async {
 class App extends ConsumerWidget {
   const App({super.key});
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) { 
     String theme = ref.watch(themeController);
     if (!initialized) {
       initialized = true;

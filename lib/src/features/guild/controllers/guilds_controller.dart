@@ -64,6 +64,7 @@ class GuildsController extends ChangeNotifier {
       guildsCache = List.of(await client?.listGuilds() ?? []);
       guildsCache = sortGuilds(guildsCache);
       final Map<String, dynamic> appData = jsonDecode(prefs.getString('app-data')!);
+      print(appData);
       Snowflake selectedGuildId = Snowflake.parse(appData['selected-guild-id']);
 
       if (guildsCache.isNotEmpty) {
@@ -77,6 +78,7 @@ class GuildsController extends ChangeNotifier {
       }
       listenEvents();
     } catch (_) {
+      print(_);
       errorOccurred = true;
     }
     loading = false;
