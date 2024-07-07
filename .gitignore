@@ -1,7 +1,21 @@
 # lib
 # assets
-
+# Ignore everything
 *
+
+# Except for .gitignore itself
+!/.gitignore
+
+# Except for README.md
+!/README.md
+
+# Except for the screenshots directory
+!/screenshots/
+
+# If you want to ensure specific files within screenshots are not ignored (optional)
+!/screenshots/*.png
+!/screenshots/*.jpg
+
 
 
 
