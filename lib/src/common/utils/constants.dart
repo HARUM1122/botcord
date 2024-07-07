@@ -1,1 +1,0 @@
-const String imageUrl = 'https://cdn.discordapp.com/avatars';
