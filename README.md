@@ -1,6 +1,6 @@
 # Botcord
 
-This application allows you to log into a Discord bot and interact with the Discord API, making it easy to manage and control your bot directly.
+This application allows you to log into a Discord bot and interact with the Discord API.
 
 Features:
 
@@ -8,7 +8,7 @@ Features:
 - Interact with Discord API.
 
 ## Screenshots
-![](screenshots/bots.png) ![](screenshots/add-bots.png)
+![](screenshots/bots.png)| ![](screenshots/add-bots.png)
 ![](screenshots/guilds.png) ![](screenshots/profile.png)
 ![](screenshots/server-settings.png) ![](screenshots/overview-settings.png)
 
